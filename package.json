@@ -1,0 +1,52 @@
+{
+  "name": "isee-sentinel",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "I.See Sentinel — Private Operator Edition, specification V6.9",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "tsx apps/api/src/server.ts",
+    "start": "tsx apps/api/src/server.ts",
+    "bootstrap": "tsx apps/api/src/cli.ts bootstrap",
+    "operator:recover": "tsx apps/api/src/cli.ts recover",
+    "operator:adopt": "tsx apps/api/src/cli.ts adopt",
+    "db:migrate": "tsx apps/api/src/cli.ts migrate",
+    "build": "npm run typecheck && npm run build --workspace @sentinel/web",
+    "typecheck": "tsc --noEmit && npm run typecheck --workspace @sentinel/web",
+    "test": "tsx --test --test-concurrency=2 packages/core/test/*.test.ts apps/api/test/*.test.ts",
+    "check": "npm run build && npm test",
+    "inventory": "node scripts/dependency-inventory.mjs",
+    "qa:server": "tsx scripts/qa-server.ts",
+    "qa:browser": "node scripts/browser-qa.cjs",
+    "verify:restore": "tsx scripts/verify-restore.ts",
+    "verify:agent": "tsx scripts/verify-agent.ts",
+    "verify:repository": "node scripts/repository-guard.mjs",
+    "test:repository": "node --test scripts/repository-guard.test.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/rate-limit": "^10.3.0",
+    "@fastify/static": "^10.1.7",
+    "@fastify/swagger": "^9.5.1",
+    "@node-rs/argon2": "^2.0.2",
+    "fastify": "^5.6.0",
+    "otpauth": "^9.4.1",
+    "pg": "^8.16.3",
+    "tsx": "^4.20.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/pg": "^8.15.5",
+    "playwright": "^1.64.1",
+    "typescript": "^5.9.3"
+  }
+}

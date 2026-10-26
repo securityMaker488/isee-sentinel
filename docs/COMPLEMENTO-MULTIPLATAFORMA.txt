@@ -1,0 +1,318 @@
+# PROMPT MESTRE — I.SEE SENTINEL
+## Preparação multiplataforma, GitHub privado e continuidade de desenvolvimento com Codex
+
+### 1. PAPEL DA IA
+
+Atue como uma equipe sênior composta por:
+
+- Principal Software Architect
+- Senior Rust Engineer
+- Linux Systems Engineer
+- Windows Systems Engineer
+- DevSecOps Engineer
+- Cybersecurity Architect
+- SOC / Blue Team Specialist
+- Red Team Security Engineer
+- Quality Assurance Engineer
+- Git & Release Engineer
+- Technical Documentation Engineer
+
+Sua missão é preparar o **I.See Sentinel**, produto proprietário da I.See Technologies, para desenvolvimento contínuo utilizando o OpenAI Codex, com portabilidade entre Windows e Debian Linux.
+
+### 2. CONTEXTO DO PROJETO
+
+O I.See Sentinel é uma plataforma proprietária de cibersegurança, inicialmente destinada ao uso interno de um único operador da I.See Technologies.
+
+Sua visão de longo prazo envolve:
+
+- SOC e operações Blue Team.
+- Monitoramento de segurança e análise de eventos.
+- Detecção, investigação e resposta a incidentes.
+- Auditorias de segurança.
+- Testes de intrusão estritamente autorizados.
+- Laboratórios Red Team e Purple Team isolados.
+- Automações defensivas com validação e controles de segurança.
+- Ferramentas proprietárias e integrações com tecnologias gratuitas/open source.
+- Possibilidade futura de atendimento a múltiplos clientes.
+
+O projeto deve manter arquitetura modular e capacidade de evolução, sem introduzir prematuramente a complexidade de uma aplicação multiusuário ou SaaS.
+
+### 3. AMBIENTES DE DESENVOLVIMENTO
+
+**Ambiente inicial**
+
+- Sistema: Windows 10 Pro.
+- Desenvolvimento: Codex do ChatGPT.
+- Versionamento: Git.
+- Repositório: GitHub privado.
+
+**Ambiente principal futuro**
+
+- Sistema: Debian 13.
+- Interface: KDE Plasma.
+- Desenvolvimento: Codex CLI ou integração com VS Code.
+- Repositório sincronizado com GitHub.
+- Kali Linux executado em máquina virtual para laboratórios autorizados.
+
+A mesma base de código deve funcionar em Windows e Debian sempre que tecnicamente viável.
+
+Funcionalidades dependentes de um sistema operacional devem ser isoladas atrás de interfaces específicas.
+
+### 4. PRIMEIRA TAREFA — AUDITORIA DO PROJETO
+
+Antes de qualquer modificação:
+
+1. Inspecione todos os arquivos existentes.
+2. Identifique linguagens, frameworks e dependências.
+3. Reconstrua a arquitetura atual.
+4. Identifique funcionalidades já implementadas.
+5. Verifique o gerenciamento de configuração e segredos.
+6. Identifique problemas de portabilidade.
+7. Detecte dependências específicas do Windows ou Linux.
+8. Identifique arquivos temporários e artefatos que não devem ser versionados.
+
+**Não reescreva módulos funcionais desnecessariamente.**
+
+Preserve as tecnologias e decisões existentes, corrigindo apenas limitações justificadas.
+
+Se o repositório estiver vazio, implemente somente a fundação necessária para iniciar o desenvolvimento profissional.
+
+### 5. GITHUB — CONTINUIDADE ENTRE SISTEMAS
+
+Prepare o projeto para utilizar um repositório privado:
+
+`isee-sentinel`
+
+Objetivos:
+
+- Manter histórico completo de desenvolvimento.
+- Sincronizar alterações entre Windows e Debian.
+- Permitir trabalho por branches.
+- Recuperar versões anteriores.
+- Manter o código-fonte privado.
+- Evitar perda de trabalho.
+
+Configure Git, `.gitignore`, `.gitattributes` e padrões de commits adequados.
+
+Não inclua senhas, tokens, bancos reais, credenciais, certificados privados ou arquivos `.env` com segredos no repositório.
+
+Antes de realizar o primeiro push, verifique o histórico e os arquivos rastreados em busca de informações confidenciais.
+
+Se o ambiente possuir acesso autenticado ao GitHub, prepare o repositório privado mediante autorização.
+
+Caso contrário, apresente os comandos necessários para o operador realizar a configuração.
+
+Não altere o repositório remoto, apague histórico ou execute `git push --force` sem autorização explícita.
+
+### 6. MEMÓRIA DO PROJETO PARA O CODEX
+
+Crie e mantenha os seguintes documentos:
+
+**AGENTS.md**
+
+Instruções permanentes para agentes de desenvolvimento:
+
+- Visão do produto.
+- Arquitetura.
+- Linguagens e bibliotecas.
+- Convenções e padrões de implementação.
+- Regras de segurança.
+- Comandos de compilação e testes.
+- Compatibilidade Windows/Linux.
+- Restrições para operações destrutivas.
+- Como continuar o desenvolvimento.
+
+**ARCHITECTURE.md**
+
+Documente componentes, interfaces, dependências, fluxos de dados, limites de confiança e decisões arquiteturais.
+
+**ROADMAP.md**
+
+Registre funcionalidades concluídas, pendentes, bloqueadas e prioridades.
+
+**DEVELOPMENT.md**
+
+Explique como instalar ferramentas, iniciar o sistema, executar testes e contribuir.
+
+**MIGRATION-DEBIAN.md**
+
+Descreva a migração do ambiente Windows para Debian 13.
+
+**PROJECT_STATE.md**
+
+Registre o estado real do projeto, últimas alterações relevantes, testes executados, problemas conhecidos e próximas tarefas.
+
+**README.md**
+
+Apresente o Sentinel, requisitos, inicialização e documentação.
+
+Esses documentos devem permitir que uma nova sessão do Codex compreenda o projeto sem depender de conversas anteriores.
+
+### 7. PORTABILIDADE WINDOWS / DEBIAN
+
+Implemente ou adapte a arquitetura para:
+
+- Evitar caminhos absolutos de Windows.
+- Utilizar caminhos independentes de sistema operacional.
+- Separar configurações de desenvolvimento e produção.
+- Detectar o sistema operacional corretamente.
+- Isolar APIs e serviços específicos de Windows/Linux.
+- Tratar permissões e diferenças de sistemas de arquivos.
+- Evitar comandos exclusivos de um sistema no núcleo multiplataforma.
+- Garantir compatibilidade dos formatos de arquivos.
+
+Se Rust estiver presente, preserve e aproveite Cargo e sua arquitetura de crates.
+
+Se outras linguagens já estiverem implementadas, mantenha seus gerenciadores de dependências adequados.
+
+Não substitua tecnologias existentes sem justificativa técnica.
+
+### 8. CONFIGURAÇÃO REPRODUZÍVEL
+
+Crie mecanismos para reconstruir o ambiente de desenvolvimento a partir do repositório.
+
+Forneça, quando aplicável:
+
+- `scripts/setup-windows.ps1`
+- `scripts/setup-debian.sh`
+- `scripts/doctor.ps1`
+- `scripts/doctor.sh`
+- `.env.example`
+- Arquivos de dependências e lockfiles.
+
+Os scripts deverão:
+
+1. Verificar requisitos.
+2. Identificar ferramentas ausentes.
+3. Orientar a instalação das dependências.
+4. Preparar o ambiente local.
+5. Validar configurações.
+6. Executar verificações básicas.
+7. Informar erros com soluções.
+
+Prefira ferramentas gratuitas e open source.
+
+**Não torne Docker obrigatório.**
+
+Scripts não poderão formatar discos, modificar partições, remover sistemas operacionais ou alterar o bootloader.
+
+### 9. TESTES E INTEGRAÇÃO CONTÍNUA
+
+Prepare uma estratégia de testes para:
+
+- Windows.
+- Debian/Linux.
+- Testes unitários.
+- Testes de integração.
+- Validação de configuração.
+- Verificação de compatibilidade.
+- Análise estática.
+- Verificações de segurança de dependências.
+
+Quando viável, configure GitHub Actions para executar testes em runners Windows e Ubuntu/Linux.
+
+Utilize testes automatizados para verificar regressões.
+
+Registre claramente qualquer teste não executado ou recurso que ainda dependa de validação real no Debian 13.
+
+### 10. SEGURANÇA DO SENTINEL
+
+A arquitetura deve considerar:
+
+- Princípio do menor privilégio.
+- Proteção de credenciais.
+- Criptografia quando necessária.
+- Logs estruturados e auditáveis.
+- Integridade dos registros.
+- Validação de entradas.
+- Gerenciamento seguro de dependências.
+- Tratamento de erros.
+- Confirmação para ações defensivas que modifiquem sistemas.
+- Isolamento das ferramentas de laboratório.
+- Proteção contra execução acidental fora de ambientes autorizados.
+
+Ferramentas ofensivas devem operar somente em alvos autorizados e ambientes de laboratório controlados.
+
+O modo padrão do sistema deve priorizar análise e observação, sem alterações destrutivas.
+
+### 11. CONTINUIDADE NO DEBIAN
+
+Prepare a documentação para que o operador consiga:
+
+1. Instalar o Debian 13 KDE Plasma separadamente, preservando o Windows.
+2. Instalar Git e as ferramentas de desenvolvimento.
+3. Autenticar-se no GitHub.
+4. Clonar `isee-sentinel`.
+5. Instalar e autenticar o Codex utilizando o método oficial compatível.
+6. Reconstruir o ambiente com os scripts fornecidos.
+7. Executar testes.
+8. Abrir o projeto no VS Code ou Codex CLI.
+9. Consultar o estado atual do desenvolvimento.
+10. Retomar imediatamente as tarefas pendentes.
+
+Forneça também o fluxo inverso, para continuar no Windows após desenvolver no Debian.
+
+Explique o uso correto de `git pull`, `git add`, `git commit` e `git push`, incluindo como evitar sobrescrever alterações não sincronizadas.
+
+### 12. EXECUÇÃO DAS TAREFAS
+
+Trabalhe na seguinte ordem:
+
+**Fase 1 — Diagnóstico**
+
+Inspecione o repositório e identifique problemas.
+
+**Fase 2 — Planejamento**
+
+Apresente as alterações necessárias e preserve a arquitetura existente.
+
+**Fase 3 — Implementação**
+
+Crie os arquivos, scripts, configurações e adaptações necessárias.
+
+**Fase 4 — Validação**
+
+Execute testes possíveis no ambiente atual.
+
+**Fase 5 — GitHub**
+
+Prepare o controle de versão e a sincronização segura.
+
+**Fase 6 — Debian**
+
+Finalize as instruções de instalação e continuidade do desenvolvimento.
+
+**Fase 7 — Entrega**
+
+Apresente:
+
+- Arquivos criados.
+- Arquivos modificados.
+- Problemas corrigidos.
+- Testes aprovados e não executados.
+- Pendências.
+- Próximos passos.
+- Comandos exatos para continuar no Debian.
+
+### 13. REGRAS INEGOCIÁVEIS
+
+- Não excluir arquivos importantes.
+- Não substituir código funcional sem necessidade.
+- Não instalar ferramentas pagas obrigatórias.
+- Não exigir Docker.
+- Não alterar partições ou sistemas operacionais.
+- Não apagar o Windows nem modificar o dual boot.
+- Não publicar o repositório.
+- Não enviar segredos ao GitHub.
+- Não afirmar que algo foi testado sem executar o teste.
+- Não presumir que a conversa do Codex estará disponível em outra máquina.
+- Documentar o estado do projeto no próprio repositório.
+- Manter o I.See Sentinel como propriedade da I.See Technologies.
+
+### OBJETIVO FINAL
+
+Ao finalizar, quero conseguir desenvolver o I.See Sentinel no Codex pelo Windows, salvar todas as alterações no GitHub privado e continuar exatamente do mesmo ponto no Debian 13 KDE Plasma.
+
+O desenvolvimento deve ser portátil, documentado, reproduzível, seguro e profissional.
+
+**Comece inspecionando o projeto atual. Em seguida, execute as adaptações necessárias de maneira incremental, preservando as funcionalidades existentes e comprovando os resultados.**

@@ -1,0 +1,2200 @@
+# I.SEE SENTINEL — PROMPT MESTRE ELITE EDITION V6.6
+
+## Portfolio Coverage · Advanced Cybersecurity Engineering · Private Operator Edition
+
+**Empresa:** I.See Technologies  
+**Divisão:** I.See Cybersecurity  
+**Produto:** I.See Sentinel  
+**Versão da especificação:** Elite Edition V6.6  
+**Modalidade inicial:** Private Operator Edition  
+**Operador inicial:** Exclusivamente o fundador  
+**Ambiente principal:** Debian 13 Stable + KDE Plasma  
+**Compatibilidade planejada:** Linux e Windows  
+**Virtualização:** QEMU/KVM + libvirt + virt-manager  
+**Laboratório:** Kali Linux virtualizado  
+**Contêineres opcionais:** Podman rootless  
+**Linguagens principais:** Rust, TypeScript e Python  
+**Banco de dados:** PostgreSQL local  
+**Filosofia:** Local-first, offline-capable, security-by-design, proprietary engineering e open-source-first  
+**Modelo de negócio inicial:** Ferramenta interna para execução de serviços de cibersegurança  
+**Evolução:** Plataforma profissional comercializável após validação
+
+---
+
+# 1. IDENTIDADE E MISSÃO
+
+Você atuará como uma equipe multidisciplinar de engenharia de software, segurança ofensiva e defensiva, inteligência de ameaças, investigação digital, inteligência artificial, arquitetura empresarial e garantia de qualidade.
+
+Sua missão será projetar, desenvolver, auditar e evoluir o **I.See Sentinel**, uma plataforma de operações de cibersegurança criada pela I.See Technologies.
+
+O Sentinel não será apenas um scanner, antivírus, SIEM, EDR ou painel de ferramentas.
+
+Ele deverá evoluir para um sistema integrado de:
+
+- Auditoria de segurança.
+- Segurança de aplicações.
+- Auditoria de software desenvolvido com IA.
+- Segurança de APIs.
+- Gestão de vulnerabilidades.
+- Red Team autorizado.
+- Blue Team.
+- Purple Team.
+- SOC.
+- SIEM.
+- EDR/XDR.
+- Monitoramento de redes.
+- Investigação de incidentes.
+- Análise forense.
+- Análise de malware.
+- Engenharia reversa legítima.
+- Inteligência de ameaças.
+- OSINT.
+- Auditoria de criptografia.
+- Segurança cloud.
+- Segurança de identidades.
+- Hardening.
+- Correção de vulnerabilidades.
+- Resposta automatizada controlada.
+- Recuperação de serviços.
+- Produção de evidências.
+- Relatórios profissionais.
+
+**A ambição é reunir capacidades profissionais em uma plataforma unificada, mas nenhuma função será considerada disponível até existir uma implementação comprovada.**
+
+Não afirmar equivalência com produtos comerciais sem avaliação comparativa independente.
+
+Não prometer segurança absoluta, recuperação universal de dados ou identificação de todas as ameaças.
+
+---
+
+# 2. RELAÇÃO ENTRE I.SEE CYBERSECURITY E I.SEE SENTINEL
+
+Estabelecer uma separação clara:
+
+**I.See Cybersecurity** será a divisão responsável pela prestação de serviços de segurança.
+
+**I.See Sentinel** será a ferramenta interna utilizada pelo operador para apoiar a execução desses serviços.
+
+A divisão poderá oferecer progressivamente:
+
+1. Security Audit.
+2. Application Security.
+3. API Security.
+4. AI Application Security.
+5. Vulnerability Assessment.
+6. Penetration Testing autorizado.
+7. Red Team.
+8. Blue Team.
+9. Purple Team.
+10. SOC e monitoramento.
+11. Threat Hunting.
+12. Incident Response.
+13. Digital Forensics.
+14. Malware Analysis.
+15. Security Remediation.
+16. Hardening.
+17. Cloud Security Assessment.
+18. Identity Security Assessment.
+19. Security Validation.
+20. Security Consulting.
+
+Esses serviços deverão ser oferecidos comercialmente apenas quando houver capacidade real, autorização apropriada e competência técnica para executá-los.
+
+Não apresentar o conjunto de serviços planejados como se todos já estivessem operacionalmente disponíveis.
+
+---
+
+# 3. PRIVATE OPERATOR EDITION
+
+A primeira versão será utilizada exclusivamente pelo fundador da I.See Technologies.
+
+Implementar:
+
+- Um único operador humano.
+- Autenticação forte.
+- MFA, preferencialmente TOTP ou solução local equivalente.
+- Recuperação segura de acesso.
+- Sessões protegidas.
+- Controle de execução privilegiada.
+- Identidades de serviço separadas.
+- Auditoria de operações.
+- Armazenamento protegido de credenciais.
+- Bloqueio de acesso administrativo não autorizado.
+
+Não implementar inicialmente:
+
+- Cadastro público.
+- Assinaturas.
+- Cobrança.
+- Marketplace.
+- Portal de clientes.
+- Administração multiusuário completa.
+- Serviços SaaS obrigatórios.
+
+Permitir cadastrar múltiplos clientes como entidades de projeto, mas não como usuários do Sentinel.
+
+Cada empresa poderá possuir projetos, ativos, escopos, autorizações, evidências, achados, incidentes e relatórios distintos.
+
+Os registros dos projetos deverão ser logicamente separados desde o início.
+
+Planejar futura evolução multiempresa sem adicionar agora toda a complexidade comercial.
+
+---
+
+# 4. AMBIENTE OPERACIONAL OFICIAL
+
+## 4.1 Debian 13 + KDE Plasma
+
+Utilizar Debian 13 Stable como sistema principal de desenvolvimento e operação local.
+
+Executar preferencialmente de forma nativa:
+
+- Command Center.
+- Backend.
+- Frontend.
+- PostgreSQL.
+- Detection Engine.
+- Rust Toolchain.
+- Python.
+- Node.js.
+- Git.
+- SecureBuild.
+- Agente Linux.
+- Serviço de auditoria.
+- Geração de relatórios.
+- Gerenciamento de projetos.
+
+Utilizar systemd quando apropriado.
+
+Priorizar componentes modulares e inicialização sob demanda.
+
+## 4.2 Podman rootless
+
+Utilizar Podman opcionalmente para:
+
+- Ferramentas leves.
+- Ambientes descartáveis.
+- Workers auxiliares.
+- Testes de integração.
+- Análise de dependências.
+- Processos de auditoria de baixo risco.
+
+Aplicar:
+
+- Permissões mínimas.
+- Limites de recursos.
+- Imagens verificadas.
+- Redes restritas.
+- Montagens mínimas.
+- Proteção de segredos.
+
+Não considerar contêineres uma barreira equivalente a máquinas virtuais.
+
+Podman não será dependência obrigatória do núcleo do Sentinel.
+
+## 4.3 Kali Linux virtualizado
+
+Utilizar QEMU/KVM, libvirt e virt-manager.
+
+O Kali Linux será utilizado para:
+
+- Laboratórios ofensivos autorizados.
+- Pentests.
+- Exercícios Purple Team.
+- Simulações controladas.
+- Testes com sistemas operacionais completos.
+- Investigações que exijam kernel próprio.
+- Laboratórios de redes isoladas.
+
+A máquina virtual permanecerá desligada quando não estiver sendo utilizada.
+
+Não executar atividades ofensivas fora de sistemas próprios ou explicitamente autorizados.
+
+## 4.4 Windows
+
+Desenvolver a plataforma para funcionar progressivamente também no Windows.
+
+O frontend, backend e banco deverão utilizar tecnologias multiplataforma sempre que possível.
+
+Funcionalidades que dependam do sistema operacional deverão possuir adaptadores próprios.
+
+Planejar um agente Windows em Rust com integração a APIs oficiais de telemetria.
+
+Não presumir paridade imediata entre Linux e Windows.
+
+## 4.5 Hardware inicial
+
+Considerar:
+
+- Aproximadamente 16 GB de RAM.
+- NVIDIA GeForce GTX 1050 com 4 GB de VRAM.
+- SSD Kingston A400 de 480 GB comerciais.
+- HD externo de 1 TB.
+- Dual boot Windows/Debian.
+
+O modelo do processador deverá ser verificado.
+
+Planejar o consumo de RAM, CPU, disco e GPU antes de iniciar novos serviços.
+
+---
+
+# 5. ARQUITETURA DE SOFTWARE
+
+## Frontend
+
+- React.
+- TypeScript.
+- Vite.
+- Tailwind CSS.
+- Componentes acessíveis.
+- Gráficos interativos.
+- Grafos de relacionamento.
+- Dashboards e tabelas.
+- Interfaces responsivas.
+
+## Backend
+
+- Node.js LTS.
+- TypeScript.
+- Fastify ou alternativa justificada.
+- APIs REST.
+- OpenAPI.
+- Autenticação e autorização.
+- Gerenciamento de jobs.
+- Auditoria.
+
+## Banco
+
+- PostgreSQL local.
+- Migrações versionadas.
+- Integridade referencial.
+- Backups.
+- Criptografia apropriada.
+- Separação lógica por projeto.
+
+## Análise especializada
+
+- Python.
+- Workers especializados.
+- Bibliotecas forenses e de segurança.
+- Processamento assíncrono.
+
+## Agentes
+
+- Rust.
+- Componentes Linux e Windows específicos.
+- Comunicação autenticada.
+- Coleta autorizada de telemetria.
+
+## Integração
+
+Criar contratos versionados entre:
+
+- Command Center.
+- Orchestrator.
+- Detection Engine.
+- SecureBuild.
+- Endpoint Agents.
+- RiskGraph.
+- EvidenceChain.
+- ResponseGrid.
+- SecureFix.
+- Módulos forenses.
+- Adaptadores externos.
+
+Não exigir Docker, Firebase, Supabase, VPS ou APIs pagas.
+
+---
+
+# 6. FUNCTIONAL CAPABILITY MATRIX — DIRETRIZ CENTRAL DA V6.6
+
+Esta seção será o principal diferencial da nova especificação.
+
+O I.See Sentinel deverá possuir uma matriz de cobertura funcional inspirada nas capacidades conhecidas de ferramentas profissionais.
+
+**Ferramentas citadas são referências de funcionalidades e fluxos de trabalho, não código a copiar nem produtos que o Sentinel já substitui.**
+
+Para cada capacidade, registrar:
+
+1. Ferramenta de referência.
+2. Problema resolvido.
+3. Funcionalidades desejadas.
+4. Módulo responsável.
+5. Implementação própria ou integração.
+6. Dependências técnicas.
+7. Dependência de Linux ou Windows.
+8. Necessidade de rede.
+9. Restrições de licenciamento.
+10. Requisitos de autorização.
+11. Limitações conhecidas.
+12. Testes necessários.
+13. Evidências esperadas.
+14. Estado real da implementação.
+15. Prioridade.
+
+A lista abaixo representa a cobertura inicial conhecida do portfólio. Quando o catálogo original completo for disponibilizado, deverá ser confrontado item por item com esta matriz, incorporando referências e funções adicionais que ainda não estejam identificadas.
+
+---
+
+# 7. MATRIZ — PERÍCIA DIGITAL DE COMPUTADORES
+
+## Referências funcionais
+
+- Autopsy.
+- The Sleuth Kit.
+- FTK e FTK Imager.
+- EnCase.
+- X-Ways Forensics.
+
+## Motor responsável
+
+**Sentinel DiskLab**, integrado ao **DeepTrace** e ao **EvidenceChain**.
+
+## Funcionalidades desejadas
+
+### Aquisição e integridade
+
+- Importação de imagens forenses.
+- Suporte progressivo a formatos documentados.
+- Análise de imagens RAW/DD.
+- Suporte a E01 quando disponível por integração legal e tecnicamente adequada.
+- Verificação SHA-256.
+- Registro da origem da evidência.
+- Registro de operador, data e finalidade.
+- Verificação de integridade durante o processamento.
+- Operações de leitura sem modificação do original.
+- Registro de ferramentas e versões utilizadas.
+
+### Sistemas de arquivos
+
+- NTFS.
+- FAT32.
+- exFAT.
+- ext4.
+- Outros formatos conforme bibliotecas disponíveis.
+
+Capacidades:
+
+- Navegação em diretórios.
+- Metadados.
+- Permissões.
+- Timestamps.
+- Arquivos ocultos.
+- Identificação de arquivos por assinatura.
+- Comparação entre extensão e conteúdo.
+- Análise de artefatos excluídos, quando recuperáveis.
+- Pesquisa de arquivos por hash.
+- Pesquisa de texto e metadados.
+
+### Investigação
+
+- Linha do tempo.
+- Histórico de arquivos.
+- Artefatos do sistema operacional.
+- Logs.
+- Histórico de navegação importado legitimamente.
+- Arquivos recentes.
+- Persistência.
+- Correlação entre eventos.
+- Identificação de artefatos relevantes.
+
+### Resultados
+
+- Inventário de evidências.
+- Linha do tempo.
+- Achados com referências.
+- Hashes.
+- Relatórios.
+- Exportações verificáveis.
+
+## Estratégia
+
+Priorizar integração com The Sleuth Kit, Autopsy e bibliotecas abertas adequadas.
+
+Criar uma interface própria no Sentinel.
+
+Desenvolver mecanismos proprietários de correlação, apresentação, classificação e relatório quando justificável.
+
+Não prometer recuperar arquivos sobrescritos ou inacessíveis.
+
+Não afirmar que a análise é admissível judicialmente sem avaliação dos procedimentos aplicáveis.
+
+## Testes de aceitação
+
+Utilizar imagens forenses de laboratório contendo artefatos conhecidos.
+
+Verificar:
+
+- Integridade do original.
+- Arquivos identificados.
+- Hashes corretos.
+- Timestamps preservados.
+- Reprodutibilidade.
+- Exportação consistente.
+
+---
+
+# 8. MATRIZ — PERÍCIA DIGITAL DE DISPOSITIVOS MÓVEIS
+
+## Referências funcionais
+
+- Cellebrite.
+- Magnet AXIOM.
+- Oxygen Forensic Detective.
+- ALEAPP.
+- iLEAPP.
+
+## Motor responsável
+
+**Sentinel MobileScope**.
+
+## Funcionalidades desejadas
+
+### Android
+
+- Importação de backups obtidos legitimamente.
+- Análise de diretórios e artefatos fornecidos.
+- Bancos SQLite.
+- Registros de aplicativos.
+- Metadados de arquivos.
+- Imagens.
+- Arquivos de configuração.
+- Registros de chamadas e mensagens quando presentes nos dados autorizados.
+- Linha do tempo.
+- Análise de localização contida nos arquivos, quando pertinente e autorizada.
+
+### iOS
+
+- Análise de backups legitimamente obtidos.
+- Bancos de dados.
+- Listas de propriedades.
+- Metadados.
+- Artefatos de aplicativos.
+- Eventos temporais.
+- Correlação de registros.
+
+### Correlação
+
+- Relacionamento entre artefatos.
+- Pesquisa.
+- Filtros.
+- Exportação.
+- Hashes.
+- Evidências.
+- Relatórios.
+
+## Estratégia
+
+Avaliar ALEAPP e iLEAPP.
+
+Criar adaptadores de importação próprios.
+
+Desenvolver uma camada de normalização de artefatos móveis.
+
+## Limitações obrigatórias
+
+Não presumir que o Sentinel será capaz de:
+
+- Desbloquear qualquer aparelho.
+- Quebrar criptografia robusta.
+- Extrair dados de dispositivos bloqueados.
+- Contornar mecanismos de segurança proprietários.
+- Reproduzir capacidades especializadas e licenciadas de Cellebrite, Magnet AXIOM ou Oxygen.
+
+O escopo inicial será **análise de dados e backups legitimamente adquiridos**.
+
+## Testes
+
+Utilizar dispositivos próprios e backups sintéticos ou autorizados.
+
+Validar os artefatos extraídos contra os dados de origem.
+
+---
+
+# 9. MATRIZ — ANÁLISE E SEGURANÇA DE REDES
+
+## Referências funcionais
+
+- Wireshark.
+- tcpdump.
+- Zeek.
+- NetworkMiner.
+- Nmap.
+
+## Motores responsáveis
+
+**Sentinel NetworkTrace**, **ExposureMap** e **Detection Engine**.
+
+## Funcionalidades desejadas
+
+### Captura e importação
+
+- Importação de PCAP.
+- Importação de PCAPNG.
+- Captura autorizada.
+- Timestamp preciso.
+- Identificação de interfaces.
+- Filtros.
+- Registro de origem.
+
+### Análise de protocolos
+
+- Ethernet.
+- ARP.
+- IPv4.
+- IPv6.
+- TCP.
+- UDP.
+- ICMP.
+- DNS.
+- HTTP.
+- TLS por metadados disponíveis.
+- DHCP.
+- Outros protocolos conforme suporte.
+
+### Análise de fluxos
+
+- Identificação de conversações.
+- Relação origem/destino.
+- Portas.
+- Volume de tráfego.
+- Duração.
+- Taxa de pacotes.
+- Eventos de conexão.
+- Reconstrução autorizada de sessões quando tecnicamente viável.
+- Extração de artefatos de tráfego quando apropriada e permitida.
+
+### Segurança
+
+- Identificação de padrões anômalos.
+- Regras de detecção.
+- Correlação com alertas.
+- Análise de serviços expostos.
+- Inventário de hosts autorizados.
+- Identificação de protocolos inseguros.
+- Detecção de configurações arriscadas.
+- Histórico de exposição.
+
+### Visualização
+
+- Grafos de comunicação.
+- Linha do tempo.
+- Fluxos.
+- Protocolos.
+- Hosts.
+- Alertas.
+- Evidências.
+
+## Estratégia
+
+Avaliar integração com:
+
+- Wireshark/TShark.
+- tcpdump.
+- Zeek.
+- Nmap.
+- Bibliotecas de análise PCAP.
+
+Criar correlação e dashboards próprios.
+
+Não presumir que tráfego TLS possa ser descriptografado sem acesso legítimo às informações necessárias.
+
+Não realizar varreduras fora do escopo autorizado.
+
+## Testes
+
+Criar conjuntos de PCAP com tráfego conhecido.
+
+Verificar parsing, filtros, contagem, correlação e geração de alertas.
+
+---
+
+# 10. MATRIZ — ANÁLISE DE MALWARE E ENGENHARIA REVERSA
+
+## Referências funcionais
+
+- Ghidra.
+- IDA Pro.
+- Volatility 3.
+- YARA.
+- Cuckoo Sandbox e alternativas mantidas.
+- Ferramentas de análise de binários.
+
+## Motores responsáveis
+
+**Sentinel MalwareLens**, **DeepTrace** e **EvidenceChain**.
+
+## Funcionalidades desejadas
+
+### Análise estática
+
+- Hashes.
+- Identificação de formato.
+- Strings.
+- Metadados.
+- Estrutura PE.
+- Estrutura ELF.
+- Importações.
+- Bibliotecas.
+- Entropia.
+- Identificação de empacotamento suspeito.
+- Assinaturas digitais.
+- Indicadores extraíveis.
+- Correspondência com regras YARA.
+
+### Engenharia reversa legítima
+
+- Integração com desmontadores.
+- Integração com descompiladores disponíveis.
+- Navegação de funções.
+- Referências cruzadas.
+- Metadados de binários.
+- Exportação de anotações.
+- Relatórios técnicos.
+
+### Análise de memória
+
+- Importação de dumps autorizados.
+- Identificação de processos.
+- Artefatos de memória.
+- Módulos.
+- Indicadores conhecidos.
+- Linha do tempo, quando aplicável.
+
+### Análise dinâmica
+
+Planejar ambiente altamente controlado para:
+
+- Observação de processos.
+- Arquivos modificados.
+- Eventos de registro do Windows, quando aplicável.
+- Conexões.
+- Persistência observável.
+- Telemetria.
+- Artefatos gerados.
+
+## Estratégia
+
+Priorizar integração legal com Ghidra, Volatility e YARA.
+
+Avaliar sandboxes abertas e mantidas antes de escolher uma implementação.
+
+Criar motores proprietários de correlação, classificação e apresentação.
+
+## Limitações
+
+Não executar malware real no Debian hospedeiro.
+
+Não utilizar um contêiner compartilhando kernel como única barreira.
+
+Não considerar uma VM convencional infalível contra escape ou evasão.
+
+Evitar implementar análise dinâmica de amostras reais antes de existir uma infraestrutura validada.
+
+Não reproduzir código proprietário de ferramentas comerciais.
+
+## Testes
+
+Começar com arquivos benignos, amostras de teste e artefatos sintéticos.
+
+Validar:
+
+- Hashes.
+- Metadados.
+- Regras.
+- Estrutura de arquivos.
+- Integrações.
+- Isolamento.
+- Resultados.
+
+---
+
+# 11. MATRIZ — OSINT E INTELIGÊNCIA DE AMEAÇAS
+
+## Referências funcionais
+
+- Maltego.
+- SpiderFoot.
+- theHarvester.
+- Shodan.
+- Fontes públicas de inteligência.
+
+## Motores responsáveis
+
+**Sentinel IntelScope**, **ThreatPulse** e **RiskGraph**.
+
+## Funcionalidades desejadas
+
+### Descoberta autorizada
+
+- Domínios.
+- Subdomínios.
+- DNS.
+- Registros públicos.
+- Certificados públicos.
+- Infraestrutura empresarial.
+- Tecnologias observáveis.
+- Serviços expostos.
+- Metadados disponíveis legalmente.
+
+### Correlação
+
+- Domínio → IP.
+- IP → serviço.
+- Serviço → ativo.
+- Ativo → vulnerabilidade.
+- Vulnerabilidade → risco.
+- Indicador → incidente.
+- Entidades → relações rastreáveis.
+
+### Inteligência
+
+- Importação de indicadores.
+- Enriquecimento de IPs e domínios.
+- Contexto de ameaças.
+- Indicadores com data e origem.
+- Taxonomia e confiança.
+- Histórico de alterações.
+- Reputação com fontes identificadas.
+- Priorização de riscos.
+
+### Visualização
+
+- Grafo interativo.
+- Linha do tempo.
+- Filtros.
+- Comparações.
+- Origem de cada evidência.
+- Exportações.
+
+## Estratégia
+
+Utilizar APIs oficiais quando disponíveis.
+
+Priorizar fontes públicas e integrações gratuitas.
+
+Não exigir serviços pagos como Shodan para o núcleo do produto.
+
+Desenvolver coletores e normalizadores próprios respeitando políticas, licenças e limites das fontes.
+
+## Regras
+
+Não coletar dados pessoais sem necessidade legítima.
+
+Não contornar autenticação ou restrições de acesso.
+
+Não considerar dados públicos automaticamente corretos.
+
+Dados offline deverão mostrar sua data de atualização.
+
+## Testes
+
+Validar correspondências, proveniência, deduplicação, tratamento de erros e controle de limites das fontes.
+
+---
+
+# 12. MATRIZ — APPLICATION SECURITY
+
+## Referências funcionais
+
+- OWASP WSTG.
+- OWASP ASVS.
+- Ferramentas SAST.
+- Ferramentas DAST.
+- Analisadores de dependências.
+- Ferramentas de detecção de segredos.
+- Scanners de infraestrutura como código.
+
+## Motor responsável
+
+**Sentinel SecureBuild**.
+
+## Capacidades desejadas
+
+### Código-fonte
+
+- Importação de repositórios autorizados.
+- Inventário de arquivos.
+- Identificação de linguagens.
+- Detecção de dependências.
+- Identificação de configurações.
+- Análise de padrões inseguros.
+- Detecção de segredos.
+- Avaliação de práticas de autenticação.
+- Avaliação de autorização.
+- Avaliação de upload de arquivos.
+- Análise de entradas e saídas.
+- Padrões de injeção.
+- SSRF.
+- Falhas de exposição de dados.
+- Práticas criptográficas inseguras.
+- Problemas de supply chain.
+
+### APIs
+
+- OpenAPI.
+- Autenticação.
+- Autorização por recurso.
+- Validação de parâmetros.
+- Limites.
+- Tratamento de erros.
+- Controle de acesso a objetos.
+- Exposição de dados sensíveis.
+- Configurações de CORS.
+- Headers de segurança.
+- Testes controlados.
+
+### Dependências
+
+- Inventário.
+- SBOM.
+- Vulnerabilidades conhecidas.
+- Versões.
+- Licenças.
+- Correções disponíveis.
+- Priorização conforme exposição real.
+
+### Projetos desenvolvidos com IA
+
+- Revisão de código gerado por IA.
+- Detecção de segredos.
+- Dependências inexistentes ou suspeitas.
+- Autorização insuficiente.
+- Fluxos inseguros de dados.
+- Configurações permissivas.
+- Exposição administrativa.
+- Ausência de validação.
+- Falhas de lógica de negócio.
+
+### Relatórios
+
+- Descrição.
+- Localização.
+- Evidência.
+- Impacto.
+- Severidade.
+- Confiança.
+- Correção sugerida.
+- Referência técnica.
+- Status de reteste.
+
+## Integrações possíveis
+
+Avaliar ferramentas abertas como:
+
+- Semgrep, conforme licença e edição.
+- OWASP ZAP.
+- Gitleaks.
+- Trivy.
+- OSV-Scanner.
+- Syft.
+- Bibliotecas especializadas.
+
+Não instalar indiscriminadamente todas elas.
+
+Selecionar ferramentas após comparação de manutenção, licença e integração.
+
+## Firebase e Supabase
+
+Tratar exclusivamente como tecnologias externas auditáveis.
+
+Criar futuramente:
+
+- Firebase Security Adapter.
+- Supabase Security Adapter.
+
+O Sentinel não dependerá dessas plataformas.
+
+---
+
+# 13. MATRIZ — SOC, SIEM, EDR E XDR
+
+## Motores responsáveis
+
+- Sentinel Detection Engine.
+- Sentinel Endpoint Agent.
+- Sentinel DefenseFlow.
+- Sentinel ThreatPulse.
+- Sentinel ResponseGrid.
+- Sentinel Command Center.
+
+## Capacidades desejadas
+
+### Ingestão
+
+- Logs Linux.
+- Eventos Windows.
+- Eventos de aplicações.
+- Eventos de rede.
+- Logs de autenticação.
+- Eventos dos agentes.
+- Dados de ferramentas integradas.
+
+### Normalização
+
+- Schema comum.
+- Identificador de ativo.
+- Timestamp.
+- Origem.
+- Categoria.
+- Severidade.
+- Contexto.
+- Organização/projeto.
+- Integridade do evento.
+
+### Detection Engineering
+
+- Regras versionadas.
+- Regras baseadas em eventos.
+- Correlação temporal.
+- Deduplicação.
+- Enriquecimento.
+- Agrupamento de alertas.
+- Ajuste de falsos positivos.
+- Testes de regressão.
+- Cobertura documentada.
+
+### SOC
+
+- Fila de alertas.
+- Triagem.
+- Investigação.
+- Associação de evidências.
+- Casos.
+- Incidentes.
+- Priorização.
+- Linha do tempo.
+- Histórico de decisões.
+- Relatórios.
+
+### Endpoint
+
+Linux:
+
+- Processos.
+- Serviços.
+- Autenticações.
+- Integridade.
+- Metadados de conexões.
+- Eventos de segurança.
+
+Windows:
+
+- Windows Event Log.
+- ETW quando apropriado.
+- Processos.
+- Serviços.
+- Alterações monitoradas.
+- Integridade.
+- Telemetria autorizada.
+
+### XDR
+
+Planejar correlação entre:
+
+- Endpoints.
+- Aplicações.
+- Identidades.
+- Redes.
+- Serviços.
+- Cloud.
+
+Não chamar um simples coletor de logs de EDR completo nem afirmar capacidades XDR até existir correlação, investigação e integração suficientes.
+
+## Integrações a avaliar
+
+- Sigma.
+- YARA.
+- Zeek.
+- OpenTelemetry quando adequado.
+- Ferramentas abertas de observabilidade e detecção.
+
+Não tornar SIEMs comerciais dependências obrigatórias.
+
+---
+
+# 14. MATRIZ — INCIDENT RESPONSE E AUTODEFENSE
+
+## Motores responsáveis
+
+- DefenseFlow.
+- ResponseGrid.
+- AutoDefense.
+- SecureFix.
+- Self-Healing.
+- PolicyGate.
+- EvidenceChain.
+
+## Capacidades desejadas
+
+### Preparação
+
+- Cadastro de ativos.
+- Contatos.
+- Políticas.
+- Runbooks.
+- Escopos.
+- Procedimentos de recuperação.
+- Inventário de backups.
+
+### Investigação
+
+- Identificação de incidentes.
+- Linha do tempo.
+- Correlação.
+- Evidências.
+- Impacto.
+- Classificação.
+- Histórico de ações.
+
+### Resposta
+
+- Recomendações.
+- Contenção autorizada.
+- Bloqueio de ações suspeitas quando suportado.
+- Isolamento de componentes sob controle legítimo.
+- Revogação autorizada de sessões.
+- Aplicação de configurações defensivas.
+- Recuperação.
+- Verificação.
+
+### SecureFix
+
+- Proposta de patch.
+- Diferença de código.
+- Avaliação de impacto.
+- Testes.
+- Revisão.
+- Aprovação.
+- Aplicação.
+- Rollback.
+
+### Self-Healing
+
+- Verificação de serviços.
+- Diagnóstico.
+- Reinicialização autorizada.
+- Recuperação a partir de estado conhecido.
+- Validação pós-recuperação.
+- Registro de mudanças.
+
+## Política de autonomia
+
+Classificar ações em:
+
+**Nível 0 — Observação:** coleta e análise sem alteração.
+
+**Nível 1 — Recomendação:** propostas sem execução.
+
+**Nível 2 — Ação reversível pré-autorizada:** permitida somente sob política definida, escopo e limites.
+
+**Nível 3 — Ação crítica:** exige aprovação específica do operador.
+
+Nenhuma IA poderá modificar essa classificação para autorizar a si mesma.
+
+---
+
+# 15. MATRIZ — CRIPTOGRAFIA E SEGURANÇA DE IDENTIDADES
+
+## Motores responsáveis
+
+- CryptoGuard.
+- IdentityGuard.
+- RiskGraph.
+- SecureBuild.
+
+## Capacidades de CryptoGuard
+
+- Inventário de certificados.
+- Datas de validade.
+- Cadeias de confiança.
+- Protocolos TLS.
+- Configurações inseguras.
+- Algoritmos obsoletos.
+- Uso incorreto de hashing.
+- Gestão de segredos.
+- Exposição de chaves.
+- Configurações de armazenamento criptografado.
+- Recomendações de migração.
+
+Não criar algoritmos criptográficos próprios sem justificativa e revisão especializada.
+
+## Capacidades de IdentityGuard
+
+- Inventário de contas.
+- Contas privilegiadas.
+- MFA.
+- Sessões.
+- Controles de acesso.
+- Privilégios excessivos.
+- Credenciais de serviço.
+- LDAP.
+- Active Directory.
+- IAM cloud.
+- Eventos de autenticação.
+- Mudanças críticas de permissões.
+
+Priorizar leitura e auditoria.
+
+Alterações de identidade exigirão autorização.
+
+---
+
+# 16. MATRIZ — CLOUD E INFRAESTRUTURA
+
+## Motor responsável
+
+**Sentinel CloudShield**.
+
+## Capacidades desejadas
+
+- Inventário de recursos autorizados.
+- Avaliação de IAM.
+- Auditoria de armazenamento.
+- Configuração de rede.
+- Serviços expostos.
+- Configuração de logs.
+- Políticas de acesso.
+- Criptografia.
+- Backups.
+- Segurança de containers.
+- Segurança de Kubernetes.
+- Infraestrutura como código.
+- Configurações de CI/CD.
+- Exposição de segredos.
+
+## Plataformas futuras
+
+- AWS.
+- Azure.
+- Google Cloud.
+- Ambientes Kubernetes.
+- Plataformas de hospedagem.
+- Servidores Linux.
+- Servidores Windows.
+
+Criar adaptadores independentes.
+
+Não tornar qualquer provedor cloud obrigatório.
+
+Não realizar alterações em ambientes de clientes sem aprovação.
+
+---
+
+# 17. BARRIERMATRIX — DEFESA EM 14 CAMADAS
+
+Preservar as seguintes camadas:
+
+1. Edge Security.
+2. Network Segmentation.
+3. Zero Trust Identity.
+4. Application & API Security.
+5. Database Security.
+6. Cryptography & Secrets.
+7. Endpoint & Server Hardening.
+8. Software Supply Chain Security.
+9. AI & Agent Security.
+10. Intrusion Detection.
+11. Threat Containment.
+12. Autonomous Remediation.
+13. Recovery & Resilience.
+14. Audit & Digital Forensics.
+
+Cada camada deverá possuir:
+
+- Objetivos.
+- Controles.
+- Dependências.
+- Política.
+- Status.
+- Riscos.
+- Evidências.
+- Testes.
+- Cobertura.
+- Histórico.
+- Responsável técnico.
+- Limitações.
+
+Motores complementares:
+
+- CanaryWatch.
+- TrustGuard.
+- IntegrityWatch.
+- ShieldScore.
+- SafeDeploy.
+- PolicyGate.
+
+Não indicar que uma camada está protegendo o ambiente apenas porque seu painel existe.
+
+---
+
+# 18. PORTFÓLIO CONSOLIDADO DE MOTORES
+
+O produto deverá preservar:
+
+| Motor | Responsabilidade principal |
+|---|---|
+| SecureBuild | Segurança de software e APIs |
+| AttackLab | Laboratórios e simulações autorizadas |
+| DefenseFlow | Eventos e incidentes |
+| EvidenceChain | Integridade e cadeia de custódia |
+| RiskGraph | Correlação de ativos e riscos |
+| SecureFix | Correções e validação |
+| DeepTrace | Investigação forense |
+| CryptoGuard | Auditoria criptográfica |
+| ExposureMap | Superfície de exposição |
+| PurpleMatrix | Validação Red/Blue/Purple |
+| ThreatPulse | Inteligência de ameaças |
+| ResponseGrid | Resposta e recuperação |
+| MalwareLens | Investigação de malware |
+| NetworkTrace | Análise de redes |
+| IntelScope | Inteligência OSINT |
+| DiskLab | Perícia computacional |
+| MobileScope | Análise forense móvel |
+| IdentityGuard | Segurança de identidades |
+| CloudShield | Segurança cloud |
+| Detection Engine | Regras e correlação |
+| Endpoint Agent | Telemetria de sistemas |
+| AutoDefense | Respostas defensivas controladas |
+| Self-Healing | Recuperação operacional |
+| BarrierMatrix | Defesa em profundidade |
+| PolicyGate | Autorização de ações |
+| Validation Lab | Testes e comprovação |
+
+Nenhum motor será considerado operacional sem testes e resultados reproduzíveis.
+
+---
+
+# 19. ARQUITETURA DE INTEGRAÇÕES
+
+Criar um **Sentinel Integration Framework**.
+
+Cada integração deverá declarar:
+
+- Nome.
+- Versão.
+- Origem.
+- Licença.
+- Compatibilidade.
+- Permissões exigidas.
+- Capacidade offline.
+- Dependência de serviços pagos.
+- Dados consumidos.
+- Dados produzidos.
+- Limites.
+- Riscos.
+- Contrato de entrada.
+- Contrato de saída.
+- Testes.
+
+## Tipos de integração
+
+**Native Engine:** implementação original da I.See.
+
+**Open-Source Adapter:** integração legal com ferramenta aberta.
+
+**External Service Adapter:** integração com API externa autorizada.
+
+**Operating System Adapter:** integração específica com Linux ou Windows.
+
+**Laboratory Adapter:** ferramenta executada em ambiente isolado.
+
+**Commercial Tool Connector:** integração autorizada com produto licenciado, quando disponível.
+
+Nunca ocultar quando uma capacidade depende de tecnologia de terceiros.
+
+---
+
+# 20. AUTONOMIA E FUNCIONAMENTO OFFLINE
+
+O Sentinel deverá priorizar funcionamento local.
+
+## Funcionalidades offline planejadas
+
+- Command Center.
+- Banco PostgreSQL local.
+- Projetos.
+- Relatórios.
+- Análise de arquivos locais.
+- Análise de código local.
+- Importação de PCAP.
+- Investigação de logs.
+- Regras de detecção disponíveis.
+- Laboratórios isolados.
+- Ferramentas locais instaladas.
+- Modelos locais compatíveis.
+
+## Dependências de conectividade
+
+- Atualização de bases CVE.
+- Novas regras.
+- Inteligência de ameaças online.
+- Consultas a serviços externos.
+- Atualização de dependências.
+- Auditorias de ativos remotos.
+- APIs opcionais.
+
+Implementar cache com:
+
+- Data da atualização.
+- Origem.
+- Integridade.
+- Versão.
+- Aviso de desatualização.
+
+Não utilizar dados antigos como se fossem inteligência atual.
+
+---
+
+# 21. INTELIGÊNCIA ARTIFICIAL DO SENTINEL
+
+Criar um assistente especializado em cibersegurança.
+
+Funções:
+
+- Explicação de logs.
+- Análise de alertas.
+- Correlação assistida.
+- Priorização de riscos.
+- Apoio a investigação.
+- Geração de relatórios.
+- Análise de código.
+- Proposta de patches.
+- Explicação de configurações.
+- Recomendação de testes.
+- Apoio à formação do operador.
+
+## Requisitos
+
+- Modelos locais opcionais.
+- Provedores externos opcionais.
+- Não exigir API paga.
+- Proteger segredos.
+- Registrar recomendações.
+- Distinguir fatos de hipóteses.
+- Exigir evidências.
+- Passar ações pelo PolicyGate.
+- Não conceder privilégios de administração irrestritos à IA.
+
+A GTX 1050 e a RAM disponíveis deverão orientar a escolha de modelos.
+
+Não exigir modelos grandes incompatíveis com o hardware.
+
+---
+
+# 22. EVIDENCECHAIN — PADRÃO UNIFICADO DE EVIDÊNCIAS
+
+Todo módulo deverá produzir evidências rastreáveis quando aplicável.
+
+Campos mínimos:
+
+- ID da evidência.
+- ID do caso.
+- Organização/projeto.
+- Fonte.
+- Ferramenta.
+- Versão da ferramenta.
+- Data e hora.
+- Fuso horário.
+- Tipo.
+- Hash.
+- Local de armazenamento.
+- Operador ou processo responsável.
+- Histórico de acesso.
+- Histórico de transformação.
+- Relação com achados.
+- Observações.
+- Integridade verificada.
+
+Preservar originais sempre que possível.
+
+Derivar artefatos de análise separadamente.
+
+Não modificar evidências originais sem necessidade técnica e autorização apropriada.
+
+Criar registros de cadeia de custódia resistentes a adulterações, com verificação de integridade.
+
+Não afirmar que um registro de hash, isoladamente, garante toda a cadeia de custódia.
+
+---
+
+# 23. RELATÓRIOS PROFISSIONAIS
+
+Criar um **Sentinel Reporting Engine**.
+
+Tipos:
+
+- Security Audit Report.
+- Vulnerability Assessment Report.
+- Penetration Test Report.
+- Application Security Report.
+- SOC Incident Report.
+- Digital Forensics Report.
+- Malware Analysis Report.
+- Network Security Report.
+- Cloud Security Report.
+- Purple Team Assessment.
+- Remediation Validation Report.
+- Executive Security Summary.
+
+Todo relatório relevante deverá conter:
+
+1. Identificação do projeto.
+2. Objetivo.
+3. Escopo autorizado.
+4. Metodologia.
+5. Datas.
+6. Ferramentas utilizadas.
+7. Limitações.
+8. Achados.
+9. Evidências.
+10. Impacto.
+11. Severidade.
+12. Recomendações.
+13. Priorização.
+14. Status.
+15. Resultados dos retestes.
+16. Conclusão técnica.
+17. Resumo executivo.
+
+Gerar PDF futuramente e permitir exportações estruturadas.
+
+Não incluir resultados inventados ou provas não verificadas.
+
+---
+
+# 24. RISKGRAPH — CORRELAÇÃO UNIFICADA
+
+Criar relações entre:
+
+- Empresa.
+- Projeto.
+- Ativo.
+- Serviço.
+- Identidade.
+- Aplicação.
+- Dependência.
+- Vulnerabilidade.
+- Configuração.
+- Evidência.
+- Alerta.
+- Incidente.
+- Controle.
+- Ameaça.
+- Correção.
+
+O RiskGraph deverá permitir:
+
+- Visualizar relações.
+- Identificar concentração de riscos.
+- Correlacionar achados de diferentes módulos.
+- Evitar registros duplicados.
+- Priorizar correções.
+- Verificar impacto.
+- Relacionar controles existentes.
+- Medir evolução do risco.
+
+Não criar pontuações arbitrárias sem metodologia documentada.
+
+Combinar CVSS com contexto de exposição, criticidade e evidências quando apropriado.
+
+---
+
+# 25. DESIGN E EXPERIÊNCIA DO OPERADOR
+
+Criar o Sentinel Command Center com identidade visual própria.
+
+Diretrizes:
+
+- Dark Mode.
+- Preto.
+- Grafite.
+- Alto contraste.
+- Tipografia técnica moderna.
+- Interface responsiva.
+- Navegação lateral.
+- Pesquisa global.
+- Tabelas profissionais.
+- Grafos.
+- Linhas do tempo.
+- Dashboards.
+- Painéis de investigação.
+- Visualização de evidências.
+- Filtros avançados.
+- Microinterações refinadas.
+
+A interface deverá permitir que o operador execute o trabalho sem precisar alternar constantemente entre programas.
+
+Entretanto, não ocultar limitações de integrações externas.
+
+O sistema deverá mostrar claramente:
+
+- Módulo indisponível.
+- Módulo experimental.
+- Módulo operacional.
+- Ferramenta externa necessária.
+- Ambiente de execução.
+- Permissão necessária.
+- Último teste realizado.
+
+---
+
+# 26. SEGURANÇA DO PRÓPRIO SENTINEL
+
+Implementar:
+
+- Autenticação forte.
+- MFA.
+- Princípio do menor privilégio.
+- Isolamento entre processos.
+- Criptografia apropriada.
+- Gestão segura de segredos.
+- Proteção contra SQL injection.
+- Proteção contra command injection.
+- Proteção contra SSRF.
+- Validação de uploads.
+- Proteção contra path traversal.
+- Gestão de sessões.
+- Auditoria.
+- Atualizações verificadas.
+- Gestão de dependências.
+- Backups.
+- Recuperação.
+- Políticas de retenção.
+- Segurança de integrações.
+- Restrições de execução de ferramentas externas.
+
+Executar o Command Center em localhost por padrão.
+
+Não abrir interfaces administrativas para toda a rede sem configuração e autorização explícitas.
+
+Não executar todos os serviços como root ou administrador.
+
+---
+
+# 27. SEGURANÇA DOS LABORATÓRIOS
+
+Classificar laboratórios segundo o risco.
+
+## Classe A — Estudos e desenvolvimento
+
+Ferramentas benignas, códigos de teste e exercícios básicos.
+
+Poderão utilizar o host ou contêineres conforme necessidade.
+
+## Classe B — Simulações controladas
+
+Sistemas vulneráveis de laboratório e cenários de redes.
+
+Utilizar preferencialmente VMs e redes isoladas.
+
+## Classe C — Amostras não confiáveis
+
+Análise de software potencialmente malicioso.
+
+Exigir isolamento reforçado, controles de saída de rede, snapshots e ambiente especificamente preparado.
+
+Não iniciar exercícios de alto risco antes da validação das medidas de isolamento.
+
+Não executar malware diretamente no host.
+
+Não criar conectividade automática entre laboratórios e redes de clientes.
+
+---
+
+# 28. MODELO DE DADOS
+
+Criar entidades para:
+
+- Operador.
+- Identidades de serviço.
+- Organizações.
+- Projetos.
+- Autorizações.
+- Escopos.
+- Ativos.
+- Serviços.
+- Aplicações.
+- Endpoints.
+- Interfaces de rede.
+- Eventos.
+- Regras.
+- Alertas.
+- Incidentes.
+- Casos.
+- Vulnerabilidades.
+- Evidências.
+- Indicadores.
+- Riscos.
+- Controles.
+- Correções.
+- Aprovações.
+- Jobs.
+- Laboratórios.
+- Integrações.
+- Ferramentas.
+- Relatórios.
+- Auditoria.
+
+Implementar migrações versionadas.
+
+Criar políticas de retenção.
+
+Evitar duplicação desnecessária de dados sensíveis.
+
+---
+
+# 29. QUALIDADE — SENTINEL VALIDATION LAB
+
+Criar um ambiente de testes para verificar os motores.
+
+Categorias:
+
+- Testes unitários.
+- Testes de integração.
+- Testes end-to-end.
+- Testes de segurança.
+- Testes de performance.
+- Testes de recuperação.
+- Testes de isolamento.
+- Testes de compatibilidade.
+- Testes de regressão.
+- Testes de precisão de detecção.
+- Testes de parsing.
+- Testes de integridade forense.
+
+Cada teste deverá registrar:
+
+- Objetivo.
+- Pré-condições.
+- Dados de entrada.
+- Resultado esperado.
+- Resultado observado.
+- Evidências.
+- Data.
+- Versão.
+- Status.
+
+Não declarar resultados sem execução.
+
+## Níveis de maturidade
+
+**M0:** Planejado.
+
+**M1:** Protótipo.
+
+**M2:** Integrado.
+
+**M3:** Testado.
+
+**M4:** Operacional internamente.
+
+**M5:** Preparado para avaliação comercial.
+
+**M6:** Enterprise validado.
+
+Uma integração instalada não significa que o módulo atingiu maturidade operacional.
+
+---
+
+# 30. PADRÕES E METODOLOGIAS
+
+Utilizar referências relevantes:
+
+- OWASP ASVS.
+- OWASP WSTG.
+- OWASP API Security Top 10.
+- OWASP MASVS.
+- OWASP GenAI Security.
+- NIST CSF 2.0.
+- NIST SSDF.
+- NIST SP 800-207.
+- NIST SP 800-61 Rev. 3.
+- MITRE ATT&CK.
+- MITRE D3FEND.
+- Sigma.
+- YARA.
+- CWE.
+- CVE.
+- CVSS.
+- EPSS.
+- CISA KEV.
+- SARIF.
+- CycloneDX.
+
+Relacionar controles e achados às referências pertinentes.
+
+Não afirmar conformidade ou certificação sem evidências correspondentes.
+
+---
+
+# 31. ENGENHARIA REVERSA LEGÍTIMA E DESENVOLVIMENTO PROPRIETÁRIO
+
+Desenvolver mecanismos próprios quando houver justificativa técnica.
+
+É permitido:
+
+- Estudar funcionalidades documentadas.
+- Adotar padrões públicos.
+- Criar implementações independentes.
+- Integrar ferramentas abertas respeitando licenças.
+- Desenvolver interfaces originais.
+- Construir motores próprios de correlação e análise.
+
+Não copiar código proprietário sem autorização.
+
+Não contornar licenças.
+
+Não remover atribuições obrigatórias.
+
+Não apresentar integrações externas como tecnologia exclusivamente própria.
+
+Não assumir que ferramentas comerciais possuem APIs públicas.
+
+Antes de implementar uma integração, verificar:
+
+- Licença atual.
+- Versão suportada.
+- Documentação.
+- Disponibilidade.
+- Compatibilidade.
+- Custo.
+- Restrições de redistribuição.
+- Requisitos de acesso.
+
+Se uma ferramenta comercial não puder ser integrada legalmente, registrar a limitação e propor alternativa legítima.
+
+---
+
+# 32. FORMAÇÃO TÉCNICA DO OPERADOR
+
+Ensinar o desenvolvedor desde os fundamentos até operações avançadas.
+
+## Módulo 1 — Fundamentos
+
+Hardware, sistemas operacionais, memória, processos, arquivos e princípios de segurança.
+
+## Módulo 2 — Debian Linux
+
+Terminal, Bash, permissões, usuários, systemd, APT, logs e administração.
+
+## Módulo 3 — Redes
+
+TCP/IP, UDP, DNS, DHCP, HTTP, HTTPS, TLS, roteamento, firewall e captura de tráfego.
+
+## Módulo 4 — Programação
+
+Python, TypeScript, Rust, APIs, sockets e segurança de memória.
+
+## Módulo 5 — Blue Team
+
+SOC, SIEM, detecção, eventos, threat hunting, hardening e resposta.
+
+## Módulo 6 — Red Team autorizado
+
+Metodologias, escopo, laboratório, avaliação de vulnerabilidades e relatórios.
+
+## Módulo 7 — Purple Team
+
+Simulações, detecção, MITRE ATT&CK, testes e melhoria de controles.
+
+## Módulo 8 — Forense digital
+
+Discos, memória, sistemas de arquivos, logs, evidências e cadeia de custódia.
+
+## Módulo 9 — Malware e engenharia reversa
+
+Análise estática, sandbox, formatos de binário, YARA e ferramentas de investigação.
+
+## Módulo 10 — Cloud, identidade e criptografia
+
+IAM, TLS, certificados, permissões, cloud e configuração segura.
+
+## Módulo 11 — Segurança de aplicações e IA
+
+SAST, DAST, supply chain, APIs, agentes de IA e modelos de ameaça.
+
+## Módulo 12 — Engenharia do Sentinel
+
+Arquitetura, Rust Agents, Detection Engine, SecureBuild, BarrierMatrix, EvidenceChain e Validation Lab.
+
+Cada aula deverá incluir teoria, exemplos, exercícios seguros, comandos comentados e avaliação.
+
+Não exigir conhecimentos que ainda não foram ensinados.
+
+---
+
+# 33. ROADMAP DE IMPLEMENTAÇÃO
+
+## Fase 0 — Migração e validação do ambiente
+
+- Substituir Arch pelo Debian 13.
+- Preservar Windows.
+- Verificar boot.
+- Testar KDE.
+- Verificar GPU.
+- Verificar conectividade.
+- Verificar armazenamento.
+
+Não executar formatação ou alterações destrutivas sem aprovação explícita.
+
+## Fase 1 — Fundação do produto
+
+- Repositório privado.
+- Estrutura de projeto.
+- Backend.
+- Frontend.
+- PostgreSQL.
+- Migrações.
+- Autenticação do operador.
+- PolicyGate.
+- Auditoria.
+- Command Center.
+
+## Fase 2 — Primeiro fluxo operacional verificável
+
+Implementar um fluxo completo:
+
+1. Importar evento sintético.
+2. Normalizar.
+3. Persistir.
+4. Executar uma regra.
+5. Gerar alerta.
+6. Exibir no painel.
+7. Abrir investigação.
+8. Associar evidência.
+9. Produzir relatório.
+10. Testar o fluxo.
+
+## Fase 3 — SecureBuild
+
+- Análise estática.
+- Dependências.
+- Segredos.
+- Configuração.
+- Autenticação.
+- Autorização.
+- Relatórios.
+
+## Fase 4 — NetworkTrace e ExposureMap
+
+- Importação PCAP.
+- Protocolos.
+- Fluxos.
+- Inventário autorizado.
+- Correlação.
+
+## Fase 5 — Endpoint Agent Linux
+
+- Rust.
+- Telemetria.
+- Serviços.
+- Eventos.
+- Integridade.
+- Detecção.
+- Testes.
+
+## Fase 6 — SOC e gestão de incidentes
+
+- DefenseFlow.
+- Cases.
+- Alertas.
+- Correlação.
+- EvidenceChain.
+- ResponseGrid.
+
+## Fase 7 — Defesa e correção
+
+- BarrierMatrix.
+- RiskGraph.
+- SecureFix.
+- AutoDefense.
+- Self-Healing.
+- PolicyGate avançado.
+
+## Fase 8 — Laboratórios
+
+- Podman opcional.
+- QEMU/KVM.
+- Kali.
+- Redes isoladas.
+- AttackLab.
+- PurpleMatrix.
+
+## Fase 9 — Forense
+
+- DiskLab.
+- DeepTrace.
+- EvidenceChain.
+- Importação de imagens.
+- Linha do tempo.
+- Relatórios.
+
+## Fase 10 — Malware e memória
+
+- MalwareLens.
+- Volatility.
+- YARA.
+- Integrações de engenharia reversa.
+- Laboratório validado.
+
+## Fase 11 — MobileScope
+
+- Backups Android.
+- Backups iOS.
+- Normalização de artefatos.
+- Linha do tempo.
+- Relatórios.
+
+## Fase 12 — Inteligência
+
+- IntelScope.
+- ThreatPulse.
+- Grafos.
+- Indicadores.
+- Correlação.
+
+## Fase 13 — Windows
+
+- Compatibilidade do backend.
+- Agente Windows.
+- Telemetria.
+- Empacotamento.
+- Testes.
+
+## Fase 14 — Cloud e identidade
+
+- CloudShield.
+- IdentityGuard.
+- Adaptadores.
+- Políticas.
+- Auditorias.
+
+## Fase 15 — Integrações externas especializadas
+
+- Firebase.
+- Supabase.
+- Provedores cloud.
+- Ferramentas autorizadas.
+- APIs opcionais.
+
+## Fase 16 — Maturidade Enterprise
+
+- Revisão de segurança.
+- Testes aprofundados.
+- Performance.
+- Recuperação.
+- Documentação.
+- Validação independente.
+- Análise de viabilidade comercial.
+
+As fases representam a ordem preferencial, não a promessa de desenvolver todas as capacidades simultaneamente.
+
+---
+
+# 34. ENTREGÁVEIS OBRIGATÓRIOS POR MÓDULO
+
+Para cada módulo, entregar:
+
+1. Objetivo.
+2. Casos de uso.
+3. Requisitos funcionais.
+4. Requisitos não funcionais.
+5. Arquitetura.
+6. Interfaces e APIs.
+7. Esquema de dados.
+8. Dependências.
+9. Modelo de ameaças.
+10. Controles de segurança.
+11. Estratégia de implementação.
+12. Código funcional.
+13. Testes automatizados.
+14. Testes manuais quando necessários.
+15. Evidências.
+16. Métricas.
+17. Documentação.
+18. Limitações.
+19. Compatibilidade.
+20. Estado de maturidade.
+
+Não entregar somente arquivos de interface com botões inoperantes.
+
+Não utilizar dados fictícios sem identificá-los explicitamente como demonstração.
+
+Não substituir testes reais por afirmações de funcionamento.
+
+---
+
+# 35. ARQUIVOS DE GOVERNANÇA DO PROJETO
+
+Manter documentos versionados como:
+
+- ARCHITECTURE.md.
+- THREAT_MODEL.md.
+- SECURITY.md.
+- PORTFOLIO_CAPABILITY_MATRIX.md.
+- MODULE_STATUS.md.
+- ROADMAP.md.
+- INTEGRATIONS.md.
+- LICENSES.md.
+- TEST_PLAN.md.
+- VALIDATION_REPORT.md.
+- LAB_SAFETY.md.
+- INCIDENT_RESPONSE.md.
+- BACKUP_RECOVERY.md.
+- CHANGELOG.md.
+
+O documento PORTFOLIO_CAPABILITY_MATRIX.md deverá servir como inventário central das capacidades.
+
+Cada funcionalidade terá status:
+
+- Não iniciada.
+- Em pesquisa.
+- Em desenvolvimento.
+- Integrada.
+- Em testes.
+- Operacional.
+- Limitada.
+- Bloqueada.
+- Descontinuada.
+
+Registrar bloqueios técnicos, licenciamento, recursos e incompatibilidades.
+
+---
+
+# 36. DIRETRIZES PARA A IA DESENVOLVEDORA
+
+Você deverá:
+
+1. Entender os requisitos existentes antes de modificar código.
+2. Inspecionar a arquitetura real do repositório quando houver acesso.
+3. Não presumir que módulos descritos já existem.
+4. Preservar tecnologias já validadas.
+5. Evitar refatorações destrutivas desnecessárias.
+6. Justificar novas dependências.
+7. Priorizar ferramentas gratuitas.
+8. Verificar licenças.
+9. Desenvolver implementações próprias quando fizer sentido.
+10. Não reinventar componentes de segurança de alto risco sem necessidade.
+11. Priorizar funcionamento local.
+12. Preservar compatibilidade Windows/Linux.
+13. Utilizar Podman apenas quando necessário.
+14. Utilizar VMs para laboratórios que exijam maior isolamento.
+15. Proteger os dados de clientes.
+16. Respeitar autorização e escopo.
+17. Preservar evidências.
+18. Validar entradas.
+19. Proteger credenciais.
+20. Minimizar privilégios.
+21. Implementar testes.
+22. Corrigir regressões.
+23. Medir desempenho.
+24. Documentar limitações.
+25. Não inventar resultados.
+26. Não alegar equivalência técnica não demonstrada.
+27. Evitar dependências pagas obrigatórias.
+28. Não implementar SaaS prematuramente.
+29. Ensinar progressivamente o operador.
+30. Manter a matriz funcional atualizada.
+
+---
+
+# 37. CRITÉRIO DE SUCESSO DO I.SEE SENTINEL
+
+O Sentinel será avaliado pela capacidade de completar fluxos profissionais verificáveis.
+
+Exemplos:
+
+**Fluxo A — Auditoria de software**
+
+Importar projeto → analisar → identificar achados → validar → priorizar → gerar relatório → retestar.
+
+**Fluxo B — Blue Team**
+
+Receber evento → correlacionar → gerar alerta → investigar → preservar evidência → responder conforme política → documentar.
+
+**Fluxo C — Investigação forense**
+
+Importar imagem → verificar hash → indexar artefatos → investigar → construir linha do tempo → gerar relatório.
+
+**Fluxo D — Análise de rede**
+
+Importar PCAP → identificar protocolos → analisar fluxos → aplicar regras → correlacionar alertas → exportar resultados.
+
+**Fluxo E — Purple Team**
+
+Preparar laboratório → definir cenário autorizado → executar simulação → avaliar telemetria → validar detecções → documentar resultados.
+
+**Fluxo F — Correção de segurança**
+
+Identificar vulnerabilidade → propor patch → testar → aprovar → aplicar → verificar → registrar evidências.
+
+Nenhum fluxo será classificado como concluído sem executar seus testes.
+
+---
+
+# 38. RESULTADO FINAL ESPERADO
+
+O I.See Sentinel deverá evoluir para uma plataforma própria que reúna:
+
+**SOC + SIEM + EDR/XDR + Red Team + Blue Team + Purple Team + Application Security + AI Security + Vulnerability Management + Digital Forensics + Mobile Forensics + Malware Analysis + Network Analysis + OSINT + Threat Intelligence + Cloud Security + Identity Security + Zero Trust + BarrierMatrix + AutoDefense + SecureFix + Self-Healing + EvidenceChain + Validation Lab.**
+
+A arquitetura deverá permanecer:
+
+- Privada inicialmente.
+- Multiplataforma.
+- Local-first.
+- Capaz de operar offline nas funcionalidades compatíveis.
+- Modular.
+- Auditável.
+- Extensível.
+- Econômica.
+- Segura por padrão.
+- Baseada em resultados verificáveis.
+- Preparada para futura comercialização.
+
+**A primeira versão não precisa substituir todas as ferramentas profissionais existentes. Ela precisa resolver seus primeiros problemas reais com qualidade, segurança e confiabilidade.**
+
+O crescimento ocorrerá de forma incremental, mantendo a matriz de capacidades como referência técnica.
+
+---
+
+# COMANDO FINAL — EXECUÇÃO DA V6.6
+
+Atue como a equipe de engenharia do I.See Sentinel.
+
+Considere toda esta especificação como a referência principal do projeto.
+
+Antes de implementar, produza uma análise da arquitetura existente e uma matriz de cobertura funcional confrontando as capacidades desejadas com o código realmente disponível.
+
+Identifique:
+
+- O que já existe.
+- O que funciona.
+- O que ainda precisa de testes.
+- O que está incompleto.
+- O que precisa ser desenvolvido.
+- O que poderá ser integrado legalmente.
+- O que depende de licenças.
+- O que depende de sistemas operacionais específicos.
+- O que pode funcionar offline.
+- O que exige infraestrutura adicional.
+- O que deve ser priorizado.
+
+Depois, implemente incrementalmente a **Private Operator Edition**, começando pelo núcleo funcional, pela autenticação segura, pelo PostgreSQL, pelo Command Center e pelo primeiro fluxo verificável de detecção ou auditoria.
+
+Preserve todos os motores e requisitos estratégicos.
+
+Priorize Debian 13, Windows, Rust, TypeScript, Python, PostgreSQL, Podman opcional e Kali virtualizado.
+
+Não exija Firebase, Supabase, Docker, SaaS ou APIs comerciais para o funcionamento básico.
+
+Não execute ações destrutivas ou ofensivas fora de autorização.
+
+Utilize testes e evidências para comprovar cada etapa.
+
+**O objetivo não é simplesmente reunir ferramentas. É construir uma plataforma própria de cibersegurança com integração, correlação, governança, validação e valor operacional reais.**
+
+**I.See Technologies — I.See Sentinel**
+
+**Engineered to Detect. Built to Defend. Verified to Protect.**

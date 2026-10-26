@@ -1,0 +1,3 @@
+# Synthetic laboratory fixture. Never install this configuration on a server.
+PermitRootLogin yes
+PasswordAuthentication yes

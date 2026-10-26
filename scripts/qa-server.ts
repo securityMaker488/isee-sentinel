@@ -1,0 +1,17 @@
+import {randomBytes,randomUUID} from 'node:crypto';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {openDatabase,migrate} from '../apps/api/src/db.ts';
+import {buildApp} from '../apps/api/src/app.ts';
+import {encrypt,hashPassword,generateEnrollment,digest} from '../apps/api/src/security.ts';
+const db=await openDatabase();await migrate(db);
+const key=randomBytes(32),org=randomUUID(),id=randomUUID(),email='qa@sentinel.test',password=randomBytes(24).toString('base64url'),enrollment=generateEnrollment(email);
+await db.query('INSERT INTO organizations(id,name) VALUES($1,$2)',[org,'Laboratório sintético de QA']);
+await db.query('INSERT INTO users(id,organization_id,email,role,password_hash,totp_cipher) VALUES($1,$2,$3,$4,$5,$6)',[id,org,email,'admin',await hashPassword(password),encrypt(enrollment.secret,key,`totp:${id}`)]);
+await db.query('INSERT INTO private_operator(slot,user_id,recovery_hash) VALUES(1,$1,$2)',[id,digest(randomBytes(32))]);
+await db.query('INSERT INTO operator_organizations(operator_id,organization_id) VALUES($1,$2)',[id,org]);
+await mkdir(resolve('.sentinel/qa'),{recursive:true,mode:0o700});
+await writeFile(resolve('.sentinel/qa/browser-session.json'),JSON.stringify({email,password,secret:enrollment.secret}),{mode:0o600});
+const app=await buildApp({db,masterKey:key,origin:'http://127.0.0.1:4311',staticDir:resolve('apps/web/dist')});
+await app.listen({host:'127.0.0.1',port:4311});console.info('QA server listening on 4311; synthetic temporary database.');
+for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>void app.close().then(()=>db.close()).then(()=>process.exit(0)));

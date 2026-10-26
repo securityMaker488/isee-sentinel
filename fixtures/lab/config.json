@@ -1,0 +1,4 @@
+{
+  "tls": { "rejectUnauthorized": false },
+  "cors": { "origin": "*", "credentials": true }
+}

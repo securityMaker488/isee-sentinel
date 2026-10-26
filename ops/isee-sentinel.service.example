@@ -1,0 +1,45 @@
+# Exemplo para homologacao; nao instalado ou habilitado automaticamente.
+# Revise caminhos, usuario, permissoes e recursos no host Linux real.
+[Unit]
+Description=I.See Sentinel Private Operator Edition
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=isee-sentinel
+Group=isee-sentinel
+WorkingDirectory=/opt/isee-sentinel
+EnvironmentFile=/etc/isee-sentinel/sentinel.env
+Environment=SENTINEL_DATA_DIR=/var/lib/isee-sentinel
+# O Node padrao do Debian13 pode ser20; ajuste para o binario24 verificado.
+ExecStart=/opt/node24/bin/node --import tsx apps/api/src/server.ts
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+StateDirectory=isee-sentinel
+StateDirectoryMode=0700
+NoNewPrivileges=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictRealtime=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/isee-sentinel
+TasksMax=128
+MemoryMax=2G
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

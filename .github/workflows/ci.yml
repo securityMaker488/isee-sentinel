@@ -1,0 +1,59 @@
+name: Development checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      RUSTUP_TOOLCHAIN: '1.98.1'
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # SHA values resolved from official actions/* refs/tags/v6 on 2026-10-25.
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.11'
+      - name: Install verified Rust toolchain
+        run: rustup toolchain install 1.98.1 --profile minimal
+      - name: Diagnose prerequisites without accessing services
+        run: node scripts/doctor.mjs
+      - name: Install pinned JavaScript dependencies
+        run: npm ci --ignore-scripts
+      - name: Build application and run integration checks
+        run: npm run build && npm test
+      - name: Check repository boundaries and high confidence secret patterns
+        run: npm run test:repository && npm run verify:repository
+      - name: Audit JavaScript dependency advisories
+        run: npm audit --audit-level=high
+      - name: Build and test the endpoint agent
+        run: cargo test --locked --manifest-path packages/endpoint-agent/Cargo.toml
+      - name: Validate observation and forensic workers
+        run: |
+          python -m unittest discover -s workers/integrity -p 'test_*.py'
+          python -m unittest discover -s workers/forensics -p 'test_*.py'
+          python -m unittest discover -s workers/imports -p 'test_*.py'
+      - name: Verify prepared development artifacts
+        run: node scripts/doctor.mjs --require-ready
+      # Browser QA and real Debian operational validation are separate, explicit checks.
+      # This workflow does not publish artifacts, provision databases or scan external targets.

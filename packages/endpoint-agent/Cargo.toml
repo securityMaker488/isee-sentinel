@@ -1,0 +1,29 @@
+[package]
+name = "sentinel-endpoint-agent"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+publish = false
+description = "Explicit-consent integrity observations and authenticated bounded monitoring for I.See Sentinel"
+license = "LicenseRef-Proprietary"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hmac = "0.12"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls"] }
+uuid = { version = "1", features = ["v4"] }
+ctrlc = { version = "3", features = ["termination"] }
+zeroize = "1"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[[bin]]
+name = "sentinel-agent"
+path = "src/main.rs"
+
+[profile.release]
+lto = "thin"
+strip = true

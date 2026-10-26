@@ -1,0 +1,9 @@
+I.See Sentinel — código original desenvolvido para I.See Technologies.
+
+Distribuição privada. Nenhuma licença pública de redistribuição, sublicenciamento
+ou oferta comercial é concedida por este arquivo. Os termos comerciais futuros
+devem ser definidos pelo titular antes da distribuição a terceiros.
+
+Dependências de terceiros permanecem sob suas próprias licenças. Consulte
+package-lock.json, docs/generated/dependencies.json e os arquivos LICENSE/NOTICE
+de cada pacote antes de redistribuir o produto.
