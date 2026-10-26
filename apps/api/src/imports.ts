@@ -32,8 +32,9 @@ export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date
  });
  app.post('/api/imports',{bodyLimit:24*1024*1024,schema:{body:object({assetId:uuid,name:str(240),format:{const:'zip'},contentBase64:{type:'string',minLength:4,maxLength:22369624}})}},async request=>{
   const a=request.actor!,b=request.body as {assetId:string;name:string;contentBase64:string};
-  const asset=await scoped(db,request,'evidence.import',b.assetId,now);await scoped(db,request,'scan',b.assetId,now);
   const bytes=Buffer.from(b.contentBase64,'base64');if(!bytes.length||bytes.length>maxBytes||bytes.toString('base64')!==b.contentBase64)throw new HttpError(400,'INVALID_FILE','Arquivo base64 canônico de até 16 MiB obrigatório.');
+  const execution={profile:'archive.inspect',inputBytes:bytes.length};
+  const asset=await scoped(db,request,'evidence.import',b.assetId,now,execution);await scoped(db,request,'scan',b.assetId,now,execution);
   if(!pythonPath||!isAbsolute(pythonPath))throw new HttpError(503,'PYTHON_UNAVAILABLE','Python local não configurado.');
   if(busy)throw new HttpError(409,'IMPORT_BUSY','Há uma inspeção em andamento.');busy=true;
   const id=randomUUID(),evidenceId=randomUUID(),sha256=digest(bytes);let started=false,folder:string|undefined;
@@ -49,6 +50,7 @@ export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date
     await audit(tx,a.organizationId,a.id,'import.quarantined',id,{assetId:b.assetId,projectId:asset.project_id??null,evidenceId,sha256,bytes:bytes.length});
    });started=true;
    folder=await mkdtemp(join(tmpdir(),'sentinel-import-'));const file=join(folder,'input.zip');await writeFile(file,bytes,{flag:'wx',mode:0o600});
+   await scoped(db,request,'scan',b.assetId,now,execution);await scoped(db,request,'evidence.import',b.assetId,now,execution);
    const output=await runner({pythonPath,file});if(output.length>maxOutput)throw new HttpError(422,'IMPORT_OUTPUT_LIMIT','Resultado excede o limite.');
    let report:any;try{report=JSON.parse(output.toString('utf8'));}catch{throw new HttpError(422,'INVALID_IMPORT_REPORT','Relatório inválido.');}
    if(report?.schemaVersion!=='1.0'||report.engine!=='Sentinel Import Inspector'||report.quarantineOnly!==true||report.input?.sha256!==sha256||report.input?.bytes!==bytes.length||report.input?.unchanged!==true||!Array.isArray(report.entries)||report.entries.length>512)throw new HttpError(409,'IMPORT_INTEGRITY','Relatório não comprova a integridade da importação.');

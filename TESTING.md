@@ -30,11 +30,19 @@ Para uma alteração específica, execute primeiro os testes correspondentes:
 npx tsx --test apps/api/test/operations.test.ts
 npx tsx --test apps/api/test/imports.test.ts
 npx tsx --test apps/api/test/graph.test.ts
+npx tsx --test packages/core/test/authorization.test.ts apps/api/test/authorization-manager.test.ts
 ```
 
 Importações ZIP também precisam de testes do worker real e dos formatos hostis.
 Um runner substituto comprova o contrato do adaptador, não a inspeção Python real.
 O mesmo cuidado se aplica ao Nmap: testes de argumentos/parsing não são varreduras.
+
+O teste `authorization-manager.test.ts` cobre o ciclo de rascunho, revisão por hash,
+aprovação e revogação, integridade da comprovação cifrada, projeto/organização,
+substituição de escopos e bloqueio de retorno ao legado. Também exercita os
+perfis dos executores e limites por bytes/portas. `authorization.test.ts` verifica
+a decisão pura do PolicyGate gerenciado. Os testes dos módulos continuam
+necessários: um perfil aprovado não substitui validação do formato ou executor.
 
 ## Navegador e agente real
 
@@ -55,6 +63,20 @@ erros de navegador. O navegador deve estar instalado; o script aceita
 Se o roteiro incluir workers, configure `SENTINEL_PYTHON_PATH` no terminal do
 servidor antes de iniciá-lo. Encerre o servidor ao terminar.
 
+Com o mesmo servidor sintético ativo, execute o roteiro específico do Authorization
+Manager:
+
+```text
+node scripts/browser-authorization-qa.cjs
+```
+
+Esse roteiro usa a tela **Autorizações** para registrar e revisar uma comprovação
+sintética, aprovar e revogar, conferir downloads, verificar aplicação dos limites
+e bloqueio de escopo legado. Também verifica apresentação móvel e erros do
+navegador. Seus registros e screenshots ficam em `.sentinel/qa`; o comando não
+pressupõe que o resultado seja aprovado. Não reutilize comprovação real de cliente
+nessa base descartável.
+
 `npm run verify:agent` usa o binário Rust compilado contra API temporária em
 loopback para verificar transporte/baseline/divergência/revogação. Isso não
 equivale à implantação de serviço ou monitoramento real no Debian.
@@ -65,6 +87,24 @@ equivale à implantação de serviço ou monitoramento real no Debian.
 devem apontar apenas a bases/identidades de teste. Mantenha URLs em ambiente
 privado, sem colar credenciais em comandos registrados. A identidade migradora
 prepara o esquema; o servidor de teste usa os grants limitados quando configurado.
+
+Para executar especificamente o Authorization Manager em PostgreSQL nativo,
+configure `SENTINEL_AUTHORIZATION_TEST_DATABASE_URL` com uma base nova de teste
+e a identidade migradora. Opcionalmente configure
+`SENTINEL_AUTHORIZATION_TEST_RUNTIME_URL` para a mesma base com a identidade
+restrita preparada conforme `ops/runtime-grants.sql`. O teste aplica migrações
+(incluindo `009_assessment_authorizations.sql`), cria fixtures sintéticas e, quando
+a URL restrita é fornecida, aplica os grants antes de iniciar a API com essa
+identidade. Execute:
+
+```text
+npx tsx --test apps/api/test/authorization-manager.test.ts
+```
+
+Sem essas variáveis o teste usa PostgreSQL embarcado isolado. A base nativa deve
+ser exclusiva e descartável: as fixtures incluem fundador único e registros de
+auditoria. Não execute testes concorrentes reutilizando a mesma base/identidade
+quando houver preparação ou alteração de credenciais em curso.
 
 Após backup/restauração em banco novo, `npm run verify:restore` compara tabelas
 e auditoria usando `SENTINEL_TEST_DATABASE_URL` e `SENTINEL_RESTORE_DATABASE_URL`.

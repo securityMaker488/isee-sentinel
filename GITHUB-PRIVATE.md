@@ -1,14 +1,30 @@
 # GitHub privado — preparação e sincronização
 
-Nome previsto: isee-sentinel. Nenhum repositório remoto, publicação ou push deve
-ser presumido. O código é proprietário da I.See Technologies. Este guia fornece
-o procedimento ao operador; não executa publicação.
+Repositório: [securityMaker488/isee-sentinel](https://github.com/securityMaker488/isee-sentinel).
+Criado em26/10/2026 por solicitação do operador; visibilidade **privada** confirmada
+nas configurações do GitHub. O código é proprietário da I.See Technologies.
+`origin` aponta para `https://github.com/securityMaker488/isee-sentinel.git`.
 
-No diagnóstico atual, Git local existe, main está inicializada e há identidade
-de commit configurada. GitHub CLI não foi localizado e não há remoto origin.
-Não foram buscados tokens em arquivos pessoais.
+Git local usa main e o Git Credential Manager já instalado. O operador autorizou
+o vínculo OAuth da conta pelo fluxo oficial do GitHub. Credenciais ficam no
+gerenciador do sistema, fora do código; não colocar tokens na URL nem no Git.
+GitHub CLI é opcional e não estava instalado durante a preparação.
 
-## Criar o privado, quando o operador decidir sincronizar
+Para conferir se fonte local e remoto estão sincronizados:
+```text
+git fetch origin
+git status --short --branch
+git rev-parse HEAD
+git rev-parse origin/main
+```
+Os dois hashes devem coincidir após o envio. Falha de autenticação ou CI deve
+ser registrada, nunca inferida como sucesso. A etapa Debian começa somente após
+concluir ou registrar explicitamente as pendências Windows de PROJECT_STATE.md.
+
+## Referência para outra instalação ou conta
+
+O repositório acima já existe; não recriá-lo. Os comandos de criação abaixo são
+referência para uma nova instalação previamente autorizada.
 
 Instale GitHub CLI pelo canal oficial, autentique e escolha a conta correta:
 ```text

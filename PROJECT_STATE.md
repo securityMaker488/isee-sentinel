@@ -10,6 +10,14 @@ migrar; a plataforma inteira e a etapa Windows ainda NÃO estão100% concluídas
 
 ## Concluído neste incremento
 
+Authorization Manager conectado à tela Autorizações, migração009 e PolicyGate.
+Rascunho imutável registra responsável, comprovação cifrada, projeto, ativos,
+vigência, modo/risco, perfis e limites. Aprovação explícita vincula o hash revisado,
+substitui os escopos anteriores e torna o ativo gerenciado. Revogação não permite
+retorno ao escopo legado. Nove perfis conferem bytes/portas reais nos executores;
+alterações de risco/limites exigem nova revisão. Ativos legados preservados até
+adesão ao fluxo. Não há execução crítica no host nem cancelamento instantâneo.
+
 Fundação privada React/Fastify/PostgreSQL, MFA, recuperação do fundador,
 organizações/projetos/ativos/escopos, evidências cifradas e auditoria preservadas.
 Agente Rust real conecta por HMAC, monitora arquivo explícito com baseline
@@ -32,13 +40,17 @@ O adaptador Nmap tem limites e testes injetados, mas Nmap real não foi homologa
 ## Verificações encerradas
 
 - Setup Windows completo passou: dependências fixadas, build web/Rust e doctor.
-- 113 testes JS/TypeScript passaram, incluindo Python real positivo/negativo.
+- 146 testes JS/TypeScript passaram, incluindo 13 novos de política, 20 do
+  Authorization Manager e Python real positivo/negativo.
 - Rust18; Python integridade8+1skip Unix; Python perícia16; Python ZIP12;
-  guarda do repositório3. Total dessas suítes:170pass e1skip.
+  guarda do repositório3 no checkpoint anterior, fontes inalteradas. Não repetidos
+  neste incremento; o total histórico anterior era170pass e1skip.
 - PostgreSQL nativo com runtime restrito: ZIP6 e perícia5 passaram; agentes6
   haviam passado no checkpoint anterior.
 - Rust real → API → baseline → divergência → alerta → revogação passou.
-- Backup/restore comparou34 tabelas do banco sintético,8 migrações e auditoria.
+- Authorization Manager no PostgreSQL nativo com runtime restrito:20 passaram.
+- Backup/restore atual comparou36 tabelas do banco sintético,9 migrações e
+  auditoria; incluiu30 autorizações estruturadas e31 vínculos de ativos.
 - Browser completo passou: correção/rollback, análises, ZIP, perícia, grafo,
   download, contexto de empresa/projeto, tela estreita e console sem erros.
 - Correções encontradas: UUID de agente malformado; rótulos acessíveis; teto de
@@ -51,11 +63,12 @@ CI Windows/Ubuntu preparada, mas não executada. Debian não foi homologado.
 
 ## Próxima tarefa concreta no Windows
 
-1. Fundação/Fase1: ampliar Authorization Manager com responsável, evidência de
-   autoridade, vínculo de projeto e limites por avaliação. Definir contrato e
-   negar parâmetros/limites sem executor correspondente. Preservar escopos atuais
-   por ativo; incluir testes de revogação, separação de empresa e alteração de risco.
-2. Fase2: estender Universal Import Lab a URL/Git/TAR por adaptadores separados;
+1. Fundação/Fase1: recorte do Authorization Manager concluído e validado.
+   Prosseguir no contrato do plano de avaliação, catálogo versionado e vínculo
+   de resultados; fila geral de jobs permanece pendente. Não reimplementar o
+   ciclo de autorização já entregue.
+2. Fase2: estender Universal Import Lab primeiro a TAR/TAR.GZ, depois URL/Git,
+   por adaptadores separados e perfis explícitos;
    URL exige defesa SSRF, DNS/redirect/limites e associação exata ao alvo autorizado.
    ZIP já implementado não precisa ser refeito. Integrar plano de avaliação real.
 3. Fase3: ProofLab completo, aplicação local isolada, avaliação reproduzível,
@@ -67,10 +80,12 @@ CI Windows/Ubuntu preparada, mas não executada. Debian não foi homologado.
 ## Continuidade e ambiente
 
 AGENTS.md, ROADMAP.md, MODULE_STATUS.md e matriz são registros versionáveis.
-Git local emmain, sem remoto; GitHub CLI não encontrado. Sem push/publicação.
-GITHUB-PRIVATE.md contém procedimento manual. Pacote de desenvolvimento e Git
+Git local emmain. Repositório privado securityMaker488/isee-sentinel criado em
+26/10/2026 e origin configurado por autorização do operador. Consultar
+GITHUB-PRIVATE.md para o estado da autenticação/sincronização. Pacote e Git
 bundle locais permitem transferir código sem transportar credenciais ou bancos.
-ZIP V6.5 é histórico; usar entrega V6.9 quando registrada na pasta outputs.
+Os pacotes V6.5 e V6.9-windows-dev anteriores são históricos e não incluem este
+incremento de autorização; usar o último commit sincronizado ou bundle atualizado.
 
 Windows10Pro; Node24.21.0; Python3.11.9; Rust/Cargo1.98.1 observados. Não alterados
 partições, boot, Windows, GPU, Kali, firewall ou serviço PostgreSQL preexistente5432.

@@ -5,10 +5,10 @@ import {constants} from 'node:fs';
 import {isIP} from 'node:net';
 import {basename,dirname,isAbsolute} from 'node:path';
 import type {FastifyInstance,FastifyRequest} from 'fastify';
-import {analyzeArtifact,evaluatePolicy,type ArtifactAnalysisReport} from '@sentinel/core';
+import {analyzeArtifact,type ArtifactAnalysisReport,type ManagedExecution} from '@sentinel/core';
 import type {Database} from './db.ts';
 import {HttpError,object,str,uuid} from './auth.ts';
-import {permit,scoped,scopeDto} from './policy.ts';
+import {permit,scoped,storedScopeAllowed} from './policy.ts';
 import {audit} from './audit.ts';
 import {digest,encrypt} from './security.ts';
 
@@ -71,12 +71,12 @@ export const runNmap:LabRunner=async(file,args,options)=>{
   });
 };
 
-async function requireLabScope(db:Database,request:FastifyRequest,assetId:string,now:()=>number,remainingMs=0) {
-  const asset=await scoped(db,request,'scan',assetId,now);
+async function requireLabScope(db:Database,request:FastifyRequest,assetId:string,now:()=>number,remainingMs=0,ports?:number[]) {
+  const execution:ManagedExecution=ports?{profile:'lab.inventory',ports}:{profile:'lab.inventory',phase:'prepare'};
+  const asset=await scoped(db,request,'scan',assetId,now,execution);
   if(asset.environment!=='lab')throw new HttpError(403,'LAB_ONLY','A execução nativa exige um ativo no ambiente lab.');
   if(remainingMs){
-    const a=request.actor!,rows=await db.query('SELECT * FROM authorizations WHERE organization_id=$1 AND asset_id=$2 AND revoked_at IS NULL',[a.organizationId,assetId]);
-    if(!rows.some(row=>evaluatePolicy({identity:a,operation:'scan',resource:{organizationId:a.organizationId,assetId,environment:'lab'},scope:scopeDto(row),now:new Date(now()+remainingMs)}).allowed)) {
+    if(!await storedScopeAllowed(db,request.actor!,'scan',asset,now()+remainingMs,execution)) {
       throw new HttpError(403,'SCOPE_TOO_SHORT','A autorização deve cobrir os próximos 40 segundos de execução.');
     }
   }
@@ -114,7 +114,7 @@ export async function registerLab(app:FastifyInstance,{db,masterKey,now=Date.now
     const a=request.actor!,b=request.body as {targetId:string;ports:number[]};
     const [target]=await db.query('SELECT * FROM lab_targets WHERE id=$1 AND organization_id=$2',[b.targetId,a.organizationId]);
     if(!target)throw new HttpError(404,'NOT_FOUND','Alvo de laboratório não encontrado.');
-    await requireLabScope(db,request,target.asset_id,now,LAB_LIMITS.timeoutMs);
+    await requireLabScope(db,request,target.asset_id,now,LAB_LIMITS.timeoutMs,b.ports);
     if(!configuredPath(nmapPath))throw new HttpError(503,'NMAP_UNAVAILABLE','Adaptador indisponível. Configure SENTINEL_NMAP_PATH com o caminho absoluto do Nmap instalado e licenciado.');
     if(busy)throw new HttpError(409,'LAB_BUSY','Já existe uma execução de laboratório em andamento.');
     const id=randomUUID(),ports=[...b.ports].sort((x,y)=>x-y),args=nmapArguments(target.address,ports);
@@ -143,7 +143,7 @@ export async function registerLab(app:FastifyInstance,{db,masterKey,now=Date.now
       });
       started=true;
       // Re-read scope immediately before invoking the fixed executable, after lock acquisition.
-      await requireLabScope(db,request,target.asset_id,now,LAB_LIMITS.timeoutMs);
+      await requireLabScope(db,request,target.asset_id,now,LAB_LIMITS.timeoutMs,ports);
       const result=await runner(nmapPath,Object.freeze(args),{timeout:LAB_LIMITS.timeoutMs,maxBuffer:LAB_LIMITS.outputBytes,shell:false,windowsHide:true,killSignal:'SIGKILL',cwd:dirname(nmapPath),env:childEnvironment()});
       if(!Buffer.isBuffer(result.stdout))throw new Error('invalid runner output');
       output=result.stdout.subarray(0,LAB_LIMITS.outputBytes);

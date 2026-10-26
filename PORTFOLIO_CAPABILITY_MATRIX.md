@@ -668,18 +668,18 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | Especificação V6.9; detalhes nos guias do módulo |
 | Problema | Registrar autoridade e limites de teste |
-| Funcionalidades desejadas / recorte | Escopos por ativo existentes; responsável, evidência de autoridade, limites/risco por avaliação pendentes |
+| Funcionalidades desejadas / recorte | Responsável e comprovação cifrados, projeto/ativos, rascunho imutável, revisão, aprovação, vigência, risco, nove perfis e limites por entrada |
 | Módulo | Authorization Manager |
 | Implementação | Nativa |
 | Dependências | PostgreSQL/PolicyGate |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
-| Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
-| Limitações | Referência textual e vigência existentes não implementam todo contratoV6.9 |
-| Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
-| Evidências | Código e evidências de testes somente para o recorte implementado; limitações explícitas. |
-| Estado real | Parcialmente implementado · M2 |
+| Autorização | Administrador cria/aprova/revoga; analista consulta detalhes. Ativo gerenciado não admite retorno ao legado; troca de limites exige novo rascunho |
+| Limitações | Somente executores implementados; bytes por entrada e portas explícitas. Sem cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática |
+| Testes necessários / disponíveis | 13 testes de política e20 de API passaram; API também passou no PostgreSQL restrito. Navegador e restore36 tabelas/9migrações validados no Windows |
+| Evidências | Migração009, authorization-manager.ts, policy.ts, AuthorizationView e VALIDATION_REPORT.md |
+| Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
 
 ## prooflab — ProofLab / Before-After Comparison

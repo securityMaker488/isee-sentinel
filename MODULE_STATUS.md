@@ -6,7 +6,8 @@ profissional ou comercial.
 
 | Módulo | Disponível no Windows | Ainda falta |
 |---|---|---|
-| Fundação privada | MFA, clientes/projetos/ativos, escopo, CSRF, evidências e auditoria | Autorização por avaliação ampliada, retenção e homologação |
+| Fundação privada | MFA, clientes/projetos/ativos, escopo, CSRF, evidências e auditoria | Plano de avaliação, retenção e homologação |
+| Authorization Manager | Responsável/prova cifrados, projeto, revisão, nove perfis, limites e revogação sem retorno ao legado | Catálogo amplo, cotas acumuladas, cancelamento imediato e homologação Debian |
 | Universal Import Lab | ZIP cifrado, inspeção, hashes, indícios de tecnologia, histórico/JSON | URL, Git, TAR.GZ, instaladores e execução isolada |
 | SecureBuild / análises | Regras estáticas, dependências, NmapXML/HAR, SARIF, cloud, identidade, IA, binários/timelines | SAST/DAST/SCA completos, feeds e avaliações de execução |
 | API Security | Auditoria estática OpenAPI JSON 3.0/3.1 | Testes ativos de autorização e lógica de negócio |
@@ -20,7 +21,7 @@ profissional ou comercial.
 | Governança e serviços | Organizações, projetos, evidências e guias | GRC, privacidade, BIA, terceiros, treinamento, equipes e operação gerenciada |
 | Portabilidade | Setup Windows executado; scripts Debian e CI preparados | CI executada, Debian13/KDE, serviços e validação entre sistemas |
 
-URLs/Git, contratos de avaliação, filas/cancelamento, relatórios e autorização
-ampliada ainda podem evoluir no Windows. Não transferir automaticamente essas
+URLs/Git/TAR, planos de avaliação, filas/cancelamento e relatórios
+ainda podem evoluir no Windows. Não transferir automaticamente essas
 lacunas para “depende do Debian”. O Debian validará componentes específicos de
 Linux e implantação; não substitui implementação ausente.

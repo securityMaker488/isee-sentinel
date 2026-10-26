@@ -6,3 +6,4 @@ export * from './events.js';
 export * from './artifact-types.js';
 export * from './artifact-analysis.js';
 export * from './api-audit.js';
+export * from './authorization.js';

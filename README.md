@@ -18,6 +18,14 @@ Estado real: [MODULE_STATUS.md](MODULE_STATUS.md). Resultados Windows:
 em quarentena; [IMPORT_PIPELINE.md](IMPORT_PIPELINE.md) descreve os limites.
 Perícia offline e importação exigem Python local configurado no servidor.
 
+A tela **Autorizações** registra responsável, comprovação cifrada, projeto,
+ativos e limites. A aprovação explícita habilita perfis definidos; revogar não
+restaura permissões antigas. Consulte [AUTHORIZATION_POLICY.md](AUTHORIZATION_POLICY.md).
+Código e memória de continuidade são sincronizados no
+[repositório privado](https://github.com/securityMaker488/isee-sentinel).
+As pendências Windows continuam registradas; o preparo do GitHub não encerra
+essa etapa nem homologa o Debian.
+
 Requer Node.js 24 LTS, npm e PostgreSQL local dedicado. Não exige Docker, Podman,
 nuvem, GPU, Firebase, Supabase ou serviço externo. Prepare as identidades do banco
 conforme `docs/OPERACAO.md` e defina `DATABASE_URL` no ambiente.

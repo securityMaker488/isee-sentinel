@@ -34,9 +34,10 @@ export async function registerForensics(app:FastifyInstance,{db,masterKey,now=Da
  app.get('/api/forensics/:id',{schema:{params:object({id:uuid})}},async request=>{permit(request,'reports.read');const a=request.actor!,id=(request.params as any).id;const [r]=await db.query(`${select} WHERE r.organization_id=$1 AND r.id=$2`,[a.organizationId,id]);if(!r)throw new HttpError(404,'NOT_FOUND','Análise forense não encontrada.');await db.transaction(tx=>audit(tx,a.organizationId,a.id,'forensic.report_viewed',id));return r;});
  app.post('/api/forensics',{bodyLimit:24*1024*1024,schema:{body:object({assetId:uuid,kind:{enum:['pcap','sqlite','plist']},name:str(240),table:str(240),contentBase64:{type:'string',minLength:4,maxLength:22369624}},['assetId','kind','name','contentBase64'])}},async request=>{
   const a=request.actor!,b=request.body as {assetId:string;kind:ForensicKind;name:string;table?:string;contentBase64:string};
-  await scoped(db,request,'scan',b.assetId,now);await scoped(db,request,'evidence.import',b.assetId,now);
   if(b.table&&b.kind!=='sqlite')throw new HttpError(400,'INVALID_TABLE','Tabela só se aplica a SQLite.');
   const bytes=Buffer.from(b.contentBase64,'base64');if(!bytes.length||bytes.length>limit||bytes.toString('base64')!==b.contentBase64)throw new HttpError(400,'INVALID_FILE','Arquivo base64 canônico de até 16 MiB obrigatório.');
+  const execution={profile:'forensic.analyze',inputBytes:bytes.length};
+  await scoped(db,request,'scan',b.assetId,now,execution);await scoped(db,request,'evidence.import',b.assetId,now,execution);
   if(!pythonPath||!isAbsolute(pythonPath))throw new HttpError(503,'PYTHON_UNAVAILABLE','Worker Python não configurado.');
   if(busy)throw new HttpError(409,'WORKER_BUSY','Há uma análise forense em andamento.');busy=true;
   const id=randomUUID(),evidenceId=randomUUID(),sha256=digest(bytes);let started=false,folder:string|undefined;
@@ -53,6 +54,7 @@ export async function registerForensics(app:FastifyInstance,{db,masterKey,now=Da
    });started=true;
    folder=await mkdtemp(join(tmpdir(),'sentinel-forensic-'));const input=join(folder,`input.${b.kind}`);
    await writeFile(input,bytes,{flag:'wx',mode:0o600});
+   await scoped(db,request,'scan',b.assetId,now,execution);await scoped(db,request,'evidence.import',b.assetId,now,execution);
    const output=await runner({pythonPath,file:input,kind:b.kind,table:b.table});if(output.length>outputLimit)throw new HttpError(422,'WORKER_OUTPUT_LIMIT','Resultado excede o limite.');
    let report:any;try{report=JSON.parse(output.toString('utf8'));}catch{throw new HttpError(422,'INVALID_WORKER_REPORT','Resultado do worker inválido.');}
    if(report?.schemaVersion!=='1.0'||report.kind!==b.kind||report.input?.sha256!==sha256||report.input?.bytes!==bytes.length||report.input?.unchanged!==true)throw new HttpError(409,'WORKER_INTEGRITY','O relatório não comprova os bytes recebidos.');

@@ -15,7 +15,8 @@ export async function registerAnalyses(app:FastifyInstance,{db,masterKey,now=Dat
   });
   app.post('/api/analyses',{schema:{body:object({assetId:uuid,kind:{enum:[...ANALYSIS_KINDS]},name:str(240),mediaType:str(100),content:{type:'string',minLength:1,maxLength:1048576}})}},async request=>{
     const a=request.actor!,b=request.body as any;
-    await scoped(db,request,'scan',b.assetId,now);await scoped(db,request,'evidence.import',b.assetId,now);
+    const execution={profile:'artifact.analyze',inputBytes:Buffer.byteLength(b.content,'utf8')};
+    await scoped(db,request,'scan',b.assetId,now,execution);await scoped(db,request,'evidence.import',b.assetId,now,execution);
     let report;try{report=analyzeArtifact({kind:b.kind,name:b.name,mediaType:b.mediaType,content:b.content});}catch(error){if(error instanceof ArtifactAnalysisError)throw new HttpError(400,'INVALID_ARTIFACT',error.message);throw error;}
     const id=randomUUID(),evidenceId=randomUUID(),bytes=Buffer.from(b.content,'utf8'),sha256=digest(bytes);
     return db.transaction(async tx=>{

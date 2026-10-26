@@ -1,9 +1,9 @@
 import { randomUUID } from 'node:crypto';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
-import { evaluatePolicy, scanFiles } from '@sentinel/core';
+import { scanFiles } from '@sentinel/core';
 import type { Database, Sql } from './db.ts';
 import { HttpError, object, str, uuid } from './auth.ts';
-import { permit, scopeDto } from './policy.ts';
+import { permit, storedScopeAllowed } from './policy.ts';
 import { audit } from './audit.ts';
 import { decrypt, digest, encrypt } from './security.ts';
 
@@ -64,14 +64,14 @@ async function getCase(tx:Sql,id:string,organizationId:string,lock=false) {
   const [incident]=await tx.query(`SELECT * FROM incidents WHERE id=$1 AND organization_id=$2${lock?' FOR UPDATE':''}`,[id,organizationId]);
   if(!incident)throw new HttpError(404,'NOT_FOUND','Incidente não encontrado.');return incident;
 }
-async function requireLabScope(tx:Sql,request:FastifyRequest,assetId:string,now:()=>number) {
+async function requireLabScope(tx:Sql,request:FastifyRequest,assetId:string,now:()=>number,inputBytes:number) {
   const actor=request.actor!;
+  await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[actor.organizationId]);
   const [asset]=await tx.query('SELECT * FROM assets WHERE id=$1 AND organization_id=$2 FOR SHARE',[assetId,actor.organizationId]);
   if(!asset)throw new HttpError(404,'NOT_FOUND','Ativo não encontrado.');
   if(asset.environment!=='lab')throw new HttpError(403,'LAB_REQUIRED','Este fluxo exige um ativo de laboratório.');
-  const rows=await tx.query('SELECT * FROM authorizations WHERE organization_id=$1 AND asset_id=$2 AND revoked_at IS NULL FOR SHARE',[actor.organizationId,assetId]);
   for(const operation of ['scan','evidence.import'] as const) {
-    if(!rows.some(row=>evaluatePolicy({identity:actor,operation,resource:{organizationId:actor.organizationId,assetId,environment:asset.environment},scope:scopeDto(row),now:new Date(now())}).allowed))throw new HttpError(403,'SCOPE_REQUIRED','Escopos vigentes scan e evidence.import são obrigatórios.');
+    if(!await storedScopeAllowed(tx,actor,operation,asset,now(),{profile:'lab.remediate',inputBytes}))throw new HttpError(403,'SCOPE_REQUIRED','Escopos vigentes scan e evidence.import são obrigatórios para esta cópia e seus limites.');
   }
 }
 async function preserve(tx:Sql,request:FastifyRequest,assetId:string,name:string,content:string,key:Buffer) {
@@ -128,7 +128,7 @@ export async function registerOperations(app:FastifyInstance,options:{db:Databas
   app.get('/api/remediations',async request=>{permit(request,'reports.read');return {items:(await db.query('SELECT * FROM remediation_plans WHERE organization_id=$1 ORDER BY created_at DESC LIMIT 100',[request.actor!.organizationId])).map(planDto)};});
   app.post('/api/remediations',{schema:{body:object({assetId:uuid,name:{...str(120),pattern:'^[A-Za-z0-9][A-Za-z0-9._ -]*$'},content:{type:'string',maxLength:262144}})}},async request=>{
     permit(request,'scopes.create');const a=request.actor!,b=request.body as {assetId:string;name:string;content:string},proposal=proposeSshArtifact(b.content);
-    return db.transaction(async tx=>{await requireLabScope(tx,request,b.assetId,now);
+    return db.transaction(async tx=>{await requireLabScope(tx,request,b.assetId,now,Buffer.byteLength(b.content,'utf8'));
       const id=randomUUID(),original=await preserve(tx,request,b.assetId,`${b.name}.original`,b.content,masterKey),proposed=await preserve(tx,request,b.assetId,`${b.name}.proposed`,proposal.content,masterKey);
       const [row]=await tx.query('INSERT INTO remediation_plans(id,organization_id,asset_id,name,status,original_evidence_id,proposed_evidence_id,original_hash,proposed_hash,changes,reasons,created_by) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *',[id,a.organizationId,b.assetId,b.name,proposal.status,original,proposed,digest(b.content),digest(proposal.content),JSON.stringify(proposal.changes),JSON.stringify(proposal.reasons),a.id]);
       await revision(tx,request,id,1,'import',b.content,masterKey);await audit(tx,a.organizationId,a.id,'remediation.proposed',id,{target,status:proposal.status,originalHash:row.original_hash,proposedHash:row.proposed_hash});return planDto(row);});
@@ -144,8 +144,10 @@ export async function registerOperations(app:FastifyInstance,options:{db:Databas
   for(const action of ['approve','apply','verify','rollback'] as const)app.post(`/api/remediations/:id/${action}`,{schema:{params}},async request=>{
     permit(request,'scopes.create');const a=request.actor!,id=(request.params as any).id;
     return db.transaction(async tx=>{
+      await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[a.organizationId]);
       const [row]=await tx.query('SELECT * FROM remediation_plans WHERE id=$1 AND organization_id=$2 FOR UPDATE',[id,a.organizationId]);if(!row)throw new HttpError(404,'NOT_FOUND','Plano não encontrado.');
-      await requireLabScope(tx,request,row.asset_id,now);
+      const original=await evidenceContent(tx,a.organizationId,row.original_evidence_id,masterKey,row.original_hash);
+      await requireLabScope(tx,request,row.asset_id,now,Buffer.byteLength(original,'utf8'));
       const required:Record<string,string[]>={approve:['proposed'],apply:['approved'],verify:['applied'],rollback:['applied','verified']};
       if(!required[action].includes(row.status))throw new HttpError(409,'INVALID_TRANSITION','Etapa incompatível com o estado atual do plano.');
       const [current]=await tx.query('SELECT * FROM remediation_revisions WHERE organization_id=$1 AND plan_id=$2 AND revision=$3',[a.organizationId,id,row.current_revision]);
@@ -153,10 +155,12 @@ export async function registerOperations(app:FastifyInstance,options:{db:Databas
       const bytes=decrypt(current.content_cipher,masterKey,`remediation:${a.organizationId}:${id}:${row.current_revision}`);
       const expected=['proposed','approved'].includes(row.status)?row.original_hash:row.proposed_hash;
       if(digest(bytes)!==current.sha256||current.sha256!==expected)throw new HttpError(409,'INTEGRITY_FAILED','Revisão atual não corresponde ao estado esperado.');
+      await requireLabScope(tx,request,row.asset_id,now,bytes.length);
       let status=action==='approve'?'approved':action==='apply'?'applied':action==='verify'?'verified':'rolled_back';
       let currentRevision=row.current_revision,verification:unknown=null;
       if(action==='apply'||action==='rollback') {
         const restoring=action==='rollback',content=await evidenceContent(tx,a.organizationId,restoring?row.original_evidence_id:row.proposed_evidence_id,masterKey,restoring?row.original_hash:row.proposed_hash);
+        await requireLabScope(tx,request,row.asset_id,now,Buffer.byteLength(content,'utf8'));
         currentRevision++;await revision(tx,request,id,currentRevision,action,content,masterKey);
       }
       if(action==='verify') {

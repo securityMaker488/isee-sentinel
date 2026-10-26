@@ -22,7 +22,7 @@ export async function registerReporting(app:FastifyInstance,{db,masterKey,now=Da
   const report=await db.transaction(async tx=>{
    const [row]=type==='analysis'?await tx.query('SELECT * FROM artifact_analyses WHERE id=$1 AND organization_id=$2',[id,a.organizationId]):await tx.query('SELECT * FROM incidents WHERE id=$1 AND organization_id=$2',[id,a.organizationId]);
    if(!row)throw new HttpError(404,'NOT_FOUND','Registro não encontrado.');
-   const ctx=await context(tx,a.organizationId,row.asset_id),base={schemaVersion:'1.0',product:'I.See Sentinel',specification:'6.6',type,id,generatedAt:new Date(now()).toISOString(),timezone:'UTC',...ctx,
+   const ctx=await context(tx,a.organizationId,row.asset_id),base={schemaVersion:'1.0',product:'I.See Sentinel',specification:'6.9',type,id,generatedAt:new Date(now()).toISOString(),timezone:'UTC',...ctx,
     scopeNote:'Autorizações listadas são registros históricos; consulte a vigência na data de cada operação. Datas da fonte não provam, isoladamente, a origem.',
     retest:{status:'not_recorded',results:[]},operatorId:a.id};
    let result;

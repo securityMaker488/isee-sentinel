@@ -21,6 +21,7 @@ import {registerLab,type LabRunner} from './lab.ts';
 import {registerForensics,type ForensicRunner} from './forensics.ts';
 import {registerGraph} from './graph.ts';
 import {registerImports,type ImportRunner} from './imports.ts';
+import {registerAuthorizationManager} from './authorization-manager.ts';
 
 export interface AppOptions {db:Database;masterKey:Buffer;origin?:string;secureCookie?:boolean;now?:()=>number;staticDir?:string;logger?:boolean;nmapPath?:string;labRunner?:LabRunner;pythonPath?:string;forensicRunner?:ForensicRunner;importRunner?:ImportRunner;}
 export async function buildApp(options:AppOptions) {
@@ -84,19 +85,21 @@ export async function buildApp(options:AppOptions) {
   app.post('/api/authorizations',{schema:{body:object({assetId:uuid,operations:{type:'array',minItems:1,maxItems:3,uniqueItems:true,items:{enum:['scan','evidence.import','event.ingest']}},authorizationRef:str(300),expiresAt:{type:'string',format:'date-time'}})}},async request=>{
     permit(request,'scopes.create');const a=request.actor!,b=request.body as any,time=now();
     if(new Date(b.expiresAt).getTime()<=time||new Date(b.expiresAt).getTime()>time+31*86400000)throw new HttpError(400,'INVALID_EXPIRY','Autorização deve expirar entre agora e 31 dias.');
-    const [asset]=await db.query('SELECT * FROM assets WHERE id=$1 AND organization_id=$2',[b.assetId,a.organizationId]);if(!asset)throw new HttpError(404,'NOT_FOUND','Ativo não encontrado.');
     return db.transaction(async tx=>{
+      await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[a.organizationId]);
+      const [asset]=await tx.query('SELECT * FROM assets WHERE id=$1 AND organization_id=$2 FOR UPDATE',[b.assetId,a.organizationId]);if(!asset)throw new HttpError(404,'NOT_FOUND','Ativo não encontrado.');
+      if(asset.authorization_mode!=='legacy')throw new HttpError(403,'MANAGED_AUTHORIZATION_REQUIRED','Este ativo exige autorização de avaliação revisada no Authorization Manager.');
       const [row]=await tx.query('INSERT INTO authorizations(id,organization_id,asset_id,environment,operations,authorization_ref,not_before,expires_at,created_by) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',[randomUUID(),a.organizationId,b.assetId,asset.environment,JSON.stringify(b.operations),b.authorizationRef,new Date(time),b.expiresAt,a.id]);
       await audit(tx,a.organizationId,a.id,'scope.granted',row.id,{assetId:b.assetId,operations:b.operations,expiresAt:b.expiresAt});return scopeDto(row);
     });
   });
   app.post('/api/authorizations/:id/revoke',{schema:{params:object({id:uuid})}},async request=>{
     permit(request,'scopes.create');const a=request.actor!,id=(request.params as any).id;
-    return db.transaction(async tx=>{const rows=await tx.query('UPDATE authorizations SET revoked_at=$3 WHERE id=$1 AND organization_id=$2 AND revoked_at IS NULL RETURNING id',[id,a.organizationId,new Date(now())]);if(!rows.length)throw new HttpError(404,'NOT_FOUND','Autorização não encontrada.');await audit(tx,a.organizationId,a.id,'scope.revoked',id);return {ok:true};});
+    return db.transaction(async tx=>{await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[a.organizationId]);const rows=await tx.query('UPDATE authorizations SET revoked_at=$3 WHERE id=$1 AND organization_id=$2 AND revoked_at IS NULL RETURNING id',[id,a.organizationId,new Date(now())]);if(!rows.length)throw new HttpError(404,'NOT_FOUND','Autorização não encontrada.');await audit(tx,a.organizationId,a.id,'scope.revoked',id);return {ok:true};});
   });
   app.post('/api/scans',{schema:{body:object({assetId:uuid,files:{type:'array',minItems:1,maxItems:40,items:object({path:str(240),content:{type:'string',maxLength:262144}})}})}},async request=>{
     const a=request.actor!,b=request.body as any;
-    await scoped(db,request,'scan',b.assetId,now);
+    await scoped(db,request,'scan',b.assetId,now,{profile:'static.scan',inputBytes:b.files.reduce((sum:number,file:{content:string})=>sum+Buffer.byteLength(file.content,'utf8'),0)});
     let result:ScanResult;
     try {result=scanFiles(b.files);}catch{throw new HttpError(400,'INVALID_FILES','Arquivos inválidos. Use caminhos relativos, até 40 arquivos, 256 KiB por arquivo e 1 MiB total.');}
     const id=randomUUID();
@@ -122,9 +125,10 @@ export async function buildApp(options:AppOptions) {
   });
   app.get('/api/evidence',async request=>{permit(request,'evidence.read');return db.transaction(async tx=>{const a=request.actor!;await audit(tx,a.organizationId,a.id,'evidence.listed',null);return {items:(await tx.query('SELECT id,asset_id,name,media_type,sha256,size_bytes,created_by,source,created_at FROM evidence WHERE organization_id=$1 ORDER BY created_at DESC LIMIT 100',[a.organizationId])).map(evidenceDto)};});});
   app.post('/api/evidence',{schema:{body:object({assetId:uuid,name:str(240),mediaType:str(100),contentBase64:{type:'string',minLength:4,maxLength:1398104}})}},async request=>{
-    const a=request.actor!,b=request.body as any;await scoped(db,request,'evidence.import',b.assetId,now);
+    const a=request.actor!,b=request.body as any;
     const bytes=Buffer.from(b.contentBase64,'base64');
     if(bytes.length>1048576||bytes.length===0||bytes.toString('base64')!==b.contentBase64)throw new HttpError(400,'INVALID_EVIDENCE','Base64 canônico e conteúdo de até 1 MiB são obrigatórios.');
+    await scoped(db,request,'evidence.import',b.assetId,now,{profile:'evidence.import',inputBytes:bytes.length});
     return db.transaction(tx=>preserve(tx,{organizationId:a.organizationId,actorId:a.id,assetId:b.assetId,name:b.name,mediaType:b.mediaType,bytes,source:'operator-import'},masterKey));
   });
   app.get('/api/evidence/:id',{schema:{params:object({id:uuid})}},async request=>{
@@ -145,7 +149,7 @@ export async function buildApp(options:AppOptions) {
   app.get('/api/audit',async request=>{permit(request,'audit.read');return {items:(await db.query('SELECT * FROM audit_events WHERE organization_id=$1 ORDER BY sequence DESC LIMIT 100',[request.actor!.organizationId])).map(r=>({id:r.id,action:r.action,actorId:r.actor_id,resourceId:r.resource_id,createdAt:r.created_at,hash:r.hash,previousHash:r.previous_hash,details:r.details}))};});
   app.get('/api/audit/verify',async request=>{permit(request,'audit.read');return verifyAuditChain(await db.query('SELECT * FROM audit_events WHERE organization_id=$1 ORDER BY sequence',[request.actor!.organizationId]));});
   app.post('/api/events',{schema:{body:object({assetId:uuid,externalId:uuid,schemaVersion:{const:1},type:{enum:['auth.failure','auth.success','configuration.change']},source:str(120),occurredAt:{type:'string',format:'date-time'},data:object({subject:str(120),synthetic:{type:'boolean'}})},['assetId','schemaVersion','type','source','occurredAt','data'])}},async request=>{
-    const a=request.actor!,b=request.body as any,asset=await scoped(db,request,'event.ingest',b.assetId,now);
+    const a=request.actor!,b=request.body as any,asset=await scoped(db,request,'event.ingest',b.assetId,now,{profile:'events.ingest',inputBytes:Buffer.byteLength(JSON.stringify(b),'utf8')});
     if(b.data.synthetic&&asset.environment!=='lab')throw new HttpError(403,'LAB_REQUIRED','Eventos de simulação exigem ativo de laboratório.');
     if(Math.abs(new Date(b.occurredAt).getTime()-now())>86400000)throw new HttpError(400,'EVENT_TIME','Evento deve estar na janela de 24 horas.');
     return db.transaction(async tx=>{
@@ -177,6 +181,7 @@ export async function buildApp(options:AppOptions) {
     return db.transaction(async tx=>{const rows=await tx.query('UPDATE alerts SET status=$3 WHERE id=$1 AND organization_id=$2 RETURNING id',[id,a.organizationId,status]);if(!rows.length)throw new HttpError(404,'NOT_FOUND','Alerta não encontrado.');await audit(tx,a.organizationId,a.id,'alert.triaged',id,{status});return {id,status};});
   });
   await registerAgents(app,{db,masterKey,now});
+  await registerAuthorizationManager(app,{db,masterKey,now});
   await registerOperations(app,{db,masterKey,now});
   await registerAnalyses(app,{db,masterKey,now});
   await registerReporting(app,{db,masterKey,now});

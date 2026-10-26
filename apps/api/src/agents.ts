@@ -1,9 +1,8 @@
 import {createHmac,randomBytes,randomUUID} from 'node:crypto';
 import type {FastifyInstance} from 'fastify';
-import {evaluatePolicy} from '@sentinel/core';
 import type {Database} from './db.ts';
 import {HttpError,object,str,uuid} from './auth.ts';
-import {permit,scoped,scopeDto} from './policy.ts';
+import {permit,scoped,storedScopeAllowed} from './policy.ts';
 import {encrypt,decrypt,digest,canonical,constantEqual} from './security.ts';
 import {audit} from './audit.ts';
 
@@ -21,7 +20,7 @@ export async function registerAgents(app:FastifyInstance,{db,masterKey,now=Date.
   app.addContentTypeParser('application/vnd.sentinel.agent+json',{parseAs:'buffer',bodyLimit:16384},(_request,body,done)=>done(null,body));
   app.get('/api/agents',async request=>{permit(request,'assets.read');return {items:(await db.query('SELECT id,asset_id,name,created_at,expires_at,revoked_at,last_seen_at FROM endpoint_agents WHERE organization_id=$1 ORDER BY created_at DESC LIMIT 100',[request.actor!.organizationId])).map(r=>agentDto(r,now()))};});
   app.post('/api/agents',{schema:{body:object({assetId:uuid,name:str(120),expiresAt:{type:'string',format:'date-time'}})}},async request=>{
-    permit(request,'scopes.create');const a=request.actor!,b=request.body as any,time=now();await scoped(db,request,'event.ingest',b.assetId,now);
+    permit(request,'scopes.create');const a=request.actor!,b=request.body as any,time=now();await scoped(db,request,'event.ingest',b.assetId,now,{profile:'agent.observe',phase:'prepare'});
     if(Date.parse(b.expiresAt)<=time||Date.parse(b.expiresAt)>time+31*86400000)throw new HttpError(400,'INVALID_EXPIRY','Credencial deve expirar em até 31 dias.');
     const id=randomUUID(),secret=randomBytes(32).toString('hex');
     return db.transaction(async tx=>{
@@ -43,6 +42,9 @@ export async function registerAgents(app:FastifyInstance,{db,masterKey,now=Date.
       const [o]=await tx.query('SELECT o.*,a.asset_id,a.revoked_at,a.expires_at FROM agent_observations o JOIN endpoint_agents a ON a.id=o.agent_id WHERE o.id=$1 AND o.organization_id=$2',[id,a.organizationId]);
       if(!o)throw new HttpError(404,'NOT_FOUND','Observação não encontrada.');
       if(o.revoked_at||Date.parse(o.expires_at)<=now())throw new HttpError(409,'AGENT_INACTIVE','Agente revogado ou expirado.');
+      const [asset]=await tx.query('SELECT * FROM assets WHERE id=$1 AND organization_id=$2',[o.asset_id,a.organizationId]);
+      if(!asset)throw new HttpError(404,'NOT_FOUND','Ativo não encontrado.');
+      if(asset.authorization_mode==='managed'&&!await storedScopeAllowed(tx,a,'event.ingest',asset,now(),{profile:'agent.observe',phase:'prepare'}))throw new HttpError(403,'SCOPE_REQUIRED','A referência exige autorização vigente do perfil do agente.');
       const f=o.payload.file;
       await tx.query('INSERT INTO integrity_baselines(agent_id,organization_id,path_id,path_label,sha256,observation_id,approved_by,approved_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT(agent_id,path_id) DO UPDATE SET sha256=EXCLUDED.sha256,path_label=EXCLUDED.path_label,observation_id=EXCLUDED.observation_id,approved_by=EXCLUDED.approved_by,approved_at=EXCLUDED.approved_at',[o.agent_id,a.organizationId,f.pathId,f.pathLabel,f.sha256,id,a.id,new Date(now())]);
       await audit(tx,a.organizationId,a.id,'integrity.baseline_approved',id,{agentId:o.agent_id,pathId:f.pathId,sha256:f.sha256});return {agentId:o.agent_id,pathId:f.pathId,sha256:f.sha256};
@@ -56,7 +58,7 @@ export async function registerAgents(app:FastifyInstance,{db,masterKey,now=Date.
     const raw=request.body,bodyHash=digest(raw);
     return db.transaction(async tx=>{
       await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[candidate.organization_id]);
-      const [agent]=await tx.query('SELECT a.*,s.environment FROM endpoint_agents a JOIN assets s ON s.id=a.asset_id AND s.organization_id=a.organization_id WHERE a.id=$1 FOR UPDATE OF a',[id]);
+      const [agent]=await tx.query('SELECT a.*,s.environment,s.project_id,s.authorization_mode FROM endpoint_agents a JOIN assets s ON s.id=a.asset_id AND s.organization_id=a.organization_id WHERE a.id=$1 FOR UPDATE OF a',[id]);
       if(!agent||agent.revoked_at||new Date(agent.expires_at).getTime()<=time)throw unauth();
       const secret=decrypt(agent.secret_cipher,masterKey,`agent:${agent.organization_id}:${id}`).toString();
       const expected=createHmac('sha256',Buffer.from(secret,'hex')).update(`${timestamp}\n${nonce}\nPOST\n/agent/v1/observations\n${bodyHash}`).digest('hex');
@@ -65,8 +67,7 @@ export async function registerAgents(app:FastifyInstance,{db,masterKey,now=Date.
       if(!request.compileValidationSchema(observationSchema)(b))throw new HttpError(400,'INVALID_OBSERVATION','Observação inválida ou campos não permitidos.');
       if(b.assetId!==agent.asset_id)throw new HttpError(403,'ASSET_MISMATCH','A credencial está vinculada a outro ativo.');
       if(Math.abs(b.observedAtEpochMs-time)>300000)throw new HttpError(400,'OBSERVATION_TIME','Observação fora da janela de cinco minutos.');
-      const scopes=await tx.query('SELECT * FROM authorizations WHERE organization_id=$1 AND asset_id=$2 AND revoked_at IS NULL',[agent.organization_id,agent.asset_id]);
-      if(!scopes.some(row=>evaluatePolicy({identity:{id,organizationId:agent.organization_id,role:'agent'},operation:'event.ingest',resource:{organizationId:agent.organization_id,assetId:agent.asset_id,environment:agent.environment},scope:scopeDto(row),now:new Date(time)}).allowed))throw new HttpError(403,'SCOPE_REQUIRED','Agente exige autorização vigente de ingestão para o ativo.');
+      if(!await storedScopeAllowed(tx,{id,organizationId:agent.organization_id,role:'agent'},'event.ingest',{...agent,id:agent.asset_id},time,{profile:'agent.observe',inputBytes:raw.length}))throw new HttpError(403,'SCOPE_REQUIRED','Agente exige autorização vigente de ingestão para o ativo e tamanho da observação.');
       await tx.query('DELETE FROM agent_nonces WHERE agent_id=$1 AND received_at<$2',[id,new Date(time-600000)]);
       const inserted=await tx.query('INSERT INTO agent_nonces(agent_id,nonce,received_at) VALUES($1,$2,$3) ON CONFLICT DO NOTHING RETURNING nonce',[id,nonce,new Date(time)]);
       if(!inserted.length)throw new HttpError(409,'NONCE_REPLAY','Requisição já recebida.');

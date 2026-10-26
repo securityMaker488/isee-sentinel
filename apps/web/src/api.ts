@@ -1,6 +1,6 @@
 export type RecordData = Record<string, unknown>;
 export interface Session { user: { id: string; email: string; role: string; organizationId: string }; csrfToken: string; activeOrganization?: { id: string; name: string } }
-export interface Asset { id: string; name: string; kind: string; environment: string; criticality: number; projectId?: string; createdAt?: string }
+export interface Asset { id: string; name: string; kind: string; environment: string; criticality: number; projectId?: string; authorizationMode?: 'legacy' | 'managed'; createdAt?: string }
 export interface Overview { assets: number; findings: number; evidence: number; scans: number; highFindings: number; recentEvents: RecordData[]; generatedAt: string; source: string }
 
 export class ApiError extends Error {

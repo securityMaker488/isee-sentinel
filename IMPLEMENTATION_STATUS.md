@@ -7,7 +7,7 @@ declaração de prontidão. A plataforma completa ainda não está concluída.
 
 | Área | Estado do recorte | Próximo critério de avanço |
 | --- | --- | --- |
-| Fundação e evidências | Implementadas com testes locais; cobertura parcial dos requisitos V6.9 | Consolidar novas migrações, autorização ampliada e homologação operacional |
+| Fundação e evidências | Authorization Manager por projeto, prova cifrada, aprovação, perfis/limites, migração009 e restore validados no Windows | Plano de avaliação, catálogo amplo e homologação operacional |
 | Agente de integridade | Transporte autenticado e FIM conectados | Validar no Debian e ampliar telemetria; não classificar como EDR/XDR completo |
 | SOC/casos/SecureFix | Fluxos conectados; correção restrita a cópia de laboratório | Consolidar E2E e restore; resposta real do host continua indisponível |
 | Análises/OpenAPI | Análises offline e auditoria estática de contrato implementadas | Cobertura adicional, comparabilidade de reteste e verificação de falsos positivos |

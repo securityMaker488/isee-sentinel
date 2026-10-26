@@ -4,6 +4,36 @@ Especificação V6.9, versão de desenvolvimento 0.2.0. Resultados de fixtures
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
+## Incremento Authorization Manager
+
+| Verificação executada em 26/10/2026 | Resultado |
+|---|---|
+| TypeScript/API e build React/Vite | Passaram |
+| Suíte JS completa com Python real configurado | 146 passaram, sem falhas nem skips |
+| Política estruturada | 13 testes novos incluídos na suíte completa |
+| Authorization Manager na API | 20 testes novos incluídos na suíte completa |
+| Os mesmos 20 testes em PostgreSQL18, runtime restrito | Passaram; migração009 e novos grants exercitados |
+| Backup/restore nativo | 36 tabelas idênticas, 9 migrações, auditoria íntegra; 30 mandatos e31 vínculos |
+| Navegador Edge/Playwright, fluxo de autorização | Rascunho, download da prova, revisão, aprovação, limites, bloqueio legado, revogação e viewport390px passaram; console sem erros |
+
+Foram exercitados alteração de risco/perfil por novo rascunho, imutabilidade,
+projetos/empresas isolados, falha de integridade, vigência, bytes UTF-8 reais,
+portas permitidas, observação assinada do agente e transições de cópia SecureFix.
+Os testes de autorização usam substitutos de Nmap/workers para provar que a
+política bloqueia antes do despacho. A suíte completa também executou os testes
+existentes com Python real. Rust e suítes Python isoladas não foram repetidos:
+suas fontes não mudaram neste incremento. Credenciais de QA não foram versionadas.
+
+Script reproduzível: `scripts/browser-authorization-qa.cjs`. Capturas em
+`.sentinel/qa/authorization-approved.png` e `authorization-mobile.png`.
+Uma tentativa de navegador precedeu o término da inicialização do servidor e
+recebeu conexão recusada; após a prontidão, o fluxo completo acima passou.
+
+## Checkpoint anterior preservado
+
+Os resultados abaixo são históricos do incremento anterior, não uma segunda
+execução das suítes inalteradas neste incremento.
+
 | Verificação executada | Resultado e alcance |
 |---|---|
 | `scripts/setup-windows.ps1` | Passou: diagnóstico, instalação pelo lockfile sem scripts, build React/TypeScript e Rust |
@@ -42,7 +72,8 @@ navegador passou após as correções.
 
 ## Limitações
 
-O restore usou banco sintético com dados de importação; tabelas sem registros
+O restore anterior usou banco sintético com dados de importação; o atual usou
+os registros dos testes de autorização, agente e cópia SecureFix. Tabelas sem registros
 foram comparadas vazias. Validou conteúdo cifrado idêntico e cadeia de auditoria,
 sem exercitar todos os tipos populados, perda elétrica ou custódia de chave de
 instalação real. Banco temporário em55432, separado do serviço preexistente5432.

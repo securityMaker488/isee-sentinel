@@ -14,8 +14,9 @@ Os critérios de hardware anteriores estão em docs/FASES-V6.5.md.
 4. Guarde backups de dados/chaves separadamente. Git transporta fonte e memória,
    não credenciais nem a instância operacional.
 
-O remoto ainda não deve ser presumido. GITHUB-PRIVATE.md explica a preparação
-e os comandos; o guia não autoriza tornar o projeto público.
+O remoto privado criado é `securityMaker488/isee-sentinel`. GITHUB-PRIVATE.md
+registra a preparação e os comandos de conferência. Verifique a sincronização
+antes de trocar de sistema; a criação do remoto não encerra as pendências Windows.
 
 Também é possível transportar o Git bundle local da entrega, sem GitHub.
 Confira seu SHA-256 e, em uma pasta nova no Debian, use:
@@ -38,11 +39,11 @@ Instale Git, Node24, Python3.11+ e o toolchain Rust compatível. Execute como
 usuário normal; requisitos ausentes serão descritos pelo doctor. Não presuma
 que a versão Node oferecida pelo APT atende ao package.json.
 
-Depois de autenticar GitHub CLI, substitua DONO pela conta/organização correta:
+Depois de autenticar GitHub CLI com a conta autorizada:
 ```bash
 gh auth login
-gh repo view DONO/isee-sentinel --json nameWithOwner,visibility
-git clone https://github.com/DONO/isee-sentinel.git
+gh repo view securityMaker488/isee-sentinel --json nameWithOwner,visibility
+git clone https://github.com/securityMaker488/isee-sentinel.git
 cd isee-sentinel
 git status
 bash scripts/doctor.sh
@@ -51,6 +52,7 @@ npm run check
 cargo test --locked --manifest-path packages/endpoint-agent/Cargo.toml
 python3 -m unittest discover -s workers/integrity
 python3 -m unittest discover -s workers/forensics
+python3 -m unittest discover -s workers/imports
 ```
 Confirme visibility=PRIVATE antes de usar o remoto. Não coloque tokens na URL.
 A [documentação GitHub CLI](https://cli.github.com/manual/gh_repo_view) descreve
