@@ -1,6 +1,6 @@
 # Matriz funcional central — I.See Sentinel V6.9
 
-Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 é a escala histórica; nenhum módulo alcançou M4–M6. EstadosV6.9 de liberação profissional não são inferidos dos testes locais. Não há recurso liberado para clientes ou distribuição comercial. Dados estruturados: docs/portfolio-capabilities.json. Resultados: VALIDATION_REPORT.md. Referências não implicam equivalência a produtos externos.
+Atualizada em27/10/2026 a partir dos incrementos e testes registrados. M0–M6 é a escala histórica; nenhum módulo alcançou M4–M6. EstadosV6.9 de liberação profissional não são inferidos dos testes locais. Não há recurso liberado para clientes ou distribuição comercial. Dados estruturados: docs/portfolio-capabilities.json. Resultados: VALIDATION_REPORT.md. Referências não implicam equivalência a produtos externos.
 
 ## private-core — Command Center / PolicyGate
 
@@ -228,7 +228,7 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | Nmap |
 | Problema | Inventariar portas de alvo autorizado |
-| Funcionalidades desejadas / recorte | Adaptador Nmap com um IPv4 de laboratório e portas limitadas |
+| Funcionalidades desejadas / recorte | Nmap limitado a IPv4/portas de manifesto aprovado, exclusões e revisão vinculada ao resultado |
 | Módulo | AttackLab / ExposureMap |
 | Implementação | Open-Source/Laboratory Adapter |
 | Dependências | Nmap externo configurado, escopo e timeout |
@@ -236,9 +236,9 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Apenas alvo explicitamente cadastrado |
 | Licenciamento | Verificação oficial em andamento; não redistribuído |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
-| Limitações | Adaptador opcional; IPv4lab,16portas,30sNmap/40sprocesso,1concorrente. Nmap real não homologado, sem exploração nem isolamentoVM automático; endereço/exclusões ainda não integram o hash da autorização. Ampliar somente após manifesto aprovado |
-| Testes necessários / disponíveis | 10 testes com executor injetado; não representam varredura real |
-| Evidências | Adaptador limitado e testes registrados; auditoria e plano em docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md. Gobuster e demais novos adaptadores ainda ausentes |
+| Limitações | Adaptador opcional; IPv4lab,16portas,30sNmap/40sprocesso,1concorrente. Nmap real não homologado; sem exploração, cancelamento imediato ou isolamentoVM automático |
+| Testes necessários / disponíveis | 11 testes lab com executor injetado e26 de autorização; não representam varredura real |
+| Evidências | Migração010, manifesto/hash, FKs e histórico; VALIDATION_REPORT.md. Gobuster e demais novos adaptadores ainda ausentes |
 | Estado real | Em validação · M2 |
 | Prioridade | P1 |
 
@@ -668,7 +668,7 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | Especificação V6.9; detalhes nos guias do módulo |
 | Problema | Registrar autoridade e limites de teste |
-| Funcionalidades desejadas / recorte | Responsável e comprovação cifrados, projeto/ativos, rascunho imutável, revisão, aprovação, vigência, risco, nove perfis e limites por entrada |
+| Funcionalidades desejadas / recorte | Responsável/comprovação cifrados, projeto/ativos, rascunho e revisão/aprovação, vigência/risco, nove perfis, limites e manifesto IPv4/portas/exclusões |
 | Módulo | Authorization Manager |
 | Implementação | Nativa |
 | Dependências | PostgreSQL/PolicyGate |
@@ -676,9 +676,9 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Administrador cria/aprova/revoga; analista consulta detalhes. Ativo gerenciado não admite retorno ao legado; troca de limites exige novo rascunho |
-| Limitações | Somente executores implementados; bytes por entrada e portas explícitas. Sem cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática; falta manifesto revisado de endereços e exclusões para operações AttackLab |
-| Testes necessários / disponíveis | 13 testes de política e20 de API passaram; API também passou no PostgreSQL restrito. Navegador e restore36 tabelas/9migrações validados no Windows |
-| Evidências | Migração009, authorization-manager.ts, policy.ts, AuthorizationView e VALIDATION_REPORT.md |
+| Limitações | Somente executores implementados; bytes por entrada e portas/alvos explícitos. Sem plano geral, cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática |
+| Testes necessários / disponíveis | 13 testes política+4 manifesto puro;26 API também no PostgreSQL restrito; navegador e restore36tabelas/10migrações passaram no Windows |
+| Evidências | Migrações009–010, authorization-manager.ts, policy.ts, target-manifest.ts, AuthorizationView e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
 

@@ -5,11 +5,13 @@ import Fastify,{type FastifyInstance} from 'fastify';
 import cookie from '@fastify/cookie';
 import {openDatabase,migrate,type Database} from '../src/db.ts';
 import {registerAuth} from '../src/auth.ts';
+import {registerAuthorizationManager} from '../src/authorization-manager.ts';
 import {registerLab,isLabAddress,nmapArguments,LAB_LIMITS,type LabRunner,type LabRunOptions} from '../src/lab.ts';
 import {digest,encrypt,decrypt,randomToken} from '../src/security.ts';
 import {verifyAuditChain} from '../src/audit.ts';
 
-let db:Database,app:FastifyInstance,clock=Date.now(),targetId:string;
+let db:Database,app:FastifyInstance,clock=Date.now(),targetId:string,mandateId:string,requestHash:string;
+const project=randomUUID();
 const key=randomBytes(32),org=randomUUID(),otherOrg=randomUUID(),actor=randomUUID(),asset=randomUUID(),production=randomUUID(),foreignAsset=randomUUID(),unscoped=randomUUID();
 const session=randomToken(),otherSession=randomToken(),csrf=randomToken(),origin='http://127.0.0.1:4310';
 const nmapPath=process.platform==='win32'?'C:\\Trusted\\nmap.exe':'/usr/bin/nmap';
@@ -20,11 +22,12 @@ let behavior:LabRunner=async()=>({stdout:xml,exitCode:0});
 const calls:{file:string;args:readonly string[];options:LabRunOptions}[]=[];
 const runner:LabRunner=async(file,args,options)=>{calls.push({file,args,options});return behavior(file,args,options);};
 
-async function makeApp(path=nmapPath,child:LabRunner=runner) {
+async function makeApp(path=nmapPath,child:LabRunner=runner,database=db) {
   const instance=Fastify({ajv:{customOptions:{removeAdditional:false,coerceTypes:false}}});
-  await instance.register(cookie);await registerAuth(instance,db,key,origin,false,()=>clock);
+  await instance.register(cookie);await registerAuth(instance,database,key,origin,false,()=>clock);
   instance.setErrorHandler((error,_request,reply)=>{const e=error as any;reply.code(e.statusCode??500).send({error:{code:e.code,message:e.message}});});
-  await registerLab(instance,{db,masterKey:key,now:()=>clock,nmapPath:path,runner:child});await instance.ready();return instance;
+  await registerAuthorizationManager(instance,{db:database,masterKey:key,now:()=>clock});
+  await registerLab(instance,{db:database,masterKey:key,now:()=>clock,nmapPath:path,runner:child});await instance.ready();return instance;
 }
 
 before(async()=>{
@@ -39,6 +42,19 @@ before(async()=>{
     if(id!==unscoped)await db.query('INSERT INTO authorizations(id,organization_id,asset_id,environment,operations,authorization_ref,not_before,expires_at,created_by) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',[randomUUID(),organization,id,environment,JSON.stringify(['scan']),'Injected runner fixture; no network tests',new Date(clock-60000),new Date(clock+3600000),actor]);
   }
   app=await makeApp();
+  await db.query('INSERT INTO projects(id,organization_id,name,contract_ref) VALUES($1,$2,$3,$4)',[project,org,'Synthetic target manifest','SYNTHETIC-ONLY']);
+  await db.query('UPDATE assets SET project_id=$2 WHERE id=$1',[asset,project]);
+  const draft=await post('/api/assessment-authorizations',{
+    projectId:project,assetIds:[asset],mode:'lab',risk:'moderate',profiles:['lab.inventory'],
+    limits:{maxInputBytes:1024,allowedPorts:[22,443]},
+    targetManifest:{version:1,targets:[{assetId:asset,address:'127.0.0.1',ports:[22,443]}],exclusions:[]},
+    notBefore:new Date(clock-1000).toISOString(),expiresAt:new Date(clock+3600000).toISOString(),
+    responsible:{name:'Synthetic lab owner',role:'Fixture owner',organization:'Synthetic organization'},
+    purpose:'Injected runner fixture; no network tests.',
+    authority:{channel:'internal',reference:'SYNTHETIC-ONLY',evidence:{name:'fixture.txt',mediaType:'text/plain',contentBase64:Buffer.from('Synthetic local fixture authorization, no real network permission.').toString('base64')}}
+  });
+  assert.equal(draft.statusCode,200,draft.body);mandateId=draft.json().id;requestHash=draft.json().requestHash;
+  const approval=await post(`/api/assessment-authorizations/${mandateId}/approve`,{requestHash,attested:true});assert.equal(approval.statusCode,200,approval.body);
 });
 after(async()=>{await app?.close();await db?.close();});
 
@@ -87,6 +103,7 @@ test('injected successful execution keeps fixed arguments, encrypted XML, analys
   behavior=async()=>({stdout:xml,exitCode:0});
   const result=await post('/api/lab/scans',{targetId,ports:[443,22]});assert.equal(result.statusCode,200,result.body);
   const scan=result.json();assert.equal(scan.status,'completed');assert.equal(scan.report.format,'nmap-xml');assert.ok(scan.analysisId);assert.equal(scan.findingCount,1);
+  assert.equal(scan.mandateId,mandateId);assert.equal(scan.authorizationRequestHash,requestHash);
   const call=calls.at(-1)!;assert.equal(call.file,nmapPath);assert.deepEqual(call.args,nmapArguments('127.0.0.1',[443,22]));
   assert.equal(call.options.shell,false);assert.equal(call.options.windowsHide,true);assert.equal(call.options.timeout,40000);assert.equal(call.options.maxBuffer,1048576);assert.equal(call.options.killSignal,'SIGKILL');
   assert.equal(call.options.env.SENTINEL_MASTER_KEY,undefined);assert.equal(call.options.env.DATABASE_URL,undefined);assert.equal(call.options.env.NMAP_UNPRIVILEGED,'1');
@@ -153,6 +170,32 @@ test('expired lease interrupts an orphaned job before a new run and late results
   const late=await post('/api/lab/scans',{targetId,ports:[22]});assert.equal(late.statusCode,409);assert.equal(late.json().error.code,'LAB_INTERRUPTED');
   const [last]=await db.query('SELECT s.analysis_id,j.status FROM lab_scans s JOIN jobs j ON j.id=s.id WHERE s.organization_id=$1 ORDER BY s.created_at DESC LIMIT 1',[org]);assert.equal(last.analysis_id,null);assert.notEqual(last.status,'completed');
   assert.deepEqual(await db.query('SELECT * FROM lab_execution_lock'),[]);
+});
+
+test('revocation committed after job acquisition is rechecked before runner dispatch and releases the lease',async()=>{
+  let intercepted=false;
+  const database:Database={...db,transaction:async fn=>{
+    let acquired=false;
+    const result=await db.transaction(tx=>fn({query:async<T>(sql:string,params?:any[])=>{
+      const rows=await tx.query<T>(sql,params);
+      if(sql.startsWith('INSERT INTO lab_scans'))acquired=true;
+      return rows;
+    }}));
+    if(acquired&&!intercepted){
+      intercepted=true;
+      await db.query('UPDATE authorizations SET revoked_at=$2 WHERE mandate_id=$1 AND revoked_at IS NULL',[mandateId,new Date(clock)]);
+    }
+    return result;
+  }};
+  const concurrent=await makeApp(nmapPath,runner,database),beforeCalls=calls.length;
+  try{
+    const response=await concurrent.inject({method:'POST',url:'/api/lab/scans',headers:headers(),payload:{targetId,ports:[22]}});
+    assert.equal(intercepted,true);assert.equal(response.statusCode,403,response.body);assert.equal(response.json().error.code,'SCOPE_REQUIRED');
+    assert.equal(calls.length,beforeCalls);
+    assert.deepEqual(await db.query('SELECT * FROM lab_execution_lock'),[]);
+    const [failed]=await db.query('SELECT s.error_code,s.evidence_id,j.status FROM lab_scans s JOIN jobs j ON j.id=s.id WHERE s.organization_id=$1 ORDER BY s.created_at DESC LIMIT 1',[org]);
+    assert.equal(failed.status,'failed');assert.equal(failed.error_code,'SCOPE_REQUIRED');assert.equal(failed.evidence_id,null);
+  }finally{await concurrent.close();}
 });
 
 test('audit chain remains valid across registration, successful, failed and interrupted runs',async()=>{

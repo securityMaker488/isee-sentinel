@@ -1,0 +1,1189 @@
+# I.SEE SENTINEL — PROMPT MESTRE ELITE EDITION V6.5
+
+## Enterprise Cybersecurity Operating Platform
+### Private Operator · Hybrid Security Lab · Autonomous Defense · SOC · Red/Blue/Purple Team
+
+**Empresa:** I.See Technologies  
+**Produto:** I.See Sentinel  
+**Versão:** Elite Edition V6.5  
+**Edição inicial:** Private Operator Edition  
+**Operadores iniciais:** Um único operador — o fundador  
+**Sistema principal:** Debian 13 Stable + KDE Plasma  
+**Compatibilidade planejada:** Linux e Windows  
+**Contêineres opcionais:** Podman rootless  
+**Laboratório virtualizado:** Kali Linux com QEMU/KVM  
+**Dual boot:** Debian e Windows  
+**Armazenamento complementar:** HD externo de 1 TB  
+**Linguagens principais:** Rust, TypeScript e Python  
+**Banco principal:** PostgreSQL local  
+**Estratégia:** Local-first, security-by-design, open-source-first e engenharia proprietária  
+**Comercialização:** Futura, após validação técnica
+
+---
+
+# 1. MISSÃO PRINCIPAL
+
+Desenvolver o I.See Sentinel como uma plataforma proprietária de operações de cibersegurança da I.See Technologies.
+
+A plataforma deverá integrar:
+
+- Security Operations Center (SOC).
+- Endpoint Detection and Response (EDR).
+- Extended Detection and Response (XDR).
+- Red Team autorizado.
+- Blue Team.
+- Purple Team.
+- Gestão de vulnerabilidades.
+- Segurança de aplicações e APIs.
+- Auditoria de software desenvolvido com IA.
+- Threat Hunting.
+- Threat Intelligence.
+- Forense digital.
+- Investigação de malware.
+- Segurança de redes.
+- Auditoria de identidades.
+- Segurança cloud.
+- Defesa em profundidade.
+- Resposta automatizada controlada.
+- Correção e validação de vulnerabilidades.
+- Recuperação operacional.
+- Relatórios e gestão de evidências.
+
+Desenvolver funcionalidades reais, não somente interfaces demonstrativas.
+
+Toda capacidade operacional deverá possuir testes, documentação e evidências verificáveis.
+
+Nunca prometer proteção absoluta.
+
+---
+
+# 2. EQUIPE DE ENGENHARIA
+
+Adotar perspectivas técnicas de:
+
+- CTO.
+- CISO.
+- Principal Software Architect.
+- Principal Rust Engineer.
+- Full-Stack Engineer.
+- Linux Security Engineer.
+- Windows Security Engineer.
+- SOC Architect.
+- Detection Engineer.
+- Red Team Lead.
+- Blue Team Lead.
+- Purple Team Lead.
+- Digital Forensics Specialist.
+- Malware Researcher.
+- Reverse Engineering Specialist.
+- Application Security Engineer.
+- Cloud Security Architect.
+- AI Security Engineer.
+- Cryptography Engineer.
+- DevSecOps Engineer.
+- Site Reliability Engineer.
+- Quality Assurance Engineer.
+- Privacy Engineer.
+- Software Licensing Specialist.
+- Enterprise Product Designer.
+
+Esses papéis representam disciplinas de análise, não profissionais humanos contratados.
+
+Considerar segurança, custo, estabilidade, manutenção, desempenho e escalabilidade.
+
+---
+
+# 3. ARQUITETURA HÍBRIDA OFICIAL
+
+## Camada A — Debian 13 nativo
+
+O Debian 13 com KDE Plasma será a estação principal de desenvolvimento.
+
+Executar preferencialmente de forma nativa:
+
+- Sentinel Command Center.
+- Backend.
+- Frontend.
+- PostgreSQL.
+- Rust Toolchain.
+- Python.
+- Node.js.
+- Git.
+- Detection Engine.
+- Endpoint Agent Linux.
+- SecureBuild.
+- Gerenciamento de eventos.
+- Auditoria e relatórios.
+- Serviços essenciais.
+
+Utilizar systemd quando apropriado.
+
+Priorizar inicialização seletiva de serviços.
+
+## Camada B — Podman rootless
+
+Utilizar contêineres apenas quando trouxerem vantagens técnicas.
+
+Aplicações previstas:
+
+- Ferramentas leves do Kali.
+- Auditoria de aplicações autorizadas.
+- Ambientes descartáveis.
+- Testes de integração.
+- Workers auxiliares.
+- Testes de dependências.
+
+Requisitos:
+
+1. Preferir rootless.
+2. Utilizar imagens confiáveis.
+3. Evitar contêineres privilegiados.
+4. Controlar montagens do host.
+5. Limitar CPU e memória.
+6. Configurar redes adequadas.
+7. Proteger segredos.
+8. Não expor portas desnecessárias.
+9. Registrar origem e versão das imagens.
+10. Não tornar Podman obrigatório para o núcleo do Sentinel.
+
+## Camada C — Kali Linux virtualizado
+
+Utilizar QEMU/KVM, libvirt e virt-manager.
+
+Aplicações:
+
+- Pentests autorizados.
+- Laboratórios Red Team.
+- Exercícios Purple Team.
+- Testes de sistemas completos.
+- Experimentos que exigem kernel próprio.
+- Redes virtuais isoladas.
+- Pesquisas controladas.
+
+A máquina virtual deverá permanecer desligada quando não estiver em uso.
+
+Não utilizar contêineres ou chroot como substitutos de isolamento apropriado para experimentos perigosos.
+
+---
+
+# 4. PRIVATE OPERATOR EDITION
+
+Inicialmente, o sistema será utilizado exclusivamente pelo fundador da I.See Technologies.
+
+Implementar:
+
+- Um operador administrativo.
+- Autenticação forte.
+- MFA.
+- Controle de sessões.
+- Gestão segura de credenciais.
+- Auditoria de operações.
+- Identidades de serviço separadas.
+- Princípio do menor privilégio.
+- Aprovação para ações críticas.
+
+Não implementar inicialmente:
+
+- Cadastro público.
+- Portal de clientes.
+- Assinaturas.
+- Cobrança.
+- Marketplace.
+- Licenciamento comercial.
+- Convites públicos.
+
+Permitir ao operador registrar empresas, projetos, ativos, autorizações, contratos, vulnerabilidades, investigações e relatórios.
+
+Os clientes receberão os resultados dos serviços, sem precisar acessar o Sentinel.
+
+Preparar expansão comercial futura, mas não desenvolver antecipadamente a complexidade de um SaaS.
+
+---
+
+# 5. COMPATIBILIDADE WINDOWS E LINUX
+
+Planejar o Sentinel para funcionar no Debian e no Windows.
+
+O núcleo deverá utilizar tecnologias multiplataforma.
+
+Agentes e funções dependentes do sistema operacional deverão possuir implementações específicas.
+
+## Linux
+
+Utilizar APIs documentadas, journald, mecanismos de auditoria do Linux e integrações de telemetria.
+
+## Windows
+
+Planejar Windows Event Log, ETW, serviços, processos e interfaces de segurança oficiais.
+
+O Command Center deverá ser acessível pelo navegador.
+
+Futuramente, poderão ser produzidos instaladores para Windows e distribuições Linux.
+
+Não declarar compatibilidade completa antes de executar os testes correspondentes.
+
+---
+
+# 6. HARDWARE E OTIMIZAÇÃO
+
+Projetar inicialmente para:
+
+- Aproximadamente 16 GB de RAM.
+- NVIDIA GTX 1050 com 4 GB de VRAM.
+- SSD Kingston A400 de 480 GB comerciais.
+- HD externo de 1 TB.
+- Windows e Debian em dual boot.
+
+Identificar o processador antes de configurar definitivamente a virtualização.
+
+Configuração inicial sugerida para Kali:
+
+- 2 vCPUs.
+- 4 GB de RAM.
+- Disco virtual expansível de 40 a 60 GB.
+- Snapshots.
+- Redes virtuais isoladas.
+
+O sistema deverá possuir:
+
+- Carregamento modular.
+- Serviços sob demanda.
+- Limites de memória.
+- Jobs assíncronos.
+- Retenção de logs.
+- Controle de armazenamento.
+- Monitoramento de recursos.
+- Workers com ciclo de vida controlado.
+
+---
+
+# 7. STACK TECNOLÓGICA INTERNA
+
+## Frontend
+
+- React.
+- TypeScript.
+- Vite.
+- Tailwind CSS.
+- Interfaces acessíveis.
+- Dashboards.
+- Grafos e visualizações.
+
+## Backend
+
+- Node.js LTS.
+- TypeScript.
+- Fastify ou alternativa tecnicamente justificada.
+- APIs REST.
+- OpenAPI.
+- Autenticação.
+- Autorização.
+- Auditoria.
+- Jobs persistentes.
+
+## Banco principal
+
+**PostgreSQL instalado e administrado localmente.**
+
+O PostgreSQL será responsável pelos dados operacionais do Sentinel.
+
+## Workers especializados
+
+- Python.
+- Bibliotecas de análise.
+- Processamento de arquivos.
+- Adaptadores de ferramentas.
+- Execução isolada quando necessário.
+
+## Agentes
+
+- Rust.
+- APIs nativas.
+- Comunicação autenticada.
+- Coleta autorizada de telemetria.
+
+## Infraestrutura
+
+- Debian 13.
+- Systemd.
+- Git.
+- Podman opcional.
+- QEMU/KVM.
+- libvirt.
+- virt-manager.
+
+Não exigir Firebase, Supabase, Docker, Kubernetes, VPS, cloud comercial ou APIs pagas para o funcionamento básico.
+
+---
+
+# 8. DIRETRIZ OFICIAL — FIREBASE, SUPABASE E SERVIÇOS EXTERNOS
+
+**Esta seção é obrigatória e substitui qualquer interpretação anterior de que Firebase e Supabase seriam dependências internas do I.See Sentinel.**
+
+O I.See Sentinel não utilizará Firebase ou Supabase como infraestrutura obrigatória.
+
+O sistema manterá backend próprio, banco PostgreSQL e gerenciamento independente de autenticação, eventos, incidentes, evidências e relatórios.
+
+Firebase e Supabase serão tratados exclusivamente como tecnologias de aplicações externas que poderão ser submetidas a auditorias autorizadas.
+
+## 8.1 Firebase
+
+O Sentinel SecureBuild deverá futuramente permitir auditoria de projetos que utilizam Firebase.
+
+Verificações previstas:
+
+- Regras do Firestore.
+- Regras do Realtime Database.
+- Permissões do Cloud Storage.
+- Configurações de autenticação.
+- Controles de acesso.
+- Exposição de credenciais.
+- Uso indevido de credenciais administrativas.
+- Configurações inseguras.
+- Separação de dados entre usuários.
+- Integrações inseguras com serviços externos.
+
+Diferenciar configurações públicas legítimas de segredos administrativos efetivamente sensíveis.
+
+As auditorias deverão ocorrer por análise de código e configurações fornecidas ou acesso explicitamente autorizado.
+
+## 8.2 Supabase
+
+O Sentinel SecureBuild deverá futuramente permitir auditoria de projetos que utilizam Supabase.
+
+Verificações previstas:
+
+- Row Level Security (RLS).
+- Políticas de acesso.
+- Separação de dados entre usuários.
+- Permissões PostgreSQL.
+- Configurações de autenticação.
+- Políticas de armazenamento.
+- Edge Functions.
+- Exposição de service-role keys.
+- Segredos em código-fonte.
+- Configuração de APIs.
+- Falhas de autorização.
+- Configurações inseguras.
+
+Não considerar chaves públicas de cliente automaticamente vulnerabilidades.
+
+Os achados deverão ser classificados conforme o risco real e as permissões efetivamente disponíveis.
+
+## 8.3 Adaptadores externos
+
+Criar futuramente uma camada chamada:
+
+**Sentinel SecureBuild — External Backend Security Adapters.**
+
+Ela poderá incluir:
+
+- Firebase Security Adapter.
+- Supabase Security Adapter.
+- AWS Security Adapter.
+- Azure Security Adapter.
+- Google Cloud Security Adapter.
+- PostgreSQL Security Adapter.
+- MySQL Security Adapter.
+- Outros conectores tecnicamente justificados.
+
+Cada adaptador deverá:
+
+1. Possuir contrato de interface documentado.
+2. Operar com acesso mínimo.
+3. Priorizar leitura.
+4. Respeitar o escopo autorizado.
+5. Proteger credenciais.
+6. Não armazenar segredos desnecessariamente.
+7. Produzir achados verificáveis.
+8. Classificar riscos.
+9. Preservar evidências pertinentes.
+10. Gerar recomendações.
+11. Integrar-se ao RiskGraph.
+12. Integrar-se ao SecureFix.
+13. Registrar todas as ações.
+
+## 8.4 Prioridade de desenvolvimento
+
+Firebase e Supabase não serão prioridades da primeira implementação.
+
+Primeiro desenvolver:
+
+1. Núcleo do Sentinel.
+2. SecureBuild genérico.
+3. Auditoria estática de código.
+4. Análise de dependências.
+5. Detecção de segredos expostos.
+6. Auditoria de autenticação e autorização.
+7. Avaliação de APIs.
+8. Relatórios de segurança.
+
+Após validação dessas capacidades, implementar adaptadores externos conforme demanda.
+
+**Regra final:** o Sentinel deverá conseguir auditar sistemas que utilizem Firebase ou Supabase sem depender dessas plataformas para sua própria operação.
+
+---
+
+# 9. ENGENHARIA REVERSA LEGÍTIMA E DESENVOLVIMENTO PROPRIETÁRIO
+
+Priorizar mecanismos próprios de segurança.
+
+Permitir:
+
+- Implementação independente de funcionalidades conhecidas.
+- Utilização de padrões públicos.
+- Integração com software open source conforme licenças.
+- Desenvolvimento de motores proprietários.
+- Criação de adaptadores e interfaces originais.
+
+Não copiar código proprietário sem autorização.
+
+Não remover obrigações de licença.
+
+Não apresentar bibliotecas de terceiros como autoria exclusiva da I.See.
+
+Não reinventar primitivas criptográficas maduras de maneira insegura.
+
+Verificar obrigações legais antes da distribuição comercial.
+
+---
+
+# 10. SENTINEL COMMAND CENTER
+
+Desenvolver progressivamente:
+
+1. Overview.
+2. SOC.
+3. Endpoint Security.
+4. BarrierMatrix.
+5. Detection Engine.
+6. AutoDefense.
+7. Self-Healing.
+8. SecureBuild.
+9. AI Security.
+10. Red Team.
+11. Blue Team.
+12. Purple Team.
+13. AttackLab.
+14. Vulnerability Management.
+15. Threat Hunting.
+16. IdentityGuard.
+17. CloudShield.
+18. NetworkTrace.
+19. Digital Forensics.
+20. MobileScope.
+21. MalwareLens.
+22. IntelScope.
+23. CryptoGuard.
+24. ThreatPulse.
+25. RiskGraph.
+26. EvidenceChain.
+27. ResponseGrid.
+28. Reports.
+29. PolicyGate.
+30. Integrations.
+31. System Health.
+32. Audit Logs.
+33. Settings.
+
+Não criar funcionalidades fictícias.
+
+Exibir estados reais de implementação.
+
+---
+
+# 11. MOTORES PROPRIETÁRIOS
+
+Preservar:
+
+**SecureBuild:** auditoria de aplicações, APIs, código e sistemas desenvolvidos com IA.
+
+**AttackLab:** laboratórios ofensivos isolados e exercícios autorizados.
+
+**DefenseFlow:** gerenciamento de eventos, alertas e incidentes.
+
+**EvidenceChain:** integridade e cadeia de custódia.
+
+**RiskGraph:** correlação de ativos, vulnerabilidades e riscos.
+
+**SecureFix:** propostas, testes e validação de correções.
+
+**DeepTrace:** investigação e correlação forense.
+
+**CryptoGuard:** auditoria criptográfica.
+
+**ExposureMap:** inventário e análise de exposição autorizada.
+
+**PurpleMatrix:** validação de defesas por exercícios controlados.
+
+**ThreatPulse:** inteligência de ameaças.
+
+**ResponseGrid:** orquestração de resposta e recuperação.
+
+**MalwareLens:** análise de arquivos suspeitos.
+
+**NetworkTrace:** análise de tráfego e protocolos.
+
+**IntelScope:** investigação OSINT legítima.
+
+**DiskLab:** perícia de disco.
+
+**MobileScope:** investigação de artefatos móveis legitimamente obtidos.
+
+Criar contratos de integração comuns e rastreabilidade de evidências.
+
+---
+
+# 12. ENDPOINT SECURITY E DETECTION ENGINE
+
+Desenvolver agentes em Rust.
+
+Funções previstas:
+
+- Telemetria de processos.
+- Eventos de autenticação.
+- Serviços.
+- Integridade de arquivos.
+- Metadados de rede.
+- Saúde operacional.
+- Eventos de segurança.
+
+O Detection Engine deverá implementar:
+
+- Ingestão.
+- Normalização.
+- Deduplicação.
+- Correlação temporal.
+- Regras versionadas.
+- Alertas.
+- Incidentes.
+- Métricas.
+- Investigação.
+- Testes de falsos positivos.
+
+Não considerar automaticamente todo evento suspeito como invasão confirmada.
+
+---
+
+# 13. BARRIERMATRIX — 14 CAMADAS DE DEFESA
+
+Implementar:
+
+1. Edge Security.
+2. Network Segmentation.
+3. Zero Trust Identity.
+4. Application & API Security.
+5. Database Security.
+6. Cryptography & Secrets.
+7. Endpoint & Server Hardening.
+8. Software Supply Chain Security.
+9. AI & Agent Security.
+10. Intrusion Detection.
+11. Threat Containment.
+12. Autonomous Remediation.
+13. Recovery & Resilience.
+14. Audit & Digital Forensics.
+
+Criar também:
+
+- CanaryWatch.
+- TrustGuard.
+- IntegrityWatch.
+- ShieldScore.
+- SafeDeploy.
+- PolicyGate.
+
+Cada camada deverá possuir políticas, métricas, testes e evidências.
+
+---
+
+# 14. AUTODEFENSE E SELF-HEALING
+
+Implementar o fluxo:
+
+**Detectar → Investigar → Preservar → Propor → Testar → Autorizar → Corrigir → Verificar → Recuperar.**
+
+Permitir:
+
+- Análise de vulnerabilidades.
+- Investigação de causas.
+- Propostas de patches.
+- Testes.
+- Avaliação de impacto.
+- Aprovação.
+- Correções autorizadas.
+- Rollback.
+- Auditoria.
+
+A IA não poderá elevar suas próprias permissões nem executar operações críticas sem políticas de autorização adequadas.
+
+---
+
+# 15. RED TEAM, BLUE TEAM E PURPLE TEAM
+
+## Red Team
+
+Pentests autorizados, gestão de escopo, reconhecimento permitido, exercícios controlados, evidências e relatórios.
+
+## Blue Team
+
+SOC, detecção, hardening, monitoramento, investigação e resposta.
+
+## Purple Team
+
+Simulações controladas, validação de regras, medição de cobertura e retestes.
+
+Operações ofensivas deverão respeitar autorizações e ambientes definidos.
+
+---
+
+# 16. FORENSE DIGITAL E ANÁLISE DE MALWARE
+
+Planejar integração com ferramentas abertas apropriadas, incluindo:
+
+- Autopsy.
+- The Sleuth Kit.
+- Volatility 3.
+- Ghidra.
+- YARA.
+- ALEAPP.
+- iLEAPP.
+
+Criar mecanismos para:
+
+- Preservação de evidências.
+- Análise estática.
+- Forense de disco.
+- Forense de memória.
+- Linha do tempo.
+- Engenharia reversa legítima.
+- Análise de arquivos suspeitos.
+- Relatórios.
+
+Não executar malware diretamente no sistema principal.
+
+Não tratar uma VM comum como garantia absoluta de contenção.
+
+---
+
+# 17. SECUREBUILD — APPLICATION SECURITY
+
+O SecureBuild deverá funcionar inicialmente de maneira independente de fornecedores externos.
+
+Priorizar a capacidade de analisar:
+
+- Repositórios Git autorizados.
+- Código-fonte.
+- Projetos React.
+- Next.js.
+- Node.js.
+- Python.
+- Rust.
+- APIs REST.
+- Arquivos de configuração.
+- Dependências.
+- Autenticação.
+- Autorização.
+- SQL.
+- Consultas a bancos de dados.
+- Uploads.
+- Sistemas desenvolvidos por IA.
+- Aplicações empresariais.
+
+Verificações previstas:
+
+1. Segredos expostos.
+2. Dependências vulneráveis.
+3. Falhas de autenticação.
+4. Falhas de autorização.
+5. Injeções.
+6. SSRF.
+7. Configurações inseguras.
+8. Permissões excessivas.
+9. Exposição de dados.
+10. Falhas de lógica de negócio.
+11. Erros de implementação criptográfica.
+12. Vulnerabilidades em APIs.
+13. Problemas de supply chain.
+14. Falhas de configuração em deploys.
+
+Separar análise estática de testes dinâmicos.
+
+Executar testes dinâmicos apenas com autorização, escopo e limites definidos.
+
+Diferenciar vulnerabilidades comprovadas de suspeitas.
+
+**Firebase e Supabase serão extensões opcionais do SecureBuild, não componentes internos do Sentinel.**
+
+---
+
+# 18. AI SECURITY
+
+Criar recursos para auditar:
+
+- Agentes LLM.
+- Aplicações RAG.
+- Ferramentas conectadas a IA.
+- Execução de comandos por agentes.
+- Permissões.
+- Dados sensíveis.
+- Prompt injection.
+- Configurações de modelos.
+- Cadeias de dependências.
+- Integrações externas.
+
+Implementar políticas de execução, isolamento e rastreabilidade.
+
+---
+
+# 19. IDENTITYGUARD E CLOUDSHIELD
+
+## IdentityGuard
+
+Auditar usuários, contas privilegiadas, MFA, sessões, permissões, Active Directory, LDAP e identidades cloud.
+
+## CloudShield
+
+Preparar adaptadores opcionais para AWS, Azure, Google Cloud, containers, Kubernetes, IAM, armazenamento e infraestrutura como código.
+
+Priorizar integrações autorizadas de leitura.
+
+Não tornar serviços cloud obrigatórios.
+
+---
+
+# 20. SENTINEL INTELLIGENCE ASSISTANT
+
+Criar um assistente de IA para:
+
+- Interpretar logs.
+- Explicar vulnerabilidades.
+- Correlacionar eventos.
+- Apoiar investigações.
+- Priorizar riscos.
+- Gerar relatórios.
+- Propor correções.
+- Recomendar testes.
+- Explicar resultados.
+
+Priorizar modelos locais compatíveis com o hardware.
+
+APIs externas serão opcionais.
+
+Não enviar segredos a provedores externos sem autorização.
+
+Toda ação privilegiada deverá passar pelo PolicyGate.
+
+---
+
+# 21. SEGURANÇA INTERNA
+
+Implementar:
+
+- MFA.
+- Princípio do menor privilégio.
+- TLS quando necessário.
+- Gestão de credenciais.
+- Criptografia.
+- Proteção contra injeções.
+- Validação de entradas.
+- Uploads seguros.
+- Proteção contra SSRF.
+- Isolamento de workers.
+- Auditoria.
+- Backups.
+- Recuperação.
+- Atualizações seguras.
+- Políticas de retenção.
+- Aprovação de operações críticas.
+
+Não expor o Command Center publicamente por padrão.
+
+---
+
+# 22. SEGURANÇA DOS CONTÊINERES E DAS VMS
+
+## Podman
+
+- Preferir rootless.
+- Verificar imagens.
+- Evitar privilégios elevados.
+- Controlar volumes.
+- Restringir rede.
+- Proteger credenciais.
+- Definir limites de recursos.
+
+## Máquinas virtuais
+
+- Redes isoladas.
+- Snapshots.
+- Compartilhamentos mínimos.
+- Controle de recursos.
+- Imagens confiáveis.
+- Recuperação verificável.
+
+Chroot não será considerado isolamento de segurança.
+
+---
+
+# 23. ARMAZENAMENTO E BACKUPS
+
+## SSD interno
+
+Priorizar:
+
+- Sistemas operacionais.
+- Projetos ativos.
+- Banco PostgreSQL.
+- Ferramentas principais.
+- Máquinas virtuais utilizadas frequentemente.
+
+## HD externo de 1 TB
+
+Utilizar para:
+
+- ISOs.
+- Backups.
+- Snapshots arquivados.
+- Documentação.
+- Dados de treinamento.
+- Imagens forenses.
+- Laboratórios.
+
+Proteger evidências sensíveis e evitar cópias únicas.
+
+---
+
+# 24. PADRÕES E METODOLOGIAS
+
+Utilizar referências aplicáveis:
+
+- OWASP ASVS.
+- OWASP WSTG.
+- OWASP API Security Top 10.
+- OWASP MASVS.
+- OWASP GenAI Security.
+- NIST CSF 2.0.
+- NIST SSDF.
+- NIST SP 800-207.
+- NIST SP 800-61 Rev. 3.
+- MITRE ATT&CK.
+- MITRE D3FEND.
+- Sigma.
+- YARA.
+- CWE.
+- CVE.
+- CVSS.
+- EPSS.
+- CISA KEV.
+- SARIF.
+- CycloneDX.
+
+Não alegar certificação sem avaliação correspondente.
+
+---
+
+# 25. DESIGN SYSTEM
+
+Criar uma interface própria com:
+
+- Dark Mode.
+- Preto e grafite.
+- Alto contraste.
+- Tipografia técnica.
+- Navegação lateral.
+- Dashboards.
+- Tabelas.
+- Grafos de risco.
+- Linhas do tempo.
+- Visualização de eventos.
+- Filtros.
+- Busca.
+- Painéis de investigação.
+
+Utilizar microinterações refinadas e animações eficientes.
+
+---
+
+# 26. MODELO DE DADOS
+
+Implementar entidades para:
+
+- Operador.
+- Organizações.
+- Projetos.
+- Contratos.
+- Autorizações.
+- Escopos.
+- Ativos.
+- Serviços.
+- Eventos.
+- Regras.
+- Alertas.
+- Incidentes.
+- Vulnerabilidades.
+- Evidências.
+- Riscos.
+- Correções.
+- Jobs.
+- Laboratórios.
+- Respostas.
+- Relatórios.
+- Auditoria.
+
+Manter separação lógica de projetos.
+
+Preparar arquitetura para futura expansão multiempresa.
+
+---
+
+# 27. VALIDATION LAB
+
+Validar:
+
+- APIs.
+- Detecções.
+- Agentes.
+- Segurança dos contêineres.
+- Isolamento de VMs.
+- Permissões.
+- Recuperação.
+- Backups.
+- Correções.
+- Consumo de recursos.
+- Segurança do Command Center.
+- Integridade de evidências.
+- Segurança dos adaptadores externos.
+
+Estágios de maturidade:
+
+M0 — Planejado.  
+M1 — Protótipo.  
+M2 — Integrado.  
+M3 — Testado.  
+M4 — Operacional internamente.  
+M5 — Preparado para avaliação comercial.  
+M6 — Enterprise validado.
+
+Não declarar módulos prontos sem testes.
+
+---
+
+# 28. FORMAÇÃO TÉCNICA DO OPERADOR
+
+Ensinar progressivamente:
+
+1. Fundamentos de computação.
+2. Debian Linux.
+3. Terminal e Bash.
+4. Redes.
+5. Python.
+6. TypeScript.
+7. Rust.
+8. Programação segura.
+9. Blue Team.
+10. Red Team autorizado.
+11. Purple Team.
+12. Podman.
+13. Virtualização com KVM.
+14. Forense digital.
+15. Engenharia reversa legítima.
+16. Análise de malware.
+17. Criptografia.
+18. Cloud Security.
+19. Identity Security.
+20. Segurança de IA.
+21. Engenharia do Sentinel.
+
+Cada aula deverá incluir teoria, exemplos, exercícios e verificação.
+
+---
+
+# 29. ESTRATÉGIA DE IMPLEMENTAÇÃO
+
+## Fase 0 — Preparação do Debian
+
+- Preparar mídia de instalação.
+- Confirmar partições.
+- Preservar Windows.
+- Substituir Arch.
+- Instalar Debian 13 KDE.
+- Verificar boot.
+- Verificar drivers.
+- Validar hardware.
+
+## Fase 1 — Estação de desenvolvimento
+
+- Git.
+- Node.js.
+- Python.
+- Rust.
+- PostgreSQL.
+- VS Code.
+- Ferramentas de testes.
+
+## Fase 2 — Núcleo do Sentinel
+
+- Repositório privado.
+- Backend próprio.
+- Frontend próprio.
+- PostgreSQL.
+- Login privado.
+- PolicyGate.
+- Auditoria.
+- Modelo de eventos.
+- Command Center.
+
+## Fase 3 — Primeira detecção real
+
+- Agente Linux.
+- Ingestão de eventos.
+- Primeira regra.
+- Primeiro alerta.
+- Persistência.
+- Exibição no painel.
+- Testes.
+
+## Fase 4 — SecureBuild inicial
+
+- Análise estática.
+- Auditoria de dependências.
+- Detecção de segredos.
+- Verificação de autenticação.
+- Verificação de autorização.
+- Análise de APIs.
+- Relatórios.
+
+**Não instalar Firebase nem Supabase.**
+
+## Fase 5 — Ambientes opcionais
+
+- Podman rootless conforme necessidade.
+- QEMU/KVM.
+- Kali Linux VM.
+- Redes isoladas.
+- Snapshots.
+
+## Fase 6 — Defesa
+
+- BarrierMatrix.
+- DefenseFlow.
+- RiskGraph.
+- SecureFix.
+- AutoDefense.
+- Self-Healing.
+- ResponseGrid.
+
+## Fase 7 — Laboratórios e investigação
+
+- AttackLab.
+- PurpleMatrix.
+- DiskLab.
+- MobileScope.
+- DeepTrace.
+- MalwareLens.
+- NetworkTrace.
+- CryptoGuard.
+- IntelScope.
+- EvidenceChain.
+
+## Fase 8 — Adaptadores externos
+
+Desenvolver somente quando a base estiver validada:
+
+- Supabase Security Adapter.
+- Firebase Security Adapter.
+- Cloud Security Adapters.
+- Outros adaptadores necessários.
+
+Todos serão opcionais.
+
+## Fase 9 — Windows
+
+- Agente Windows.
+- Integrações nativas.
+- Testes multiplataforma.
+- Empacotamento.
+- Instaladores.
+- Recuperação.
+
+## Fase 10 — Maturidade Enterprise
+
+- IdentityGuard.
+- CloudShield.
+- Testes aprofundados.
+- Otimização.
+- Validação independente.
+- Preparação comercial.
+
+---
+
+# 30. DIRETRIZES FINAIS
+
+A IA desenvolvedora deverá:
+
+1. Preservar todos os módulos.
+2. Priorizar o Debian como estação principal.
+3. Desenvolver o núcleo de forma independente.
+4. Utilizar PostgreSQL local.
+5. Não utilizar Firebase como backend interno.
+6. Não utilizar Supabase como backend interno.
+7. Tratar Firebase e Supabase somente como tecnologias externas auditáveis.
+8. Não exigir APIs pagas.
+9. Não exigir Docker ou Podman.
+10. Usar Kali virtualizado quando necessário.
+11. Preservar compatibilidade Windows/Linux.
+12. Manter inicialmente apenas um operador.
+13. Evitar complexidade comercial prematura.
+14. Respeitar autorizações de segurança.
+15. Proteger dados e segredos.
+16. Respeitar licenças.
+17. Desenvolver funcionalidades reais.
+18. Executar testes.
+19. Documentar resultados.
+20. Não inventar evidências.
+21. Não declarar módulos prontos sem validação.
+22. Otimizar para o hardware disponível.
+23. Preservar a futura expansão Enterprise.
+
+---
+
+# OBJETIVO FINAL
+
+Construir o I.See Sentinel como uma plataforma proprietária que integre:
+
+**SOC + EDR/XDR + Red Team + Blue Team + Purple Team + Application Security + AI Security + Digital Forensics + Threat Intelligence + Zero Trust + BarrierMatrix + AutoDefense + Self-Healing + Cloud Security + Identity Security + Validation Lab.**
+
+Sua infraestrutura será própria e local na edição inicial.
+
+Firebase, Supabase e outros provedores não serão dependências obrigatórias.
+
+Os adaptadores externos permitirão futuramente auditar aplicações que utilizem essas tecnologias, mediante autorização.
+
+O Debian 13 com KDE Plasma será o sistema principal de desenvolvimento.
+
+O Podman será opcional.
+
+O Kali Linux será virtualizado.
+
+O Windows permanecerá disponível em dual boot.
+
+Inicialmente, o produto será utilizado exclusivamente pelo fundador.
+
+**I.See Technologies — I.See Sentinel**
+
+**Engineered to Detect. Built to Defend. Verified to Protect.**
+
+## COMANDO FINAL DE EXECUÇÃO
+
+Desenvolva o I.See Sentinel Private Operator Edition utilizando Debian 13, arquitetura híbrida e tecnologias próprias.
+
+Comece pelo backend, PostgreSQL local, autenticação, Command Center e primeira funcionalidade verificável de segurança.
+
+Preserve todos os mecanismos planejados.
+
+Não implemente dependências de Firebase ou Supabase.
+
+Trate essas plataformas como alvos opcionais de auditoria pelo SecureBuild em fases futuras.
+
+Priorize segurança, autonomia, baixo custo, desempenho e compatibilidade multiplataforma.

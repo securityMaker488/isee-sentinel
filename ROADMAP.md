@@ -1,6 +1,6 @@
 # Roadmap V6.9 — fases 0 a 12
 
-Atualizado em 26/10/2026 conforme `docs/ESPECIFICACAO-V6.9.txt`, §46 e diretriz
+Atualizado em 27/10/2026 sob o guia único `docs/GUIA-MESTRE-CONSOLIDADO.md`, conforme `docs/ESPECIFICACAO-V6.9.txt`, §46 e diretriz
 final. Comparação em `docs/EVOLUCAO-V6.9.md`; resultados recentes e ponto de
 retomada em `PROJECT_STATE.md`. Esta ordem não afirma que testes pendentes passaram.
 
@@ -18,11 +18,11 @@ parte do checkpoint e das interfaces afetadas, sem repetir revisões amplas.
 
 | Fase | Escopo e base disponível | Próximo incremento / dependências | Evidência de conclusão do recorte |
 | --- | --- | --- | --- |
-| 0 — Auditoria | Inventário, arquitetura e registros existentes; integrações em finalização | Consolidar OpenAPI/RiskGraph, perícia, browser QA e restore de todas as tabelas; resolver divergências de documentação | Inventário/riscos atualizados e resultados reproduzíveis vinculados à revisão testada; sem presumir nova revisão integral |
+| 0 — Auditoria | Inventário/arquitetura; OpenAPI/RiskGraph/perícia integrados, QA/restore e auditoria dirigida AttackLab registrados; prompts consolidados | Manter apenas revisão dirigida de novos requisitos/alterações e coerência documental | Resultados em VALIDATION_REPORT.md; não reiniciar revisão integral |
 | 1 — Fundação | React/Fastify/PostgreSQL, MFA, clientes/projetos, PolicyGate, escopos e evidências; Authorization Manager com responsável, comprovação cifrada, revisão/aprovação, perfis e limites aplicados | Plano completo de avaliação/importação e contratos de execução geral; ampliar os perfis junto de cada executor, sem liberar ações ainda indisponíveis | Testes de identidade, isolamento organização/projeto, migrações, backup/restore e falhas; testes de aprovação, substituição/revogação, bytes e portas; homologação Debian registrada separadamente |
 | 2 — Universal Import Lab | Uploads e análises específicas fornecem partes do fluxo | Preservar/identificar/quarentenar artefato próprio; expansão segura de ZIP/TAR, URL e Git por adaptadores separados | Limites, hashes, travessia, links, expansão, erros/limpeza e permissão testados; nenhuma execução automática de software desconhecido no host |
 | 3 — ProofLab | SOC sintético e SecureFix de cópia reaproveitáveis | Aplicação vulnerável local, isolamento e cenário integrado à importação/avaliação | Importar → avaliar → evidência → corrigir cópia → retestar comparavelmente → relatar, identificado como laboratório; isolamento/recuperação testados |
-| 4 — Security Assessment | Baseline e analisadores offline; OpenAPI em consolidação | Web/API, catálogo de testes, SAST/SCA e DAST controlado por etapas; ferramentas/feeds com origem/versão/licença | Positivos/negativos, entradas malformadas, limites, evidências e relatório; ausência de achado não implica segurança |
+| 4 — Security Assessment | Baseline, analisadores offline e OpenAPI JSON integrados | Web/API, catálogo de testes, SAST/SCA e DAST controlado por etapas; ferramentas/feeds com origem/versão/licença | Positivos/negativos, entradas malformadas, limites, evidências e relatório; ausência de achado não implica segurança |
 | 5 — Remediation | Ciclo reversível de cópia SSH cifrada | Git, regressão, homologação, comparação e reteste vinculado ao achado; produção exige aprovação específica | Correção testada, risco residual, original/diff/aprovação, verificação e rollback; cópia no banco não equivale a alteração do host |
 | 6 — Execution Center | APIs, jobs registrados e CLIs específicas | Fila PostgreSQL, prioridade, estados completos, cancelamento, retomada e CLI; antecipar apenas dependências mínimas das fases 2–5 | Consistência após reinício, nenhuma ação duplicada, timeout/cancelamento/limpeza testados e PolicyGate obrigatório |
 | 7 — SOC e defesa | Correlação, casos, FIM autenticado e 14 camadas registradas | Telemetria Rust ampliada, hunting, regras, ResponseGrid, contenção/recuperação e perícia de resposta | Eventos/ações rastreáveis, falsos positivos avaliados e suporte por SO testado; controles ativos e recuperação demonstrados |
@@ -37,14 +37,17 @@ parte do checkpoint e das interfaces afetadas, sem repetir revisões amplas.
 O complemento AttackLab Evidence Fusion/Purple Validation de26/10/2026 detalha
 as fases deste módulo sem substituir a sequência V6.9. Auditoria dirigida e
 plano: [ATTACKLAB-EVIDENCE-FUSION-PLAN.md](docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md).
-Alvos exatos/exclusões vinculados ao hash aprovado são dependência obrigatória
-antes de ampliar executores ativos; reaproveitar o Authorization Manager.
+Alvos exatos/exclusões no hash aprovado foram implementados na migração010,
+com negação antes do cadastro/despacho. Manter essa dependência ao ampliar
+executores. O próximo passo da fase1 é o plano de avaliação versionado, ligado
+ao mandato revisado, catálogo de perfis existentes, jobs e resultados.
 
 1. Integrações OpenAPI/RiskGraph, perícia/PostgreSQL restrito, painel e restore
    encerradas neste recorte Windows; resultados em VALIDATION_REPORT.md.
 2. Recorte de fundação do Authorization Manager entregue: rascunho imutável,
    comprovação/responsável, projeto, revisão explícita e aplicação de perfis,
-   bytes/portas, substituição e revogação. A tela Autorizações acompanha o ciclo;
+   bytes/portas, substituição e revogação; manifesto imutável de IPs/exclusões e
+   vínculo da execução à revisão aprovada. A tela Autorizações acompanha o ciclo;
    detalhes em AUTHORIZATION_POLICY.md. Plano completo de avaliação e jobs gerais
    continuam pendentes; este recorte não encerra toda a fase 1.
 3. ZIP em quarentena já implementado e testado. Avançar TAR primeiro e depois

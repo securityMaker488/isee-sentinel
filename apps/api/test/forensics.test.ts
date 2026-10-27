@@ -1,7 +1,9 @@
 import {before,after,test} from 'node:test';
 import assert from 'node:assert/strict';
 import {randomBytes,randomUUID} from 'node:crypto';
-import {readFile,access} from 'node:fs/promises';
+import {readFile,access,mkdtemp,writeFile,symlink,unlink,rmdir} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 import {openDatabase,migrate,type Database} from '../src/db.ts';
 import {buildApp} from '../src/app.ts';
 import {runForensicWorker,type ForensicRunner} from '../src/forensics.ts';
@@ -59,4 +61,20 @@ test('only one forensic worker runs concurrently',async()=>{
 test('real Python worker executes with isolated runtime against the uploaded PCAP fixture',{skip:!process.env.SENTINEL_TEST_PYTHON_PATH},async()=>{
  behavior=runForensicWorker;
  try{const r=await send();assert.equal(r.statusCode,200,r.body);assert.equal(r.json().report.engine,'Sentinel Offline Forensics');assert.equal(r.json().report.input.unchanged,true);assert.equal(r.json().report.input.sha256,digest(bytes));}finally{behavior=normal;}
+});
+
+test('configured Python path rejects missing files and directories before execution',async()=>{
+ const dir=await mkdtemp(join(tmpdir(),'sentinel-python-path-'));
+ try{for(const candidate of [dir,join(dir,'missing-python')])await assert.rejects(runForensicWorker({pythonPath:candidate,file:'unused',kind:'pcap'}),{code:'PYTHON_UNAVAILABLE'});}
+ finally{await rmdir(dir);}
+});
+
+test('POSIX Python symlink executes the actual forensic worker and preserves fixture hash',{skip:process.platform==='win32'||!process.env.SENTINEL_TEST_PYTHON_PATH},async()=>{
+ const dir=await mkdtemp(join(tmpdir(),'sentinel-python-link-')),interpreter=join(dir,'python3'),file=join(dir,'input.pcap');
+ try{
+  await symlink(pythonPath,interpreter);await writeFile(file,bytes);
+  const report=JSON.parse((await runForensicWorker({pythonPath:interpreter,file,kind:'pcap'})).toString('utf8'));
+  assert.equal(report.engine,'Sentinel Offline Forensics');assert.equal(report.input.sha256,digest(bytes));assert.equal(report.input.unchanged,true);
+  assert.deepEqual(await readFile(file),bytes);
+ }finally{await unlink(interpreter).catch(()=>{});await unlink(file).catch(()=>{});await rmdir(dir);}
 });

@@ -12,7 +12,9 @@ alegada. Arquivos do laboratório são sintéticos e identificados como tal.
 
 ## Iniciar localmente
 
-Para retomar o desenvolvimento, comece por [PROJECT_STATE.md](PROJECT_STATE.md).
+Os requisitos dos sete prompts estão no [guia mestre consolidado](docs/GUIA-MESTRE-CONSOLIDADO.md).
+Para retomar, use [PROJECT_STATE.md](PROJECT_STATE.md) e a fila única do ROADMAP.
+O manifesto de alvos inclui IPs, portas e exclusões na aprovação do inventário.
 Estado real: [MODULE_STATUS.md](MODULE_STATUS.md). Resultados Windows:
 [VALIDATION_REPORT.md](VALIDATION_REPORT.md). O Universal Import Lab inspeciona ZIP
 em quarentena; [IMPORT_PIPELINE.md](IMPORT_PIPELINE.md) descreve os limites.

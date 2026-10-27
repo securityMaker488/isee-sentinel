@@ -1,4 +1,5 @@
 import { OPERATIONS, type Operation } from './types.js';
+import { validTargetManifest, targetManifestAllows, type TargetManifest } from './target-manifest.js';
 
 export interface ExecutionProfile {
   id: string;
@@ -32,6 +33,7 @@ export interface ManagedGrant {
   risk: 'low' | 'moderate';
   profiles: string[];
   limits: { maxInputBytes: number; allowedPorts?: number[] };
+  targetManifest?: TargetManifest | null;
 }
 
 /** This context must be built by the trusted executor, never copied from user input. */
@@ -40,11 +42,12 @@ export interface ManagedExecution {
   phase?: 'prepare' | 'execute';
   inputBytes?: number;
   ports?: number[];
+  address?: string;
 }
 
 export type ManagedDecisionCode = 'ALLOWED' | 'GRANT_INVALID' | 'GRANT_INACTIVE' | 'PROJECT_MISMATCH'
   | 'MODE_MISMATCH' | 'RISK_INSUFFICIENT' | 'EXECUTION_REQUIRED' | 'PROFILE_DENIED' | 'OPERATION_DENIED'
-  | 'INPUT_LIMIT' | 'PORT_LIMIT';
+  | 'INPUT_LIMIT' | 'PORT_LIMIT' | 'TARGET_MANIFEST_REQUIRED' | 'TARGET_DENIED';
 export interface ManagedDecision { allowed: boolean; code: ManagedDecisionCode; reason: string }
 const profiles = new Map(EXECUTION_PROFILES.map(profile => [profile.id, profile]));
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -56,7 +59,7 @@ const deny = (code: ManagedDecisionCode, reason: string): ManagedDecision => ({ 
 /** Additional constraint only: base PolicyGate must still verify identity, organization, asset, operation and time. */
 export function evaluateManagedGrant(
   grant: ManagedGrant,
-  asset: { projectId?: string | null; environment: string },
+  asset: { id?: string; projectId?: string | null; environment: string },
   operation: Operation,
   execution?: ManagedExecution,
 ): ManagedDecision {
@@ -68,7 +71,8 @@ export function evaluateManagedGrant(
     || grant.profiles.some(id => typeof id !== 'string' || !profiles.has(id))
     || !record(grant.limits) || Object.keys(grant.limits).some(key => !['maxInputBytes', 'allowedPorts'].includes(key))
     || !Number.isInteger(grant.limits.maxInputBytes) || grant.limits.maxInputBytes < 1 || grant.limits.maxInputBytes > 16 * MiB
-    || (grant.limits.allowedPorts !== undefined && !portsValid(grant.limits.allowedPorts))) {
+    || (grant.limits.allowedPorts !== undefined && !portsValid(grant.limits.allowedPorts))
+    || (grant.targetManifest != null && !validTargetManifest(grant.targetManifest, undefined, grant.limits.allowedPorts))) {
     return deny('GRANT_INVALID', 'Autorização estruturada ou limites inválidos; operação negada.');
   }
   if (grant.status !== 'approved') return deny('GRANT_INACTIVE', 'A autorização precisa estar aprovada.');
@@ -87,7 +91,7 @@ export function evaluateManagedGrant(
     return deny('GRANT_INVALID', 'Inventário de laboratório exige portas explicitamente autorizadas.');
   }
   if (!record(execution) || typeof execution.profile !== 'string'
-    || Object.keys(execution).some(key => !['profile', 'phase', 'inputBytes', 'ports'].includes(key))
+    || Object.keys(execution).some(key => !['profile', 'phase', 'inputBytes', 'ports', 'address'].includes(key))
     || (execution.phase !== undefined && execution.phase !== 'prepare' && execution.phase !== 'execute')) {
     return deny('EXECUTION_REQUIRED', 'Executor deve informar um contexto de operação válido.');
   }
@@ -96,6 +100,20 @@ export function evaluateManagedGrant(
   if (!(OPERATIONS as readonly unknown[]).includes(operation) || !profile.operations.includes(operation)) {
     return deny('OPERATION_DENIED', 'Operação não implementada ou incompatível com o perfil.');
   }
+  if (profile.id === 'lab.inventory') {
+    if (!validTargetManifest(grant.targetManifest)) return deny('TARGET_MANIFEST_REQUIRED', 'Inventário exige manifesto de alvos revisado e aprovado.');
+    if (execution.phase !== 'prepare' && (execution.inputBytes !== undefined || !portsValid(execution.ports)
+      || execution.ports.some(port => !grant.limits.allowedPorts!.includes(port)))) {
+      return deny('PORT_LIMIT', 'Portas ausentes, inválidas ou fora do conjunto autorizado.');
+    }
+    if (typeof asset.id !== 'string' || !grant.targetManifest.targets.some(target => target.assetId.toLowerCase() === asset.id!.toLowerCase())) {
+      return deny('TARGET_DENIED', 'Ativo ausente do manifesto aprovado.');
+    }
+    if ((execution.phase !== 'prepare' || execution.address !== undefined)
+      && !targetManifestAllows(grant.targetManifest, asset.id, execution.address!, execution.phase === 'prepare' ? undefined : execution.ports)) {
+      return deny('TARGET_DENIED', 'Endereço ou portas fora do manifesto, ou endereço explicitamente excluído.');
+    }
+  } else if (execution.address !== undefined) return deny('EXECUTION_REQUIRED', 'Endereço é exclusivo do perfil de inventário.');
   if (execution.phase === 'prepare') {
     return { allowed: true, code: 'ALLOWED', reason: 'Preparação autorizada; a execução deve revalidar escopo e entrada.' };
   }

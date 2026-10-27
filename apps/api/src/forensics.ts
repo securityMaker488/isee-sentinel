@@ -1,6 +1,6 @@
 import {execFile} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
-import {mkdtemp,writeFile,unlink,rmdir,lstat} from 'node:fs/promises';
+import {mkdtemp,writeFile,unlink,rmdir,stat,realpath} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve,dirname,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -17,10 +17,12 @@ const worker=fileURLToPath(new URL('../../../workers/forensics/analyze_artifact.
 const limit=16*1024*1024,outputLimit=4*1024*1024;
 export const runForensicWorker:ForensicRunner=async({pythonPath,file,kind,table})=>{
  if(!isAbsolute(pythonPath))throw new HttpError(503,'PYTHON_UNAVAILABLE','Configure o executável Python local.');
- try{const stat=await lstat(pythonPath);if(!stat.isFile()||stat.isSymbolicLink())throw new Error('invalid');}catch{throw new HttpError(503,'PYTHON_UNAVAILABLE','Executável Python local indisponível.');}
+ // Resolve the operator-configured interpreter once, as the archive worker does.
+ // Standard Linux Python installations commonly expose python3 through a symlink.
+ let executable:string;try{executable=await realpath(pythonPath);if(!(await stat(executable)).isFile())throw new Error('invalid');}catch{throw new HttpError(503,'PYTHON_UNAVAILABLE','Executável Python local indisponível.');}
  const env:NodeJS.ProcessEnv={};for(const name of ['SystemRoot','WINDIR','TEMP','TMP','LANG','LC_ALL'])if(process.env[name])env[name]=process.env[name];
  const args=['-I','-B',worker,'--consent','--file',file,'--kind',kind,...(table?['--table',table]:[])];
- return new Promise((accept,reject)=>{const child=execFile(pythonPath,args,{shell:false,windowsHide:true,timeout:60000,killSignal:'SIGKILL',maxBuffer:outputLimit,encoding:'buffer',cwd:dirname(worker),env},(error,stdout)=>{
+ return new Promise((accept,reject)=>{const child=execFile(executable,args,{shell:false,windowsHide:true,timeout:60000,killSignal:'SIGKILL',maxBuffer:outputLimit,encoding:'buffer',cwd:dirname(worker),env},(error,stdout)=>{
   if(error){const e=error as any;reject(new HttpError(e.code==='ENOENT'?503:422,e.killed?'WORKER_TIMEOUT':'WORKER_REJECTED','O worker não concluiu a análise. Confira formato, tamanho e configuração; o original permanece preservado.'));return;}
   accept(Buffer.from(stdout));
  });child.stdin?.end();});

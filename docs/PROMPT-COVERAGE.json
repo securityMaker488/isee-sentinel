@@ -1,0 +1,2735 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-27",
+  "guide": "docs/GUIA-MESTRE-CONSOLIDADO.md",
+  "checkpoint": "PROJECT_STATE.md",
+  "executionQueue": "ROADMAP.md",
+  "meaning": "Índice de fontes e correspondência temática; não mede percentual de implementação nem prova completude funcional. Originais históricos são preservados integralmente; precedência e síntese em G01/G26.",
+  "guideSections": [
+    {
+      "id": "G01",
+      "title": "Continuidade, precedência e definição do trabalho"
+    },
+    {
+      "id": "G02",
+      "title": "Missão, propriedade, princípios e modelo de uso"
+    },
+    {
+      "id": "G03",
+      "title": "Arquitetura, tecnologias e fronteiras"
+    },
+    {
+      "id": "G04",
+      "title": "Windows, Debian, hardware e operação econômica"
+    },
+    {
+      "id": "G05",
+      "title": "Clientes, autorização e PolicyGate"
+    },
+    {
+      "id": "G06",
+      "title": "Universal Import Lab e importador de URL"
+    },
+    {
+      "id": "G07",
+      "title": "AttackLab, descoberta e auditoria Linux"
+    },
+    {
+      "id": "G08",
+      "title": "ProofLab, ResilienceLab e isolamento"
+    },
+    {
+      "id": "G09",
+      "title": "EvidenceChain, Evidence Fusion, RiskGraph e comparação"
+    },
+    {
+      "id": "G10",
+      "title": "SOC, Blue Detection Fusion e Purple Validation"
+    },
+    {
+      "id": "G11",
+      "title": "Agentes, BarrierMatrix e motores complementares"
+    },
+    {
+      "id": "G12",
+      "title": "SecureBuild e avaliações Web/API/infraestrutura"
+    },
+    {
+      "id": "G13",
+      "title": "Remediation, ResponseGrid, AutoDefense e Self-Healing"
+    },
+    {
+      "id": "G14",
+      "title": "Perícia computacional e móvel"
+    },
+    {
+      "id": "G15",
+      "title": "NetworkTrace, MalwareLens e inteligência"
+    },
+    {
+      "id": "G16",
+      "title": "Cloud, identidade, criptografia, IA e portfólio empresarial"
+    },
+    {
+      "id": "G17",
+      "title": "Intelligence Assistant e formação"
+    },
+    {
+      "id": "G18",
+      "title": "Command Center, relatórios, métricas e serviços"
+    },
+    {
+      "id": "G19",
+      "title": "Execution Center, contratos de dados e CLI"
+    },
+    {
+      "id": "G20",
+      "title": "Integrações, licenças e referências"
+    },
+    {
+      "id": "G21",
+      "title": "Engenharia e segurança obrigatórias (§53 unificado)"
+    },
+    {
+      "id": "G22",
+      "title": "Validação, maturidade e definição de pronto"
+    },
+    {
+      "id": "G23",
+      "title": "Git privado, memória portátil e migração"
+    },
+    {
+      "id": "G24",
+      "title": "Linha única de fases e critérios"
+    },
+    {
+      "id": "G25",
+      "title": "Estado conhecido e ponto de retomada da consolidação"
+    },
+    {
+      "id": "G26",
+      "title": "Conflitos resolvidos e manutenção do guia"
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/ESPECIFICACAO-V5.0.txt",
+      "sha256": "ff555bb48b942360b1d48962a9ee972e1d1ea2a79d7ccddf4bd30208cde99d8f",
+      "bytes": 49846,
+      "provenance": "original attachment bytes",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "I.SEE SENTINEL — PROMPT MESTRE ENTERPRISE V5.0"
+        },
+        {
+          "line": 2,
+          "heading": "Autonomous Cyber Defense, Offensive Security, Digital Forensics & AI Security Operating Platform"
+        },
+        {
+          "line": 17,
+          "heading": "0. DIRETRIZ EXECUTIVA — LEITURA OBRIGATÓRIA"
+        },
+        {
+          "line": 64,
+          "heading": "1. EQUIPE DE ENGENHARIA DE ALTO NÍVEL"
+        },
+        {
+          "line": 68,
+          "heading": "Liderança"
+        },
+        {
+          "line": 78,
+          "heading": "Desenvolvimento"
+        },
+        {
+          "line": 90,
+          "heading": "Cibersegurança"
+        },
+        {
+          "line": 110,
+          "heading": "Inteligência artificial"
+        },
+        {
+          "line": 118,
+          "heading": "Qualidade e governança"
+        },
+        {
+          "line": 135,
+          "heading": "2. ESTRATÉGIA DE PROPRIEDADE TECNOLÓGICA"
+        },
+        {
+          "line": 170,
+          "heading": "3. ARQUITETURA GLOBAL DO SENTINEL"
+        },
+        {
+          "line": 174,
+          "heading": "3.1 Control Plane"
+        },
+        {
+          "line": 190,
+          "heading": "3.2 Security Data Plane"
+        },
+        {
+          "line": 203,
+          "heading": "3.3 Analysis Plane"
+        },
+        {
+          "line": 216,
+          "heading": "3.4 Defense Plane"
+        },
+        {
+          "line": 228,
+          "heading": "3.5 Laboratory Plane"
+        },
+        {
+          "line": 240,
+          "heading": "3.6 Intelligence Plane"
+        },
+        {
+          "line": 256,
+          "heading": "4. TECNOLOGIAS PRINCIPAIS"
+        },
+        {
+          "line": 260,
+          "heading": "Frontend"
+        },
+        {
+          "line": 272,
+          "heading": "Backend"
+        },
+        {
+          "line": 285,
+          "heading": "Workers especializados"
+        },
+        {
+          "line": 294,
+          "heading": "Sistema operacional"
+        },
+        {
+          "line": 304,
+          "heading": "Infraestrutura"
+        },
+        {
+          "line": 327,
+          "heading": "5. I.SEE BARRIERMATRIX — SISTEMA DE DEFESA EM PROFUNDIDADE"
+        },
+        {
+          "line": 362,
+          "heading": "6. AS 14 CAMADAS OBRIGATÓRIAS DA BARRIERMATRIX"
+        },
+        {
+          "line": 364,
+          "heading": "CAMADA 1 — EDGE SECURITY"
+        },
+        {
+          "line": 388,
+          "heading": "CAMADA 2 — NETWORK SEGMENTATION"
+        },
+        {
+          "line": 406,
+          "heading": "CAMADA 3 — ZERO TRUST IDENTITY"
+        },
+        {
+          "line": 427,
+          "heading": "CAMADA 4 — APPLICATION & API SECURITY"
+        },
+        {
+          "line": 453,
+          "heading": "CAMADA 5 — DATABASE SECURITY"
+        },
+        {
+          "line": 473,
+          "heading": "CAMADA 6 — CRYPTOGRAPHY & SECRET PROTECTION"
+        },
+        {
+          "line": 492,
+          "heading": "CAMADA 7 — ENDPOINT & SERVER HARDENING"
+        },
+        {
+          "line": 513,
+          "heading": "CAMADA 8 — SOFTWARE SUPPLY CHAIN"
+        },
+        {
+          "line": 532,
+          "heading": "CAMADA 9 — AI & AGENT SECURITY"
+        },
+        {
+          "line": 551,
+          "heading": "CAMADA 10 — INTRUSION DETECTION"
+        },
+        {
+          "line": 568,
+          "heading": "CAMADA 11 — THREAT CONTAINMENT"
+        },
+        {
+          "line": 586,
+          "heading": "CAMADA 12 — AUTONOMOUS REMEDIATION"
+        },
+        {
+          "line": 604,
+          "heading": "CAMADA 13 — RECOVERY & RESILIENCE"
+        },
+        {
+          "line": 622,
+          "heading": "CAMADA 14 — AUDIT, FORENSICS & EVIDENCE"
+        },
+        {
+          "line": 641,
+          "heading": "7. ENGENHARIA DE BARREIRAS ADICIONAIS"
+        },
+        {
+          "line": 645,
+          "heading": "7.1 Sentinel CanaryWatch"
+        },
+        {
+          "line": 657,
+          "heading": "7.2 Sentinel PolicyGate"
+        },
+        {
+          "line": 680,
+          "heading": "7.3 Sentinel TrustGuard"
+        },
+        {
+          "line": 693,
+          "heading": "7.4 Sentinel IntegrityWatch"
+        },
+        {
+          "line": 707,
+          "heading": "7.5 Sentinel ShieldScore"
+        },
+        {
+          "line": 727,
+          "heading": "7.6 Sentinel SafeDeploy"
+        },
+        {
+          "line": 742,
+          "heading": "8. AUTODEFENSE ENGINE — DEFESA AUTOMATIZADA"
+        },
+        {
+          "line": 769,
+          "heading": "Operação autônoma de baixo risco"
+        },
+        {
+          "line": 779,
+          "heading": "Operação autônoma condicionada"
+        },
+        {
+          "line": 788,
+          "heading": "Operação crítica"
+        },
+        {
+          "line": 801,
+          "heading": "9. SELF-HEALING ENGINE — AUTORRECUPERAÇÃO"
+        },
+        {
+          "line": 830,
+          "heading": "10. SECUREFIX — CORREÇÃO REAL DE VULNERABILIDADES"
+        },
+        {
+          "line": 858,
+          "heading": "11. SECUREBUILD — SEGURANÇA DE SOFTWARE"
+        },
+        {
+          "line": 899,
+          "heading": "12. ATTACKLAB — LABORATÓRIO OFENSIVO"
+        },
+        {
+          "line": 926,
+          "heading": "13. DEFENSEFLOW — MOTOR BLUE TEAM"
+        },
+        {
+          "line": 957,
+          "heading": "14. PURPLEMATRIX — RED TEAM + BLUE TEAM"
+        },
+        {
+          "line": 980,
+          "heading": "15. DIGITAL FORENSICS — SISTEMAS PROPRIETÁRIOS"
+        },
+        {
+          "line": 984,
+          "heading": "Sentinel DiskLab"
+        },
+        {
+          "line": 1000,
+          "heading": "Sentinel MobileScope"
+        },
+        {
+          "line": 1017,
+          "heading": "Sentinel DeepTrace"
+        },
+        {
+          "line": 1032,
+          "heading": "Sentinel EvidenceChain"
+        },
+        {
+          "line": 1050,
+          "heading": "16. MALWARE RESEARCH"
+        },
+        {
+          "line": 1078,
+          "heading": "17. NETWORK INTELLIGENCE"
+        },
+        {
+          "line": 1102,
+          "heading": "18. OSINT & THREAT INTELLIGENCE"
+        },
+        {
+          "line": 1106,
+          "heading": "Sentinel IntelScope"
+        },
+        {
+          "line": 1118,
+          "heading": "Sentinel ThreatPulse"
+        },
+        {
+          "line": 1135,
+          "heading": "19. CRYPTOGUARD — AUDITORIA CRIPTOGRÁFICA"
+        },
+        {
+          "line": 1154,
+          "heading": "20. RISKGRAPH — INTELIGÊNCIA DE RISCO"
+        },
+        {
+          "line": 1187,
+          "heading": "21. RESPONSEGRID — RESPOSTA A INCIDENTES"
+        },
+        {
+          "line": 1210,
+          "heading": "22. AI SECURITY — PROJETOS GERADOS COM IA"
+        },
+        {
+          "line": 1238,
+          "heading": "23. INTELIGÊNCIA ARTIFICIAL DO SENTINEL"
+        },
+        {
+          "line": 1289,
+          "heading": "24. COMMAND CENTER — EXPERIÊNCIA VISUAL"
+        },
+        {
+          "line": 1354,
+          "heading": "25. SISTEMA UNIFICADO DE EVENTOS"
+        },
+        {
+          "line": 1384,
+          "heading": "26. INTEGRAÇÃO TOTAL — EXEMPLO OPERACIONAL"
+        },
+        {
+          "line": 1388,
+          "heading": "Identificação"
+        },
+        {
+          "line": 1392,
+          "heading": "Classificação"
+        },
+        {
+          "line": 1396,
+          "heading": "Análise"
+        },
+        {
+          "line": 1400,
+          "heading": "Contenção"
+        },
+        {
+          "line": 1404,
+          "heading": "Validação"
+        },
+        {
+          "line": 1408,
+          "heading": "Defesa"
+        },
+        {
+          "line": 1412,
+          "heading": "Correção"
+        },
+        {
+          "line": 1416,
+          "heading": "Segurança"
+        },
+        {
+          "line": 1420,
+          "heading": "Testes"
+        },
+        {
+          "line": 1424,
+          "heading": "Aplicação"
+        },
+        {
+          "line": 1428,
+          "heading": "Verificação"
+        },
+        {
+          "line": 1432,
+          "heading": "Recuperação"
+        },
+        {
+          "line": 1436,
+          "heading": "Evidências"
+        },
+        {
+          "line": 1440,
+          "heading": "Relatório"
+        },
+        {
+          "line": 1448,
+          "heading": "27. BANCO DE DADOS"
+        },
+        {
+          "line": 1496,
+          "heading": "28. LICENCIAMENTO E FERRAMENTAS GRATUITAS"
+        },
+        {
+          "line": 1533,
+          "heading": "29. ESTRATÉGIA DE CUSTOS"
+        },
+        {
+          "line": 1560,
+          "heading": "30. REQUISITOS DE SEGURANÇA DO PRÓPRIO SENTINEL"
+        },
+        {
+          "line": 1596,
+          "heading": "31. PADRÕES PROFISSIONAIS"
+        },
+        {
+          "line": 1628,
+          "heading": "32. TESTES OBRIGATÓRIOS"
+        },
+        {
+          "line": 1632,
+          "heading": "Testes funcionais"
+        },
+        {
+          "line": 1643,
+          "heading": "Testes de segurança"
+        },
+        {
+          "line": 1656,
+          "heading": "Testes da BarrierMatrix"
+        },
+        {
+          "line": 1668,
+          "heading": "Testes de AutoDefense"
+        },
+        {
+          "line": 1679,
+          "heading": "Testes de recuperação"
+        },
+        {
+          "line": 1693,
+          "heading": "33. MÉTRICAS OPERACIONAIS"
+        },
+        {
+          "line": 1720,
+          "heading": "34. EVOLUÇÃO COMERCIAL"
+        },
+        {
+          "line": 1726,
+          "heading": "Serviços profissionais"
+        },
+        {
+          "line": 1739,
+          "heading": "Serviços recorrentes"
+        },
+        {
+          "line": 1748,
+          "heading": "Produto de software"
+        },
+        {
+          "line": 1761,
+          "heading": "35. DESENVOLVIMENTO INTEGRADO"
+        },
+        {
+          "line": 1818,
+          "heading": "36. CRITÉRIOS DE ACEITAÇÃO"
+        },
+        {
+          "line": 1822,
+          "heading": "Demonstração A — Auditoria"
+        },
+        {
+          "line": 1826,
+          "heading": "Demonstração B — Barreiras"
+        },
+        {
+          "line": 1830,
+          "heading": "Demonstração C — Defesa"
+        },
+        {
+          "line": 1834,
+          "heading": "Demonstração D — AutoDefense"
+        },
+        {
+          "line": 1838,
+          "heading": "Demonstração E — Self-Healing"
+        },
+        {
+          "line": 1842,
+          "heading": "Demonstração F — Purple Team"
+        },
+        {
+          "line": 1846,
+          "heading": "Demonstração G — Forense"
+        },
+        {
+          "line": 1850,
+          "heading": "Demonstração H — Segurança do Sentinel"
+        },
+        {
+          "line": 1856,
+          "heading": "37. REGRAS DE EXECUÇÃO PARA O MODELO DE IA"
+        },
+        {
+          "line": 1900,
+          "heading": "38. FORMATO DE ENTREGA"
+        },
+        {
+          "line": 1932,
+          "heading": "39. TAREFA INICIAL — COMEÇAR O PROJETO"
+        },
+        {
+          "line": 1979,
+          "heading": "40. OBJETIVO FINAL — I.SEE SENTINEL"
+        },
+        {
+          "line": 1998,
+          "heading": "COMANDO FINAL"
+        }
+      ]
+    },
+    {
+      "path": "docs/ESPECIFICACAO-V6.3.txt",
+      "sha256": "ac64c8b16cc2a90f593dd276899aafa929188aaa7356b86d12cf6526fddfc6d5",
+      "bytes": 27374,
+      "provenance": "original attachment bytes",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "I.SEE SENTINEL — PROMPT MESTRE ELITE EDITION V6.3"
+        },
+        {
+          "line": 2,
+          "heading": "Enterprise Cybersecurity Operating Platform"
+        },
+        {
+          "line": 3,
+          "heading": "Autonomous Defense · Red Team · Blue Team · Purple Team · SOC · XDR · Digital Forensics · AI Security"
+        },
+        {
+          "line": 22,
+          "heading": "1. MISSÃO PRINCIPAL"
+        },
+        {
+          "line": 59,
+          "heading": "2. EQUIPE TÉCNICA ESPECIALIZADA"
+        },
+        {
+          "line": 102,
+          "heading": "3. AMBIENTE OFICIAL — DEBIAN 13 + KDE PLASMA"
+        },
+        {
+          "line": 125,
+          "heading": "3.1 Compatibilidade"
+        },
+        {
+          "line": 133,
+          "heading": "3.2 Interface"
+        },
+        {
+          "line": 147,
+          "heading": "3.3 Drivers NVIDIA"
+        },
+        {
+          "line": 157,
+          "heading": "4. DIRETRIZ OFICIAL — PRIVATE OPERATOR EDITION"
+        },
+        {
+          "line": 169,
+          "heading": "4.1 Identidade e autenticação"
+        },
+        {
+          "line": 188,
+          "heading": "4.2 Interface privada"
+        },
+        {
+          "line": 207,
+          "heading": "4.3 Funcionamento local"
+        },
+        {
+          "line": 219,
+          "heading": "4.4 Gestão de empresas e projetos"
+        },
+        {
+          "line": 247,
+          "heading": "4.5 Segurança obrigatória"
+        },
+        {
+          "line": 268,
+          "heading": "4.6 Compatibilidade multiplataforma"
+        },
+        {
+          "line": 276,
+          "heading": "4.7 Evolução comercial"
+        },
+        {
+          "line": 296,
+          "heading": "5. COMPATIBILIDADE WINDOWS E LINUX"
+        },
+        {
+          "line": 308,
+          "heading": "5.1 Command Center"
+        },
+        {
+          "line": 314,
+          "heading": "5.2 Backend"
+        },
+        {
+          "line": 318,
+          "heading": "5.3 Agentes"
+        },
+        {
+          "line": 340,
+          "heading": "5.4 Distribuição"
+        },
+        {
+          "line": 354,
+          "heading": "6. HARDWARE E ARMAZENAMENTO"
+        },
+        {
+          "line": 377,
+          "heading": "6.1 HD externo"
+        },
+        {
+          "line": 396,
+          "heading": "7. KALI LINUX VIRTUALIZADO"
+        },
+        {
+          "line": 426,
+          "heading": "8. STACK TECNOLÓGICA"
+        },
+        {
+          "line": 428,
+          "heading": "Frontend"
+        },
+        {
+          "line": 439,
+          "heading": "Backend"
+        },
+        {
+          "line": 452,
+          "heading": "Workers"
+        },
+        {
+          "line": 460,
+          "heading": "Agentes"
+        },
+        {
+          "line": 473,
+          "heading": "9. ENGENHARIA REVERSA LEGÍTIMA E DESENVOLVIMENTO PROPRIETÁRIO"
+        },
+        {
+          "line": 502,
+          "heading": "10. SENTINEL COMMAND CENTER"
+        },
+        {
+          "line": 546,
+          "heading": "11. MOTORES PROPRIETÁRIOS"
+        },
+        {
+          "line": 588,
+          "heading": "12. ENDPOINT AGENT E DETECTION ENGINE"
+        },
+        {
+          "line": 618,
+          "heading": "13. BARRIERMATRIX — 14 CAMADAS DE DEFESA"
+        },
+        {
+          "line": 652,
+          "heading": "14. AUTODEFENSE E SELF-HEALING"
+        },
+        {
+          "line": 676,
+          "heading": "15. RED TEAM, BLUE TEAM E PURPLE TEAM"
+        },
+        {
+          "line": 678,
+          "heading": "Red Team"
+        },
+        {
+          "line": 688,
+          "heading": "Blue Team"
+        },
+        {
+          "line": 698,
+          "heading": "Purple Team"
+        },
+        {
+          "line": 710,
+          "heading": "16. FORENSE E MALWARE"
+        },
+        {
+          "line": 733,
+          "heading": "17. APPLICATION SECURITY E AI SECURITY"
+        },
+        {
+          "line": 768,
+          "heading": "18. IDENTITYGUARD E CLOUDSHIELD"
+        },
+        {
+          "line": 770,
+          "heading": "IdentityGuard"
+        },
+        {
+          "line": 774,
+          "heading": "CloudShield"
+        },
+        {
+          "line": 782,
+          "heading": "19. SENTINEL INTELLIGENCE ASSISTANT"
+        },
+        {
+          "line": 806,
+          "heading": "20. VALIDATION LAB — QUALIDADE ENTERPRISE"
+        },
+        {
+          "line": 832,
+          "heading": "21. SEGURANÇA DO PRÓPRIO SENTINEL"
+        },
+        {
+          "line": 856,
+          "heading": "22. METODOLOGIAS E PADRÕES"
+        },
+        {
+          "line": 887,
+          "heading": "23. DESIGN SYSTEM"
+        },
+        {
+          "line": 911,
+          "heading": "24. MODELO DE DADOS"
+        },
+        {
+          "line": 943,
+          "heading": "25. CRITÉRIOS DE MATURIDADE"
+        },
+        {
+          "line": 963,
+          "heading": "26. ESTRATÉGIA DE DESENVOLVIMENTO"
+        },
+        {
+          "line": 967,
+          "heading": "Fundação"
+        },
+        {
+          "line": 977,
+          "heading": "Detecção"
+        },
+        {
+          "line": 985,
+          "heading": "Defesa"
+        },
+        {
+          "line": 992,
+          "heading": "Segurança de aplicações"
+        },
+        {
+          "line": 999,
+          "heading": "Laboratório"
+        },
+        {
+          "line": 1006,
+          "heading": "Pesquisa e perícia"
+        },
+        {
+          "line": 1016,
+          "heading": "Enterprise"
+        },
+        {
+          "line": 1028,
+          "heading": "27. MODO PROFESSOR — CURSO DO ZERO AO AVANÇADO"
+        },
+        {
+          "line": 1076,
+          "heading": "28. PRIMEIRA IMPLEMENTAÇÃO OPERACIONAL"
+        },
+        {
+          "line": 1105,
+          "heading": "29. REGRAS PARA A IA DESENVOLVEDORA"
+        },
+        {
+          "line": 1131,
+          "heading": "30. OBJETIVO FINAL"
+        },
+        {
+          "line": 1151,
+          "heading": "COMANDO FINAL"
+        }
+      ]
+    },
+    {
+      "path": "docs/ESPECIFICACAO-V6.5.txt",
+      "sha256": "da1107b8e2596fd16ab30b5661bc329c257ea28ac62714bcfee68b59535e0de1",
+      "bytes": 28502,
+      "provenance": "original attachment bytes",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "I.SEE SENTINEL — PROMPT MESTRE ELITE EDITION V6.5"
+        },
+        {
+          "line": 3,
+          "heading": "Enterprise Cybersecurity Operating Platform"
+        },
+        {
+          "line": 4,
+          "heading": "Private Operator · Hybrid Security Lab · Autonomous Defense · SOC · Red/Blue/Purple Team"
+        },
+        {
+          "line": 24,
+          "heading": "1. MISSÃO PRINCIPAL"
+        },
+        {
+          "line": 60,
+          "heading": "2. EQUIPE DE ENGENHARIA"
+        },
+        {
+          "line": 96,
+          "heading": "3. ARQUITETURA HÍBRIDA OFICIAL"
+        },
+        {
+          "line": 98,
+          "heading": "Camada A — Debian 13 nativo"
+        },
+        {
+          "line": 123,
+          "heading": "Camada B — Podman rootless"
+        },
+        {
+          "line": 149,
+          "heading": "Camada C — Kali Linux virtualizado"
+        },
+        {
+          "line": 169,
+          "heading": "4. PRIVATE OPERATOR EDITION"
+        },
+        {
+          "line": 203,
+          "heading": "5. COMPATIBILIDADE WINDOWS E LINUX"
+        },
+        {
+          "line": 211,
+          "heading": "Linux"
+        },
+        {
+          "line": 215,
+          "heading": "Windows"
+        },
+        {
+          "line": 227,
+          "heading": "6. HARDWARE E OTIMIZAÇÃO"
+        },
+        {
+          "line": 260,
+          "heading": "7. STACK TECNOLÓGICA INTERNA"
+        },
+        {
+          "line": 262,
+          "heading": "Frontend"
+        },
+        {
+          "line": 272,
+          "heading": "Backend"
+        },
+        {
+          "line": 284,
+          "heading": "Banco principal"
+        },
+        {
+          "line": 290,
+          "heading": "Workers especializados"
+        },
+        {
+          "line": 298,
+          "heading": "Agentes"
+        },
+        {
+          "line": 305,
+          "heading": "Infraestrutura"
+        },
+        {
+          "line": 319,
+          "heading": "8. DIRETRIZ OFICIAL — FIREBASE, SUPABASE E SERVIÇOS EXTERNOS"
+        },
+        {
+          "line": 329,
+          "heading": "8.1 Firebase"
+        },
+        {
+          "line": 350,
+          "heading": "8.2 Supabase"
+        },
+        {
+          "line": 373,
+          "heading": "8.3 Adaptadores externos"
+        },
+        {
+          "line": 406,
+          "heading": "8.4 Prioridade de desenvolvimento"
+        },
+        {
+          "line": 427,
+          "heading": "9. ENGENHARIA REVERSA LEGÍTIMA E DESENVOLVIMENTO PROPRIETÁRIO"
+        },
+        {
+          "line": 451,
+          "heading": "10. SENTINEL COMMAND CENTER"
+        },
+        {
+          "line": 495,
+          "heading": "11. MOTORES PROPRIETÁRIOS"
+        },
+        {
+          "line": 537,
+          "heading": "12. ENDPOINT SECURITY E DETECTION ENGINE"
+        },
+        {
+          "line": 568,
+          "heading": "13. BARRIERMATRIX — 14 CAMADAS DE DEFESA"
+        },
+        {
+          "line": 600,
+          "heading": "14. AUTODEFENSE E SELF-HEALING"
+        },
+        {
+          "line": 622,
+          "heading": "15. RED TEAM, BLUE TEAM E PURPLE TEAM"
+        },
+        {
+          "line": 624,
+          "heading": "Red Team"
+        },
+        {
+          "line": 628,
+          "heading": "Blue Team"
+        },
+        {
+          "line": 632,
+          "heading": "Purple Team"
+        },
+        {
+          "line": 640,
+          "heading": "16. FORENSE DIGITAL E ANÁLISE DE MALWARE"
+        },
+        {
+          "line": 669,
+          "heading": "17. SECUREBUILD — APPLICATION SECURITY"
+        },
+        {
+          "line": 720,
+          "heading": "18. AI SECURITY"
+        },
+        {
+          "line": 739,
+          "heading": "19. IDENTITYGUARD E CLOUDSHIELD"
+        },
+        {
+          "line": 741,
+          "heading": "IdentityGuard"
+        },
+        {
+          "line": 745,
+          "heading": "CloudShield"
+        },
+        {
+          "line": 755,
+          "heading": "20. SENTINEL INTELLIGENCE ASSISTANT"
+        },
+        {
+          "line": 779,
+          "heading": "21. SEGURANÇA INTERNA"
+        },
+        {
+          "line": 804,
+          "heading": "22. SEGURANÇA DOS CONTÊINERES E DAS VMS"
+        },
+        {
+          "line": 806,
+          "heading": "Podman"
+        },
+        {
+          "line": 816,
+          "heading": "Máquinas virtuais"
+        },
+        {
+          "line": 829,
+          "heading": "23. ARMAZENAMENTO E BACKUPS"
+        },
+        {
+          "line": 831,
+          "heading": "SSD interno"
+        },
+        {
+          "line": 841,
+          "heading": "HD externo de 1 TB"
+        },
+        {
+          "line": 857,
+          "heading": "24. PADRÕES E METODOLOGIAS"
+        },
+        {
+          "line": 886,
+          "heading": "25. DESIGN SYSTEM"
+        },
+        {
+          "line": 908,
+          "heading": "26. MODELO DE DADOS"
+        },
+        {
+          "line": 940,
+          "heading": "27. VALIDATION LAB"
+        },
+        {
+          "line": 972,
+          "heading": "28. FORMAÇÃO TÉCNICA DO OPERADOR"
+        },
+        {
+          "line": 1002,
+          "heading": "29. ESTRATÉGIA DE IMPLEMENTAÇÃO"
+        },
+        {
+          "line": 1004,
+          "heading": "Fase 0 — Preparação do Debian"
+        },
+        {
+          "line": 1015,
+          "heading": "Fase 1 — Estação de desenvolvimento"
+        },
+        {
+          "line": 1025,
+          "heading": "Fase 2 — Núcleo do Sentinel"
+        },
+        {
+          "line": 1037,
+          "heading": "Fase 3 — Primeira detecção real"
+        },
+        {
+          "line": 1047,
+          "heading": "Fase 4 — SecureBuild inicial"
+        },
+        {
+          "line": 1059,
+          "heading": "Fase 5 — Ambientes opcionais"
+        },
+        {
+          "line": 1067,
+          "heading": "Fase 6 — Defesa"
+        },
+        {
+          "line": 1077,
+          "heading": "Fase 7 — Laboratórios e investigação"
+        },
+        {
+          "line": 1090,
+          "heading": "Fase 8 — Adaptadores externos"
+        },
+        {
+          "line": 1101,
+          "heading": "Fase 9 — Windows"
+        },
+        {
+          "line": 1110,
+          "heading": "Fase 10 — Maturidade Enterprise"
+        },
+        {
+          "line": 1121,
+          "heading": "30. DIRETRIZES FINAIS"
+        },
+        {
+          "line": 1151,
+          "heading": "OBJETIVO FINAL"
+        },
+        {
+          "line": 1177,
+          "heading": "COMANDO FINAL DE EXECUÇÃO"
+        }
+      ]
+    },
+    {
+      "path": "docs/ESPECIFICACAO-V6.6.txt",
+      "sha256": "31cecb4835cc7b640bfdfbedc79247af9d9b745fd71d1fd24e290517c8e04bff",
+      "bytes": 53161,
+      "provenance": "original attachment bytes",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "I.SEE SENTINEL — PROMPT MESTRE ELITE EDITION V6.6"
+        },
+        {
+          "line": 3,
+          "heading": "Portfolio Coverage · Advanced Cybersecurity Engineering · Private Operator Edition"
+        },
+        {
+          "line": 24,
+          "heading": "1. IDENTIDADE E MISSÃO"
+        },
+        {
+          "line": 70,
+          "heading": "2. RELAÇÃO ENTRE I.SEE CYBERSECURITY E I.SEE SENTINEL"
+        },
+        {
+          "line": 107,
+          "heading": "3. PRIVATE OPERATOR EDITION"
+        },
+        {
+          "line": 144,
+          "heading": "4. AMBIENTE OPERACIONAL OFICIAL"
+        },
+        {
+          "line": 146,
+          "heading": "4.1 Debian 13 + KDE Plasma"
+        },
+        {
+          "line": 171,
+          "heading": "4.2 Podman rootless"
+        },
+        {
+          "line": 195,
+          "heading": "4.3 Kali Linux virtualizado"
+        },
+        {
+          "line": 213,
+          "heading": "4.4 Windows"
+        },
+        {
+          "line": 225,
+          "heading": "4.5 Hardware inicial"
+        },
+        {
+          "line": 241,
+          "heading": "5. ARQUITETURA DE SOFTWARE"
+        },
+        {
+          "line": 243,
+          "heading": "Frontend"
+        },
+        {
+          "line": 255,
+          "heading": "Backend"
+        },
+        {
+          "line": 266,
+          "heading": "Banco"
+        },
+        {
+          "line": 275,
+          "heading": "Análise especializada"
+        },
+        {
+          "line": 282,
+          "heading": "Agentes"
+        },
+        {
+          "line": 289,
+          "heading": "Integração"
+        },
+        {
+          "line": 309,
+          "heading": "6. FUNCTIONAL CAPABILITY MATRIX — DIRETRIZ CENTRAL DA V6.6"
+        },
+        {
+          "line": 339,
+          "heading": "7. MATRIZ — PERÍCIA DIGITAL DE COMPUTADORES"
+        },
+        {
+          "line": 341,
+          "heading": "Referências funcionais"
+        },
+        {
+          "line": 349,
+          "heading": "Motor responsável"
+        },
+        {
+          "line": 353,
+          "heading": "Funcionalidades desejadas"
+        },
+        {
+          "line": 355,
+          "heading": "Aquisição e integridade"
+        },
+        {
+          "line": 368,
+          "heading": "Sistemas de arquivos"
+        },
+        {
+          "line": 389,
+          "heading": "Investigação"
+        },
+        {
+          "line": 401,
+          "heading": "Resultados"
+        },
+        {
+          "line": 410,
+          "heading": "Estratégia"
+        },
+        {
+          "line": 422,
+          "heading": "Testes de aceitação"
+        },
+        {
+          "line": 437,
+          "heading": "8. MATRIZ — PERÍCIA DIGITAL DE DISPOSITIVOS MÓVEIS"
+        },
+        {
+          "line": 439,
+          "heading": "Referências funcionais"
+        },
+        {
+          "line": 447,
+          "heading": "Motor responsável"
+        },
+        {
+          "line": 451,
+          "heading": "Funcionalidades desejadas"
+        },
+        {
+          "line": 453,
+          "heading": "Android"
+        },
+        {
+          "line": 466,
+          "heading": "iOS"
+        },
+        {
+          "line": 476,
+          "heading": "Correlação"
+        },
+        {
+          "line": 486,
+          "heading": "Estratégia"
+        },
+        {
+          "line": 494,
+          "heading": "Limitações obrigatórias"
+        },
+        {
+          "line": 506,
+          "heading": "Testes"
+        },
+        {
+          "line": 514,
+          "heading": "9. MATRIZ — ANÁLISE E SEGURANÇA DE REDES"
+        },
+        {
+          "line": 516,
+          "heading": "Referências funcionais"
+        },
+        {
+          "line": 524,
+          "heading": "Motores responsáveis"
+        },
+        {
+          "line": 528,
+          "heading": "Funcionalidades desejadas"
+        },
+        {
+          "line": 530,
+          "heading": "Captura e importação"
+        },
+        {
+          "line": 540,
+          "heading": "Análise de protocolos"
+        },
+        {
+          "line": 555,
+          "heading": "Análise de fluxos"
+        },
+        {
+          "line": 567,
+          "heading": "Segurança"
+        },
+        {
+          "line": 578,
+          "heading": "Visualização"
+        },
+        {
+          "line": 588,
+          "heading": "Estratégia"
+        },
+        {
+          "line": 604,
+          "heading": "Testes"
+        },
+        {
+          "line": 612,
+          "heading": "10. MATRIZ — ANÁLISE DE MALWARE E ENGENHARIA REVERSA"
+        },
+        {
+          "line": 614,
+          "heading": "Referências funcionais"
+        },
+        {
+          "line": 623,
+          "heading": "Motores responsáveis"
+        },
+        {
+          "line": 627,
+          "heading": "Funcionalidades desejadas"
+        },
+        {
+          "line": 629,
+          "heading": "Análise estática"
+        },
+        {
+          "line": 645,
+          "heading": "Engenharia reversa legítima"
+        },
+        {
+          "line": 655,
+          "heading": "Análise de memória"
+        },
+        {
+          "line": 664,
+          "heading": "Análise dinâmica"
+        },
+        {
+          "line": 676,
+          "heading": "Estratégia"
+        },
+        {
+          "line": 684,
+          "heading": "Limitações"
+        },
+        {
+          "line": 696,
+          "heading": "Testes"
+        },
+        {
+          "line": 712,
+          "heading": "11. MATRIZ — OSINT E INTELIGÊNCIA DE AMEAÇAS"
+        },
+        {
+          "line": 714,
+          "heading": "Referências funcionais"
+        },
+        {
+          "line": 722,
+          "heading": "Motores responsáveis"
+        },
+        {
+          "line": 726,
+          "heading": "Funcionalidades desejadas"
+        },
+        {
+          "line": 728,
+          "heading": "Descoberta autorizada"
+        },
+        {
+          "line": 740,
+          "heading": "Correlação"
+        },
+        {
+          "line": 750,
+          "heading": "Inteligência"
+        },
+        {
+          "line": 761,
+          "heading": "Visualização"
+        },
+        {
+          "line": 770,
+          "heading": "Estratégia"
+        },
+        {
+          "line": 780,
+          "heading": "Regras"
+        },
+        {
+          "line": 790,
+          "heading": "Testes"
+        },
+        {
+          "line": 796,
+          "heading": "12. MATRIZ — APPLICATION SECURITY"
+        },
+        {
+          "line": 798,
+          "heading": "Referências funcionais"
+        },
+        {
+          "line": 808,
+          "heading": "Motor responsável"
+        },
+        {
+          "line": 812,
+          "heading": "Capacidades desejadas"
+        },
+        {
+          "line": 814,
+          "heading": "Código-fonte"
+        },
+        {
+          "line": 833,
+          "heading": "APIs"
+        },
+        {
+          "line": 847,
+          "heading": "Dependências"
+        },
+        {
+          "line": 857,
+          "heading": "Projetos desenvolvidos com IA"
+        },
+        {
+          "line": 869,
+          "heading": "Relatórios"
+        },
+        {
+          "line": 881,
+          "heading": "Integrações possíveis"
+        },
+        {
+          "line": 897,
+          "heading": "Firebase e Supabase"
+        },
+        {
+          "line": 910,
+          "heading": "13. MATRIZ — SOC, SIEM, EDR E XDR"
+        },
+        {
+          "line": 912,
+          "heading": "Motores responsáveis"
+        },
+        {
+          "line": 921,
+          "heading": "Capacidades desejadas"
+        },
+        {
+          "line": 923,
+          "heading": "Ingestão"
+        },
+        {
+          "line": 933,
+          "heading": "Normalização"
+        },
+        {
+          "line": 945,
+          "heading": "Detection Engineering"
+        },
+        {
+          "line": 957,
+          "heading": "SOC"
+        },
+        {
+          "line": 970,
+          "heading": "Endpoint"
+        },
+        {
+          "line": 991,
+          "heading": "XDR"
+        },
+        {
+          "line": 1004,
+          "heading": "Integrações a avaliar"
+        },
+        {
+          "line": 1016,
+          "heading": "14. MATRIZ — INCIDENT RESPONSE E AUTODEFENSE"
+        },
+        {
+          "line": 1018,
+          "heading": "Motores responsáveis"
+        },
+        {
+          "line": 1028,
+          "heading": "Capacidades desejadas"
+        },
+        {
+          "line": 1030,
+          "heading": "Preparação"
+        },
+        {
+          "line": 1040,
+          "heading": "Investigação"
+        },
+        {
+          "line": 1050,
+          "heading": "Resposta"
+        },
+        {
+          "line": 1061,
+          "heading": "SecureFix"
+        },
+        {
+          "line": 1072,
+          "heading": "Self-Healing"
+        },
+        {
+          "line": 1081,
+          "heading": "Política de autonomia"
+        },
+        {
+          "line": 1097,
+          "heading": "15. MATRIZ — CRIPTOGRAFIA E SEGURANÇA DE IDENTIDADES"
+        },
+        {
+          "line": 1099,
+          "heading": "Motores responsáveis"
+        },
+        {
+          "line": 1106,
+          "heading": "Capacidades de CryptoGuard"
+        },
+        {
+          "line": 1122,
+          "heading": "Capacidades de IdentityGuard"
+        },
+        {
+          "line": 1143,
+          "heading": "16. MATRIZ — CLOUD E INFRAESTRUTURA"
+        },
+        {
+          "line": 1145,
+          "heading": "Motor responsável"
+        },
+        {
+          "line": 1149,
+          "heading": "Capacidades desejadas"
+        },
+        {
+          "line": 1166,
+          "heading": "Plataformas futuras"
+        },
+        {
+          "line": 1184,
+          "heading": "17. BARRIERMATRIX — DEFESA EM 14 CAMADAS"
+        },
+        {
+          "line": 1231,
+          "heading": "18. PORTFÓLIO CONSOLIDADO DE MOTORES"
+        },
+        {
+          "line": 1268,
+          "heading": "19. ARQUITETURA DE INTEGRAÇÕES"
+        },
+        {
+          "line": 1290,
+          "heading": "Tipos de integração"
+        },
+        {
+          "line": 1308,
+          "heading": "20. AUTONOMIA E FUNCIONAMENTO OFFLINE"
+        },
+        {
+          "line": 1312,
+          "heading": "Funcionalidades offline planejadas"
+        },
+        {
+          "line": 1327,
+          "heading": "Dependências de conectividade"
+        },
+        {
+          "line": 1349,
+          "heading": "21. INTELIGÊNCIA ARTIFICIAL DO SENTINEL"
+        },
+        {
+          "line": 1367,
+          "heading": "Requisitos"
+        },
+        {
+          "line": 1385,
+          "heading": "22. EVIDENCECHAIN — PADRÃO UNIFICADO DE EVIDÊNCIAS"
+        },
+        {
+          "line": 1421,
+          "heading": "23. RELATÓRIOS PROFISSIONAIS"
+        },
+        {
+          "line": 1466,
+          "heading": "24. RISKGRAPH — CORRELAÇÃO UNIFICADA"
+        },
+        {
+          "line": 1503,
+          "heading": "25. DESIGN E EXPERIÊNCIA DO OPERADOR"
+        },
+        {
+          "line": 1542,
+          "heading": "26. SEGURANÇA DO PRÓPRIO SENTINEL"
+        },
+        {
+          "line": 1575,
+          "heading": "27. SEGURANÇA DOS LABORATÓRIOS"
+        },
+        {
+          "line": 1579,
+          "heading": "Classe A — Estudos e desenvolvimento"
+        },
+        {
+          "line": 1585,
+          "heading": "Classe B — Simulações controladas"
+        },
+        {
+          "line": 1591,
+          "heading": "Classe C — Amostras não confiáveis"
+        },
+        {
+          "line": 1605,
+          "heading": "28. MODELO DE DADOS"
+        },
+        {
+          "line": 1647,
+          "heading": "29. QUALIDADE — SENTINEL VALIDATION LAB"
+        },
+        {
+          "line": 1680,
+          "heading": "Níveis de maturidade"
+        },
+        {
+          "line": 1700,
+          "heading": "30. PADRÕES E METODOLOGIAS"
+        },
+        {
+          "line": 1731,
+          "heading": "31. ENGENHARIA REVERSA LEGÍTIMA E DESENVOLVIMENTO PROPRIETÁRIO"
+        },
+        {
+          "line": 1769,
+          "heading": "32. FORMAÇÃO TÉCNICA DO OPERADOR"
+        },
+        {
+          "line": 1773,
+          "heading": "Módulo 1 — Fundamentos"
+        },
+        {
+          "line": 1777,
+          "heading": "Módulo 2 — Debian Linux"
+        },
+        {
+          "line": 1781,
+          "heading": "Módulo 3 — Redes"
+        },
+        {
+          "line": 1785,
+          "heading": "Módulo 4 — Programação"
+        },
+        {
+          "line": 1789,
+          "heading": "Módulo 5 — Blue Team"
+        },
+        {
+          "line": 1793,
+          "heading": "Módulo 6 — Red Team autorizado"
+        },
+        {
+          "line": 1797,
+          "heading": "Módulo 7 — Purple Team"
+        },
+        {
+          "line": 1801,
+          "heading": "Módulo 8 — Forense digital"
+        },
+        {
+          "line": 1805,
+          "heading": "Módulo 9 — Malware e engenharia reversa"
+        },
+        {
+          "line": 1809,
+          "heading": "Módulo 10 — Cloud, identidade e criptografia"
+        },
+        {
+          "line": 1813,
+          "heading": "Módulo 11 — Segurança de aplicações e IA"
+        },
+        {
+          "line": 1817,
+          "heading": "Módulo 12 — Engenharia do Sentinel"
+        },
+        {
+          "line": 1827,
+          "heading": "33. ROADMAP DE IMPLEMENTAÇÃO"
+        },
+        {
+          "line": 1829,
+          "heading": "Fase 0 — Migração e validação do ambiente"
+        },
+        {
+          "line": 1841,
+          "heading": "Fase 1 — Fundação do produto"
+        },
+        {
+          "line": 1854,
+          "heading": "Fase 2 — Primeiro fluxo operacional verificável"
+        },
+        {
+          "line": 1869,
+          "heading": "Fase 3 — SecureBuild"
+        },
+        {
+          "line": 1879,
+          "heading": "Fase 4 — NetworkTrace e ExposureMap"
+        },
+        {
+          "line": 1887,
+          "heading": "Fase 5 — Endpoint Agent Linux"
+        },
+        {
+          "line": 1897,
+          "heading": "Fase 6 — SOC e gestão de incidentes"
+        },
+        {
+          "line": 1906,
+          "heading": "Fase 7 — Defesa e correção"
+        },
+        {
+          "line": 1915,
+          "heading": "Fase 8 — Laboratórios"
+        },
+        {
+          "line": 1924,
+          "heading": "Fase 9 — Forense"
+        },
+        {
+          "line": 1933,
+          "heading": "Fase 10 — Malware e memória"
+        },
+        {
+          "line": 1941,
+          "heading": "Fase 11 — MobileScope"
+        },
+        {
+          "line": 1949,
+          "heading": "Fase 12 — Inteligência"
+        },
+        {
+          "line": 1957,
+          "heading": "Fase 13 — Windows"
+        },
+        {
+          "line": 1965,
+          "heading": "Fase 14 — Cloud e identidade"
+        },
+        {
+          "line": 1973,
+          "heading": "Fase 15 — Integrações externas especializadas"
+        },
+        {
+          "line": 1981,
+          "heading": "Fase 16 — Maturidade Enterprise"
+        },
+        {
+          "line": 1995,
+          "heading": "34. ENTREGÁVEIS OBRIGATÓRIOS POR MÓDULO"
+        },
+        {
+          "line": 2028,
+          "heading": "35. ARQUIVOS DE GOVERNANÇA DO PROJETO"
+        },
+        {
+          "line": 2065,
+          "heading": "36. DIRETRIZES PARA A IA DESENVOLVEDORA"
+        },
+        {
+          "line": 2102,
+          "heading": "37. CRITÉRIO DE SUCESSO DO I.SEE SENTINEL"
+        },
+        {
+          "line": 2136,
+          "heading": "38. RESULTADO FINAL ESPERADO"
+        },
+        {
+          "line": 2162,
+          "heading": "COMANDO FINAL — EXECUÇÃO DA V6.6"
+        }
+      ]
+    },
+    {
+      "path": "docs/ESPECIFICACAO-V6.9.txt",
+      "sha256": "b2ceb4166505a65158cb6d292fa2b60c3271b1b81d00b751a7590c9739b73fbd",
+      "bytes": 44425,
+      "provenance": "original attachment bytes",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "I.SEE SENTINEL — PROMPT MESTRE ELITE EDITION V6.9"
+        },
+        {
+          "line": 2,
+          "heading": "Complete Cybersecurity Platform — Complete Engineering Specification"
+        },
+        {
+          "line": 19,
+          "heading": "1. MISSÃO PRINCIPAL",
+          "guideSections": [
+            "G02"
+          ]
+        },
+        {
+          "line": 66,
+          "heading": "2. EQUIPE VIRTUAL DE ESPECIALISTAS",
+          "guideSections": [
+            "G02"
+          ]
+        },
+        {
+          "line": 70,
+          "heading": "Liderança e arquitetura"
+        },
+        {
+          "line": 80,
+          "heading": "Engenharia"
+        },
+        {
+          "line": 95,
+          "heading": "Segurança ofensiva"
+        },
+        {
+          "line": 106,
+          "heading": "Segurança defensiva"
+        },
+        {
+          "line": 118,
+          "heading": "Segurança empresarial"
+        },
+        {
+          "line": 129,
+          "heading": "Governança"
+        },
+        {
+          "line": 146,
+          "heading": "3. PRINCÍPIOS FUNDAMENTAIS",
+          "guideSections": [
+            "G02",
+            "G21"
+          ]
+        },
+        {
+          "line": 179,
+          "heading": "4. ARQUITETURA E TECNOLOGIAS",
+          "guideSections": [
+            "G03",
+            "G04"
+          ]
+        },
+        {
+          "line": 185,
+          "heading": "Frontend"
+        },
+        {
+          "line": 199,
+          "heading": "Backend"
+        },
+        {
+          "line": 214,
+          "heading": "Workers"
+        },
+        {
+          "line": 220,
+          "heading": "Agentes"
+        },
+        {
+          "line": 231,
+          "heading": "Infraestrutura"
+        },
+        {
+          "line": 256,
+          "heading": "5. SENTINEL COMMAND CENTER",
+          "guideSections": [
+            "G18"
+          ]
+        },
+        {
+          "line": 317,
+          "heading": "6. SENTINEL UNIVERSAL IMPORT LAB",
+          "guideSections": [
+            "G06"
+          ]
+        },
+        {
+          "line": 321,
+          "heading": "Entradas"
+        },
+        {
+          "line": 341,
+          "heading": "Fluxo"
+        },
+        {
+          "line": 359,
+          "heading": "Segurança"
+        },
+        {
+          "line": 367,
+          "heading": "7. SENTINEL WEB URL IMPORTER",
+          "guideSections": [
+            "G06"
+          ]
+        },
+        {
+          "line": 401,
+          "heading": "8. ATTACKLAB",
+          "guideSections": [
+            "G07"
+          ]
+        },
+        {
+          "line": 425,
+          "heading": "9. PROOFLAB",
+          "guideSections": [
+            "G08"
+          ]
+        },
+        {
+          "line": 448,
+          "heading": "10. RESILIENCELAB",
+          "guideSections": [
+            "G08"
+          ]
+        },
+        {
+          "line": 475,
+          "heading": "11. OFFENSIVE SECURITY ENGINE",
+          "guideSections": [
+            "G12"
+          ]
+        },
+        {
+          "line": 479,
+          "heading": "Web Security"
+        },
+        {
+          "line": 507,
+          "heading": "API Security"
+        },
+        {
+          "line": 511,
+          "heading": "Infrastructure Security"
+        },
+        {
+          "line": 519,
+          "heading": "12. SOC & DETECTION ENGINE",
+          "guideSections": [
+            "G10"
+          ]
+        },
+        {
+          "line": 544,
+          "heading": "13. BARRIERMATRIX — 14 CAMADAS",
+          "guideSections": [
+            "G11"
+          ]
+        },
+        {
+          "line": 569,
+          "heading": "14. AUTODEFENSE & SELF-HEALING",
+          "guideSections": [
+            "G13"
+          ]
+        },
+        {
+          "line": 589,
+          "heading": "15. SECUREBUILD & CODE AUDIT",
+          "guideSections": [
+            "G12"
+          ]
+        },
+        {
+          "line": 611,
+          "heading": "16. REMEDIATION ENGINE",
+          "guideSections": [
+            "G13"
+          ]
+        },
+        {
+          "line": 638,
+          "heading": "17. BEFORE/AFTER SECURITY COMPARISON",
+          "guideSections": [
+            "G09"
+          ]
+        },
+        {
+          "line": 659,
+          "heading": "18. CLOUDSHIELD",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 669,
+          "heading": "19. IDENTITYGUARD",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 675,
+          "heading": "20. MOBILE SECURITY",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 687,
+          "heading": "21. IOT SECURITY",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 695,
+          "heading": "22. OT/ICS SECURITY",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 707,
+          "heading": "23. PRIVACY & DATA PROTECTION",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 715,
+          "heading": "24. GOVERNANCE, RISK & COMPLIANCE",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 723,
+          "heading": "25. THIRD-PARTY & SUPPLY CHAIN SECURITY",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 729,
+          "heading": "26. BUSINESS CONTINUITY & DISASTER RECOVERY",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 735,
+          "heading": "27. HUMAN SECURITY",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 743,
+          "heading": "28. DIGITAL FORENSICS & INCIDENT RESPONSE",
+          "guideSections": [
+            "G14"
+          ]
+        },
+        {
+          "line": 758,
+          "heading": "29. MALWARE RESEARCH & THREAT HUNTING",
+          "guideSections": [
+            "G15"
+          ]
+        },
+        {
+          "line": 766,
+          "heading": "30. AI SECURITY ENGINE",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 772,
+          "heading": "31. SENTINEL INTELLIGENCE ASSISTANT",
+          "guideSections": [
+            "G17"
+          ]
+        },
+        {
+          "line": 782,
+          "heading": "32. CRYPTOGUARD",
+          "guideSections": [
+            "G16"
+          ]
+        },
+        {
+          "line": 790,
+          "heading": "33. EXPOSURE MANAGEMENT & RISKGRAPH",
+          "guideSections": [
+            "G09"
+          ]
+        },
+        {
+          "line": 798,
+          "heading": "34. EVIDENCECHAIN & POLICYGATE",
+          "guideSections": [
+            "G05",
+            "G09"
+          ]
+        },
+        {
+          "line": 800,
+          "heading": "EvidenceChain"
+        },
+        {
+          "line": 804,
+          "heading": "PolicyGate"
+        },
+        {
+          "line": 812,
+          "heading": "35. AUTHORIZATION MANAGER",
+          "guideSections": [
+            "G05"
+          ]
+        },
+        {
+          "line": 837,
+          "heading": "36. MODOS OPERACIONAIS",
+          "guideSections": [
+            "G05"
+          ]
+        },
+        {
+          "line": 839,
+          "heading": "LAB MODE"
+        },
+        {
+          "line": 845,
+          "heading": "ASSESSMENT MODE"
+        },
+        {
+          "line": 851,
+          "heading": "PRODUCTION REMEDIATION MODE"
+        },
+        {
+          "line": 861,
+          "heading": "37. EXECUTION CENTER & CLI",
+          "guideSections": [
+            "G19"
+          ]
+        },
+        {
+          "line": 890,
+          "heading": "38. SECURITY SERVICES MANAGEMENT",
+          "guideSections": [
+            "G18"
+          ]
+        },
+        {
+          "line": 926,
+          "heading": "39. CLIENT MANAGEMENT",
+          "guideSections": [
+            "G05"
+          ]
+        },
+        {
+          "line": 936,
+          "heading": "40. REPORTING ENGINE",
+          "guideSections": [
+            "G18"
+          ]
+        },
+        {
+          "line": 946,
+          "heading": "41. INTEGRATION CENTER",
+          "guideSections": [
+            "G20"
+          ]
+        },
+        {
+          "line": 954,
+          "heading": "42. SEGURANÇA DO PRÓPRIO SENTINEL",
+          "guideSections": [
+            "G21"
+          ]
+        },
+        {
+          "line": 962,
+          "heading": "43. CONFIABILIDADE & VALIDATION LAB",
+          "guideSections": [
+            "G22"
+          ]
+        },
+        {
+          "line": 972,
+          "heading": "44. SEGURANÇA OPERACIONAL",
+          "guideSections": [
+            "G08",
+            "G21"
+          ]
+        },
+        {
+          "line": 984,
+          "heading": "45. MATRIZ DE MATURIDADE",
+          "guideSections": [
+            "G22"
+          ]
+        },
+        {
+          "line": 1002,
+          "heading": "46. ROADMAP OFICIAL",
+          "guideSections": [
+            "G24"
+          ]
+        },
+        {
+          "line": 1004,
+          "heading": "Fase 0 — Auditoria"
+        },
+        {
+          "line": 1008,
+          "heading": "Fase 1 — Fundação"
+        },
+        {
+          "line": 1012,
+          "heading": "Fase 2 — Universal Import Lab"
+        },
+        {
+          "line": 1016,
+          "heading": "Fase 3 — ProofLab"
+        },
+        {
+          "line": 1020,
+          "heading": "Fase 4 — Security Assessment"
+        },
+        {
+          "line": 1024,
+          "heading": "Fase 5 — Remediation"
+        },
+        {
+          "line": 1028,
+          "heading": "Fase 6 — Execution Center"
+        },
+        {
+          "line": 1032,
+          "heading": "Fase 7 — SOC e defesa"
+        },
+        {
+          "line": 1036,
+          "heading": "Fase 8 — Laboratórios avançados"
+        },
+        {
+          "line": 1040,
+          "heading": "Fase 9 — Segurança empresarial"
+        },
+        {
+          "line": 1044,
+          "heading": "Fase 10 — Governança"
+        },
+        {
+          "line": 1048,
+          "heading": "Fase 11 — Serviços gerenciados"
+        },
+        {
+          "line": 1052,
+          "heading": "Fase 12 — Enterprise"
+        },
+        {
+          "line": 1058,
+          "heading": "47. DOCUMENTAÇÃO",
+          "guideSections": [
+            "G21",
+            "G23"
+          ]
+        },
+        {
+          "line": 1085,
+          "heading": "48. PADRÕES E REFERÊNCIAS",
+          "guideSections": [
+            "G20"
+          ]
+        },
+        {
+          "line": 1113,
+          "heading": "49. MODO PROFESSOR",
+          "guideSections": [
+            "G17"
+          ]
+        },
+        {
+          "line": 1123,
+          "heading": "50. INSTRUÇÕES PARA CODEX",
+          "guideSections": [
+            "G01",
+            "G22"
+          ]
+        },
+        {
+          "line": 1152,
+          "heading": "51. PRIMEIRA ENTREGA OBRIGATÓRIA",
+          "guideSections": [
+            "G01",
+            "G24"
+          ]
+        },
+        {
+          "line": 1170,
+          "heading": "52. OBJETIVO FINAL",
+          "guideSections": [
+            "G02"
+          ]
+        },
+        {
+          "line": 1184,
+          "heading": "53. ENGINEERING IMPLEMENTATION STANDARD — ESPECIFICAÇÃO TÉCNICA OBRIGATÓRIA",
+          "guideSections": [
+            "G03",
+            "G08",
+            "G19",
+            "G20",
+            "G21",
+            "G22",
+            "G23"
+          ]
+        },
+        {
+          "line": 1190,
+          "heading": "53.1. Arquitetura e comunicação entre componentes",
+          "guideSections": [
+            "G03"
+          ]
+        },
+        {
+          "line": 1207,
+          "heading": "Requisitos"
+        },
+        {
+          "line": 1232,
+          "heading": "53.2. Orquestração de tarefas",
+          "guideSections": [
+            "G19"
+          ]
+        },
+        {
+          "line": 1274,
+          "heading": "53.3. Contratos de dados",
+          "guideSections": [
+            "G19"
+          ]
+        },
+        {
+          "line": 1316,
+          "heading": "53.4. Segurança dos laboratórios",
+          "guideSections": [
+            "G08"
+          ]
+        },
+        {
+          "line": 1342,
+          "heading": "53.5. Separação de redes",
+          "guideSections": [
+            "G08"
+          ]
+        },
+        {
+          "line": 1358,
+          "heading": "53.6. Proteção de credenciais e informações",
+          "guideSections": [
+            "G21"
+          ]
+        },
+        {
+          "line": 1378,
+          "heading": "53.7. Catálogo técnico de testes",
+          "guideSections": [
+            "G21"
+          ]
+        },
+        {
+          "line": 1411,
+          "heading": "53.8. Regras de execução de ferramentas",
+          "guideSections": [
+            "G07",
+            "G20",
+            "G21"
+          ]
+        },
+        {
+          "line": 1434,
+          "heading": "53.9. Distribuição e manutenção",
+          "guideSections": [
+            "G21",
+            "G23"
+          ]
+        },
+        {
+          "line": 1459,
+          "heading": "53.10. Observabilidade",
+          "guideSections": [
+            "G21"
+          ]
+        },
+        {
+          "line": 1478,
+          "heading": "53.11. Recuperação e tolerância a falhas",
+          "guideSections": [
+            "G21"
+          ]
+        },
+        {
+          "line": 1497,
+          "heading": "53.12. Testes obrigatórios",
+          "guideSections": [
+            "G22"
+          ]
+        },
+        {
+          "line": 1518,
+          "heading": "53.13. Critérios de liberação profissional",
+          "guideSections": [
+            "G22"
+          ]
+        },
+        {
+          "line": 1543,
+          "heading": "53.14. Documentação de engenharia",
+          "guideSections": [
+            "G21",
+            "G23"
+          ]
+        },
+        {
+          "line": 1563,
+          "heading": "53.15. Procedimento obrigatório do Codex",
+          "guideSections": [
+            "G01",
+            "G22"
+          ]
+        },
+        {
+          "line": 1590,
+          "heading": "53.16. Definição de pronto",
+          "guideSections": [
+            "G22"
+          ]
+        },
+        {
+          "line": 1607,
+          "heading": "DIRETRIZ FINAL DE EXECUÇÃO"
+        }
+      ]
+    },
+    {
+      "path": "docs/COMPLEMENTO-MULTIPLATAFORMA.txt",
+      "sha256": "8f0f61bb044bb9124b620ff5baeeed2d636c0e85e54f87a5ae23a30847a18261",
+      "bytes": 11087,
+      "provenance": "original attachment bytes",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "PROMPT MESTRE — I.SEE SENTINEL"
+        },
+        {
+          "line": 2,
+          "heading": "Preparação multiplataforma, GitHub privado e continuidade de desenvolvimento com Codex"
+        },
+        {
+          "line": 4,
+          "heading": "1. PAPEL DA IA",
+          "guideSections": [
+            "G02"
+          ]
+        },
+        {
+          "line": 22,
+          "heading": "2. CONTEXTO DO PROJETO",
+          "guideSections": [
+            "G02",
+            "G03"
+          ]
+        },
+        {
+          "line": 40,
+          "heading": "3. AMBIENTES DE DESENVOLVIMENTO",
+          "guideSections": [
+            "G04"
+          ]
+        },
+        {
+          "line": 61,
+          "heading": "4. PRIMEIRA TAREFA — AUDITORIA DO PROJETO",
+          "guideSections": [
+            "G01"
+          ]
+        },
+        {
+          "line": 80,
+          "heading": "5. GITHUB — CONTINUIDADE ENTRE SISTEMAS",
+          "guideSections": [
+            "G23"
+          ]
+        },
+        {
+          "line": 107,
+          "heading": "6. MEMÓRIA DO PROJETO PARA O CODEX",
+          "guideSections": [
+            "G01",
+            "G23"
+          ]
+        },
+        {
+          "line": 151,
+          "heading": "7. PORTABILIDADE WINDOWS / DEBIAN",
+          "guideSections": [
+            "G03",
+            "G04"
+          ]
+        },
+        {
+          "line": 170,
+          "heading": "8. CONFIGURAÇÃO REPRODUZÍVEL",
+          "guideSections": [
+            "G23"
+          ]
+        },
+        {
+          "line": 199,
+          "heading": "9. TESTES E INTEGRAÇÃO CONTÍNUA",
+          "guideSections": [
+            "G22"
+          ]
+        },
+        {
+          "line": 218,
+          "heading": "10. SEGURANÇA DO SENTINEL",
+          "guideSections": [
+            "G21"
+          ]
+        },
+        {
+          "line": 238,
+          "heading": "11. CONTINUIDADE NO DEBIAN",
+          "guideSections": [
+            "G23"
+          ]
+        },
+        {
+          "line": 257,
+          "heading": "12. EXECUÇÃO DAS TAREFAS",
+          "guideSections": [
+            "G01",
+            "G22"
+          ]
+        },
+        {
+          "line": 297,
+          "heading": "13. REGRAS INEGOCIÁVEIS",
+          "guideSections": [
+            "G01",
+            "G21",
+            "G23"
+          ]
+        },
+        {
+          "line": 312,
+          "heading": "OBJETIVO FINAL"
+        }
+      ]
+    },
+    {
+      "path": "docs/COMPLEMENTO-ATTACKLAB-EVIDENCE-FUSION.md",
+      "sha256": "2b8beb5ca7d796bac40582b4909034a750dab9b050c10ce430bb740cbe36403b",
+      "bytes": 10432,
+      "provenance": "normalized chat transcription",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "PROMPT MESTRE — I.See Sentinel"
+        },
+        {
+          "line": 2,
+          "heading": "AttackLab Evidence Fusion & Purple Validation Engine"
+        },
+        {
+          "line": 7,
+          "heading": "1. PAPEL DA EQUIPE DE DESENVOLVIMENTO",
+          "guideSections": [
+            "G02"
+          ]
+        },
+        {
+          "line": 24,
+          "heading": "2. CONTEXTO E ARQUITETURA",
+          "guideSections": [
+            "G03",
+            "G04"
+          ]
+        },
+        {
+          "line": 43,
+          "heading": "3. ATTACKLAB — GERENCIAMENTO DE OPERAÇÕES",
+          "guideSections": [
+            "G05",
+            "G07"
+          ]
+        },
+        {
+          "line": 60,
+          "heading": "4. DISCOVERY & ENUMERATION ENGINE",
+          "guideSections": [
+            "G07"
+          ]
+        },
+        {
+          "line": 84,
+          "heading": "5. PRIVILEGE & CONFIGURATION AUDIT",
+          "guideSections": [
+            "G07"
+          ]
+        },
+        {
+          "line": 106,
+          "heading": "6. BLUE TEAM — DETECTION FUSION",
+          "guideSections": [
+            "G10"
+          ]
+        },
+        {
+          "line": 130,
+          "heading": "7. PURPLE TEAM — VALIDATION ENGINE",
+          "guideSections": [
+            "G10"
+          ]
+        },
+        {
+          "line": 152,
+          "heading": "8. EVIDENCE FUSION — DIFERENCIAL DO PRODUTO",
+          "guideSections": [
+            "G09"
+          ]
+        },
+        {
+          "line": 173,
+          "heading": "9. SENTINEL COMMAND CENTER — INTERFACE",
+          "guideSections": [
+            "G18"
+          ]
+        },
+        {
+          "line": 190,
+          "heading": "10. LABORATÓRIO E ISOLAMENTO",
+          "guideSections": [
+            "G08"
+          ]
+        },
+        {
+          "line": 208,
+          "heading": "11. ENGENHARIA E SEGURANÇA DO PRÓPRIO SENTINEL",
+          "guideSections": [
+            "G21"
+          ]
+        },
+        {
+          "line": 227,
+          "heading": "12. ENTREGAS E ORDEM DE IMPLEMENTAÇÃO",
+          "guideSections": [
+            "G24"
+          ]
+        },
+        {
+          "line": 253,
+          "heading": "13. RESULTADO ESPERADO",
+          "guideSections": [
+            "G22"
+          ]
+        }
+      ]
+    }
+  ]
+}

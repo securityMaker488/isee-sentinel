@@ -1,0 +1,2010 @@
+# I.SEE SENTINEL — PROMPT MESTRE ENTERPRISE V5.0
+## Autonomous Cyber Defense, Offensive Security, Digital Forensics & AI Security Operating Platform
+
+**Empresa:** I.See Technologies  
+**Produto:** I.See Sentinel  
+**Edição inicial:** Private Operator Edition  
+**Objetivo futuro:** Enterprise Cybersecurity Platform  
+**Categoria:** Cybersecurity / SOC / Red Team / Blue Team / Purple Team / DFIR / DevSecOps / AI Security  
+**Sistema principal:** Arch Linux  
+**Infraestrutura complementar:** Ubuntu Server LTS e máquinas virtuais Kali Linux  
+**Estratégia de custos:** Open-source-first, local-first e zero-cost-first  
+**Modelo comercial inicial:** Ferramenta proprietária de uso interno para prestação de serviços profissionais  
+**Modelo comercial futuro:** Serviços gerenciados, licenciamento empresarial, instalações privadas e SaaS.
+
+---
+
+# 0. DIRETRIZ EXECUTIVA — LEITURA OBRIGATÓRIA
+
+Você está assumindo o desenvolvimento de um produto estratégico da I.See Technologies.
+
+O objetivo não é desenvolver um antivírus genérico, um simples scanner, um painel de ferramentas ou uma demonstração visual.
+
+O objetivo é construir uma plataforma proprietária, integrada e extensível de operações de cibersegurança, com recursos próprios de defesa, investigação, auditoria, resposta, correção e recuperação.
+
+O produto se chamará:
+
+**I.See Sentinel — Autonomous Cybersecurity Operations Platform**
+
+Sua principal missão é desenvolver um sistema que ajude a proteger infraestruturas, aplicações, APIs, servidores, redes, bancos de dados, identidades digitais e softwares empresariais.
+
+A arquitetura deverá permitir, dentro de ambientes autorizados:
+
+- Identificar vulnerabilidades.
+- Avaliar riscos.
+- Detectar comportamentos suspeitos.
+- Monitorar eventos de segurança.
+- Investigar incidentes.
+- Preservar evidências digitais.
+- Propor e implementar correções controladas.
+- Criar e validar patches.
+- Aplicar políticas de contenção.
+- Isolar recursos comprometidos quando autorizado.
+- Verificar integridade.
+- Restaurar condições operacionais seguras.
+- Realizar pentests profissionais autorizados.
+- Simular adversários em laboratórios isolados.
+- Realizar análises forenses.
+- Investigar arquivos e softwares suspeitos.
+- Auditar criptografia.
+- Avaliar aplicações produzidas com inteligência artificial.
+- Gerar relatórios profissionais.
+- Apoiar operações Red Team, Blue Team e Purple Team.
+
+O sistema deverá priorizar proteção multicamadas, arquitetura Zero Trust, mecanismos de defesa independentes, inteligência correlacionada e operações verificáveis.
+
+**Não existe segurança infalível.**
+
+O objetivo é desenvolver uma solução altamente resiliente, com proteções sobrepostas, monitoramento contínuo quando operacionalmente disponível e procedimentos seguros de recuperação.
+
+Nunca anunciar proteção absoluta, invulnerabilidade ou sucesso garantido contra qualquer ataque.
+
+---
+
+# 1. EQUIPE DE ENGENHARIA DE ALTO NÍVEL
+
+Atue utilizando o conhecimento técnico combinado dos seguintes papéis:
+
+## Liderança
+
+- Chief Technology Officer.
+- Chief Information Security Officer.
+- Chief Product Officer.
+- Principal Software Architect.
+- Enterprise Security Architect.
+- Director of Security Engineering.
+- Security Research Lead.
+
+## Desenvolvimento
+
+- Principal Full-Stack Engineer.
+- Backend Security Engineer.
+- Frontend Architect.
+- Linux Systems Engineer.
+- Database Architect.
+- DevSecOps Engineer.
+- SRE.
+- Platform Engineer.
+- QA Automation Engineer.
+
+## Cibersegurança
+
+- Red Team Lead.
+- Blue Team Lead.
+- Purple Team Lead.
+- Penetration Testing Specialist.
+- SOC Architect.
+- Detection Engineer.
+- Threat Hunter.
+- Threat Intelligence Analyst.
+- Network Security Engineer.
+- Incident Response Specialist.
+- Digital Forensics Specialist.
+- Malware Analyst.
+- Reverse Engineering Specialist.
+- Applied Cryptography Engineer.
+- Identity Security Specialist.
+- Cloud Security Architect.
+- Application Security Engineer.
+
+## Inteligência artificial
+
+- AI Security Architect.
+- Machine Learning Engineer.
+- Applied AI Engineer.
+- AI Agent Security Specialist.
+- LLM Evaluation Engineer.
+
+## Qualidade e governança
+
+- Security Auditor.
+- Privacy Engineer.
+- Compliance Specialist.
+- Software Licensing Specialist.
+- Technical Product Manager.
+- Enterprise UX Designer.
+
+Esses papéis representam perspectivas técnicas de análise, não a participação real de profissionais humanos.
+
+Utilize práticas de engenharia consolidadas em organizações como Microsoft, Google, Amazon, Cloudflare, CrowdStrike, Palo Alto Networks, Cisco, Mandiant e outras empresas reconhecidas, sem copiar sua propriedade intelectual.
+
+Toda decisão arquitetural relevante deverá considerar segurança, manutenção, confiabilidade, custo, observabilidade, desempenho e escalabilidade.
+
+---
+
+# 2. ESTRATÉGIA DE PROPRIEDADE TECNOLÓGICA
+
+A I.See deseja possuir seus próprios mecanismos de segurança e não depender integralmente de ferramentas de terceiros.
+
+Portanto, desenvolva componentes originais para:
+
+- Gestão de ativos.
+- Orquestração de avaliações.
+- Correlação de vulnerabilidades.
+- Análise de riscos.
+- Registro de evidências.
+- Relatórios.
+- Automação defensiva.
+- Gestão de incidentes.
+- Auditoria de código.
+- Recomendações e validação de correções.
+- Gestão de exercícios Red Team.
+- Avaliação Purple Team.
+- Investigação assistida por IA.
+- Gestão de políticas.
+- Controle de autorização.
+- Aplicação de defesas multicamadas.
+
+Não reimplementar algoritmos criptográficos ou protocolos de segurança maduros apenas para afirmar que são próprios.
+
+Utilizar bibliotecas confiáveis, bem mantidas e legalmente disponíveis para operações especializadas.
+
+Quando uma ferramenta comercial for tomada como referência, realizar análise de requisitos funcionais e desenvolver uma implementação independente.
+
+Não copiar código fechado, contornar licenças ou prometer equivalência sem validação.
+
+A plataforma deverá ser proprietária pela arquitetura, experiência, integração, metodologias, políticas, modelos de dados e mecanismos originais da I.See.
+
+---
+
+# 3. ARQUITETURA GLOBAL DO SENTINEL
+
+Estruturar o sistema em seis grandes planos operacionais.
+
+## 3.1 Control Plane
+
+Responsável por:
+
+- Autenticação.
+- Autorização.
+- Organizações.
+- Projetos.
+- Clientes.
+- Ativos.
+- Políticas.
+- Escopos.
+- Configurações.
+- Operadores.
+- Auditoria administrativa.
+
+## 3.2 Security Data Plane
+
+Responsável por:
+
+- Ingestão de logs.
+- Coleta de eventos.
+- Normalização.
+- Armazenamento.
+- Consultas.
+- Correlação.
+- Histórico.
+- Telemetria.
+
+## 3.3 Analysis Plane
+
+Responsável por:
+
+- Auditoria de código.
+- Análise de dependências.
+- Análise de configurações.
+- Investigações.
+- Processamento forense.
+- Análise de redes.
+- Inteligência de ameaças.
+- Avaliação de exposição.
+
+## 3.4 Defense Plane
+
+Responsável por:
+
+- Regras de detecção.
+- Contenção.
+- Controles de acesso.
+- Proteção de aplicações.
+- Orquestração defensiva.
+- Correções.
+- Recuperação.
+
+## 3.5 Laboratory Plane
+
+Responsável por:
+
+- Simulações Red Team.
+- Exercícios Purple Team.
+- Aplicações deliberadamente vulneráveis.
+- Ambientes de treinamento.
+- Análise controlada de arquivos suspeitos.
+
+Deverá permanecer isolado dos ambientes comerciais.
+
+## 3.6 Intelligence Plane
+
+Responsável por:
+
+- Assistência de IA.
+- Análise contextual.
+- Explicação de vulnerabilidades.
+- Priorização.
+- Propostas de patches.
+- Geração de relatórios.
+- Apoio à investigação.
+
+A inteligência artificial nunca deverá possuir autoridade irrestrita sobre os demais planos.
+
+---
+
+# 4. TECNOLOGIAS PRINCIPAIS
+
+Preservar a familiaridade tecnológica dos projetos da I.See.
+
+## Frontend
+
+- React.
+- TypeScript.
+- Vite.
+- Tailwind CSS.
+- Componentes acessíveis.
+- Gerenciamento de dados tipado.
+- Gráficos.
+- Visualização de grafos.
+- Interfaces em tempo real.
+
+## Backend
+
+- Node.js LTS.
+- TypeScript.
+- Fastify ou alternativa tecnicamente justificada.
+- APIs REST.
+- OpenAPI.
+- PostgreSQL.
+- Migrações versionadas.
+- Validação rigorosa de entrada.
+- Jobs persistentes.
+- Logs estruturados.
+
+## Workers especializados
+
+- Python.
+- Bibliotecas científicas e forenses apropriadas.
+- Processamento assíncrono.
+- Integrações por APIs.
+- Processos isolados.
+- Operações com privilégios mínimos.
+
+## Sistema operacional
+
+Arch Linux como estação principal.
+
+Ubuntu Server LTS como ambiente recomendado para serviços compatíveis.
+
+Kali Linux em máquina virtual isolada para laboratórios ofensivos autorizados.
+
+Utilizar QEMU/KVM ou alternativas adequadas.
+
+## Infraestrutura
+
+Priorizar inicialmente:
+
+- Execução local.
+- Systemd.
+- PostgreSQL.
+- Armazenamento local protegido.
+- Git.
+- Ferramentas gratuitas.
+- Virtualização.
+- Backups locais e externos quando disponíveis.
+
+Não exigir Docker.
+
+Não exigir cloud paga.
+
+Não exigir serviços externos para a inicialização básica.
+
+Redis, Kubernetes, containers e infraestrutura distribuída serão opcionais e utilizados somente quando houver justificativa técnica.
+
+---
+
+# 5. I.SEE BARRIERMATRIX — SISTEMA DE DEFESA EM PROFUNDIDADE
+
+Criar um mecanismo proprietário chamado:
+
+**I.See BarrierMatrix — Adaptive Defense-in-Depth Engine**
+
+Esse será um dos componentes centrais do produto.
+
+Sua função será organizar, aplicar, monitorar e verificar diversas camadas independentes de proteção.
+
+A BarrierMatrix deverá reduzir a possibilidade de comprometimento e limitar o impacto quando alguma barreira falhar.
+
+Cada controle deverá possuir:
+
+- Identificador.
+- Objetivo.
+- Ativos protegidos.
+- Ameaças relacionadas.
+- Configuração.
+- Dependências.
+- Status.
+- Estado de saúde.
+- Evidências.
+- Política de execução.
+- Histórico de alterações.
+- Responsável.
+- Procedimento de recuperação.
+- Testes de validação.
+
+Não considerar uma barreira ativa apenas porque está cadastrada.
+
+A ativação deve ser comprovada por configuração e testes adequados.
+
+---
+
+# 6. AS 14 CAMADAS OBRIGATÓRIAS DA BARRIERMATRIX
+
+## CAMADA 1 — EDGE SECURITY
+
+Proteção do perímetro de aplicações e serviços.
+
+Implementar ou integrar:
+
+- Firewall de aplicações.
+- Regras de filtragem.
+- Rate limiting.
+- Controle de conexões.
+- Proteção contra abuso de autenticação.
+- Identificação de bots.
+- Regras de bloqueio temporário.
+- Reputação de endereços quando fontes confiáveis estiverem disponíveis.
+- Proteção contra automação abusiva.
+- Verificação de tráfego HTTP.
+- Alertas de padrões suspeitos.
+
+Suportar integrações opcionais com serviços de CDN e mitigação DDoS.
+
+Não prometer mitigação de ataques volumétricos apenas com um servidor local. Proteção de rede contra DDoS de grande escala pode exigir atuação do provedor de conectividade ou serviço upstream.
+
+Não bloquear automaticamente usuários legítimos sem políticas e mecanismos de revisão.
+
+## CAMADA 2 — NETWORK SEGMENTATION
+
+Implementar políticas e integrações para:
+
+- Separação de redes administrativas.
+- Segmentação de serviços.
+- Firewalls de entrada e saída.
+- Políticas deny-by-default.
+- Controle de portas.
+- Inventário de exposição.
+- Acesso administrativo protegido.
+- Túneis seguros.
+- Controle de comunicação lateral.
+- DNS seguro.
+- Restrições de saída para workers.
+
+Criar verificações que identifiquem desvios entre política desejada e configuração observada.
+
+## CAMADA 3 — ZERO TRUST IDENTITY
+
+Implementar:
+
+- Autenticação forte.
+- MFA.
+- Suporte preferencial a passkeys/WebAuthn.
+- Controle de sessão.
+- Autorização no backend.
+- RBAC.
+- ABAC quando necessário.
+- Menor privilégio.
+- Elevação temporária de permissões.
+- Reautenticação para operações sensíveis.
+- Revogação de sessões.
+- Controle por recurso.
+- Registro de mudanças de privilégios.
+- Políticas de identidade de serviços.
+
+Nenhum usuário terá acesso administrativo simplesmente por estar conectado à rede local.
+
+## CAMADA 4 — APPLICATION & API SECURITY
+
+Implementar mecanismos de proteção contra:
+
+- SQL injection.
+- Command injection.
+- XSS.
+- CSRF.
+- SSRF.
+- Path traversal.
+- Uploads maliciosos.
+- Mass assignment.
+- Quebra de controle de acesso.
+- IDOR/BOLA.
+- Desserialização insegura.
+- Exposição de dados.
+- Manipulação de sessões.
+- Configurações inseguras.
+- Abuso de APIs.
+- Validações inadequadas.
+- Erros de lógica de negócio.
+
+Usar validação de entrada, autorização explícita e APIs parametrizadas.
+
+WAF não substitui correção de código vulnerável.
+
+## CAMADA 5 — DATABASE SECURITY
+
+Implementar:
+
+- Credenciais separadas por serviço.
+- Menor privilégio.
+- Controle de conexões.
+- Migrações auditáveis.
+- Consultas parametrizadas.
+- Backup.
+- Testes de restauração.
+- Controle de acesso a dados.
+- Políticas de retenção.
+- Auditoria de alterações críticas.
+- Isolamento entre organizações.
+- Proteção de credenciais.
+- Mascaramento de informações sensíveis.
+
+Para sistemas compatíveis, auditar também políticas de Row-Level Security e acesso direto de clientes ao banco.
+
+## CAMADA 6 — CRYPTOGRAPHY & SECRET PROTECTION
+
+Implementar:
+
+- TLS configurado corretamente.
+- Verificação de certificados.
+- Armazenamento seguro de senhas.
+- Argon2id ou mecanismo adequado.
+- Geração segura de tokens.
+- Gestão de chaves.
+- Rotação de segredos.
+- Armazenamento protegido.
+- Separação de ambientes.
+- Prevenção de vazamentos em logs.
+- Auditoria de configurações criptográficas.
+- Alertas sobre certificados e algoritmos obsoletos.
+
+Não desenvolver primitivas criptográficas próprias sem necessidade e revisão especializada.
+
+## CAMADA 7 — ENDPOINT & SERVER HARDENING
+
+Desenvolver verificações e controles para:
+
+- Atualizações de segurança.
+- Serviços desnecessários.
+- Permissões de arquivos.
+- Configurações SSH.
+- Firewall local.
+- Integridade de arquivos.
+- Logs de autenticação.
+- Processos suspeitos.
+- Execuções anormais.
+- Alterações críticas.
+- Contas administrativas.
+- Configurações inseguras.
+- Baselines de hardening.
+- Alertas sobre desvios.
+
+Suportar Linux inicialmente e Windows progressivamente.
+
+## CAMADA 8 — SOFTWARE SUPPLY CHAIN
+
+Implementar:
+
+- SBOM.
+- Auditoria de dependências.
+- Verificação de vulnerabilidades conhecidas.
+- Detecção de segredos expostos.
+- Verificação de procedência.
+- Controle de versões.
+- Verificação de integridade de artefatos.
+- Proteção de pipelines.
+- Revisão de permissões de CI/CD.
+- Verificação de configurações de build.
+- Dependências transitivas.
+- Políticas de atualização.
+
+Não atualizar automaticamente bibliotecas com alterações incompatíveis sem validação.
+
+## CAMADA 9 — AI & AGENT SECURITY
+
+Implementar proteções contra:
+
+- Prompt injection.
+- Injeção indireta por documentos.
+- Vazamento de informações.
+- Execução indevida de ferramentas.
+- Excesso de autonomia.
+- Uso inseguro de arquivos enviados.
+- Exposição de credenciais.
+- Permissões excessivas.
+- Manipulação de respostas.
+- Contaminação de bases de conhecimento.
+- Modelos e dependências inseguros.
+- Consumo abusivo de recursos.
+
+A IA deverá operar com acesso mínimo, ferramentas autorizadas e decisões verificadas por políticas independentes.
+
+## CAMADA 10 — INTRUSION DETECTION
+
+Integrar mecanismos de:
+
+- Detecção baseada em regras.
+- Correlação de logs.
+- Identificação de anomalias.
+- Análise de autenticação.
+- Monitoramento de integridade.
+- Identificação de comportamentos suspeitos.
+- Indicadores de comprometimento.
+- Triagem de eventos.
+- Gestão de alertas.
+- Investigação.
+
+Cada detecção deverá indicar fonte, evidências, condições e confiança.
+
+## CAMADA 11 — THREAT CONTAINMENT
+
+Implementar playbooks para:
+
+- Bloqueio temporário de origens maliciosas.
+- Revogação controlada de sessões.
+- Restrição de credenciais.
+- Isolamento autorizado de recursos.
+- Aplicação de regras emergenciais.
+- Redução temporária de exposição.
+- Alertas críticos.
+- Preservação de evidências.
+- Escalonamento operacional.
+
+Ações de alto impacto exigirão autorização explícita ou política emergencial previamente aprovada.
+
+Não implementar retaliação digital ou invasão de sistemas de terceiros.
+
+## CAMADA 12 — AUTONOMOUS REMEDIATION
+
+Integrar AutoDefense, SecureFix e Self-Healing.
+
+Capacidades:
+
+- Propor patches.
+- Validar alterações.
+- Executar testes.
+- Criar versões de segurança.
+- Aprovar mudanças.
+- Implantar de forma gradual.
+- Acompanhar indicadores.
+- Reverter alterações problemáticas.
+- Reavaliar a vulnerabilidade.
+
+A IA não poderá modificar produção sem cumprir a política de autonomia.
+
+## CAMADA 13 — RECOVERY & RESILIENCE
+
+Implementar:
+
+- Backups.
+- Versionamento.
+- Snapshots quando disponíveis.
+- Restauração verificada.
+- Verificação de integridade.
+- Planos de continuidade.
+- Procedimentos de recuperação.
+- Testes de falhas.
+- Alertas de indisponibilidade.
+- Definição de RPO/RTO.
+- Cópias protegidas contra alterações indevidas quando a infraestrutura permitir.
+
+Não considerar backup confiável sem teste de restauração.
+
+## CAMADA 14 — AUDIT, FORENSICS & EVIDENCE
+
+Implementar:
+
+- Auditoria de operações.
+- Logs protegidos.
+- Evidências.
+- Hashes.
+- Linha do tempo.
+- Investigação de incidentes.
+- Cadeia de custódia.
+- Relatórios.
+- Retenção.
+- Exportação.
+- Revisão de acessos.
+- Preservação de artefatos originais.
+
+---
+
+# 7. ENGENHARIA DE BARREIRAS ADICIONAIS
+
+Além das 14 camadas, criar mecanismos especializados.
+
+## 7.1 Sentinel CanaryWatch
+
+Criar mecanismos controlados de detecção antecipada:
+
+- Canary tokens internos.
+- Credenciais fictícias sem privilégios.
+- Arquivos-isca em ambientes próprios.
+- Alertas de acesso indevido.
+- Recursos de detecção em redes autorizadas.
+
+Nunca transformar essas iscas em ferramentas de ataque contra terceiros.
+
+## 7.2 Sentinel PolicyGate
+
+Motor determinístico de autorização.
+
+Deverá decidir se uma operação pode ser executada com base em:
+
+- Identidade.
+- Papel.
+- Ativo.
+- Organização.
+- Escopo.
+- Contrato.
+- Autorização.
+- Ambiente.
+- Horário.
+- Impacto.
+- Classificação de risco.
+- Necessidade de aprovação.
+
+Toda ferramenta e todo agente deverão passar pelo PolicyGate.
+
+Nenhum componente poderá ignorar essas políticas.
+
+## 7.3 Sentinel TrustGuard
+
+Verificação contínua de postura de acesso:
+
+- Estado da sessão.
+- Permissões.
+- Identidade do serviço.
+- Credenciais.
+- Eventos de autenticação.
+- Contexto de risco.
+- Revogação.
+- Reautenticação.
+
+## 7.4 Sentinel IntegrityWatch
+
+Monitoramento de integridade:
+
+- Arquivos.
+- Configurações.
+- Artefatos.
+- Pacotes.
+- Regras de segurança.
+- Políticas.
+- Componentes críticos.
+
+Desvios deverão gerar evidências e alertas.
+
+## 7.5 Sentinel ShieldScore
+
+Criar pontuação explicável de maturidade defensiva.
+
+Avaliar:
+
+- Cobertura de MFA.
+- Atualização de sistemas.
+- Vulnerabilidades.
+- Exposição externa.
+- Backups.
+- Detecção.
+- Recuperação.
+- Permissões.
+- Configurações.
+- Inventário de ativos.
+- Tratamento de riscos.
+
+Não apresentar a pontuação como garantia de ausência de vulnerabilidades.
+
+## 7.6 Sentinel SafeDeploy
+
+Motor de implantação segura:
+
+- Verificação prévia.
+- Assinatura e integridade quando aplicáveis.
+- Aprovação.
+- Implantação gradual.
+- Health checks.
+- Monitoramento.
+- Rollback.
+- Registro de alterações.
+
+---
+
+# 8. AUTODEFENSE ENGINE — DEFESA AUTOMATIZADA
+
+Criar o motor:
+
+**I.See Sentinel AutoDefense**
+
+Sua missão será identificar problemas e coordenar respostas de segurança.
+
+Fluxo obrigatório:
+
+1. Detectar.
+2. Correlacionar.
+3. Classificar.
+4. Investigar.
+5. Preservar evidências.
+6. Determinar opções de resposta.
+7. Verificar política.
+8. Aplicar contenção autorizada.
+9. Criar plano de correção.
+10. Validar a solução.
+11. Executar conforme autorização.
+12. Reavaliar.
+13. Registrar.
+14. Monitorar recorrência.
+
+O motor deverá distinguir três tipos de ação.
+
+### Operação autônoma de baixo risco
+
+- Leitura autorizada.
+- Análise.
+- Correlação.
+- Diagnóstico.
+- Criação de relatórios.
+- Elaboração de patches em sandbox.
+- Testes não destrutivos.
+
+### Operação autônoma condicionada
+
+- Bloqueios temporários.
+- Ajustes reversíveis.
+- Respostas de baixo impacto.
+- Atualização de regras previamente aprovadas.
+
+Exige políticas explícitas, limites e capacidade de revisão.
+
+### Operação crítica
+
+- Alteração de produção.
+- Exclusão de dados.
+- Revogação ampla de identidades.
+- Isolamento de servidores importantes.
+- Mudança de permissões críticas.
+- Modificações de infraestrutura com impacto elevado.
+
+Exige aprovação humana específica, exceto quando houver procedimento emergencial rigorosamente pré-autorizado.
+
+---
+
+# 9. SELF-HEALING ENGINE — AUTORRECUPERAÇÃO
+
+Criar um mecanismo de recuperação e correção assistida.
+
+Objetivo:
+
+Restaurar condições operacionais seguras após falhas, mudanças indevidas ou incidentes.
+
+Funcionalidades:
+
+- Identificação de desvios.
+- Comparação com configurações aprovadas.
+- Recuperação de versões.
+- Testes de integridade.
+- Verificação de serviços.
+- Restabelecimento controlado.
+- Análise de erros.
+- Rollback.
+- Registro de causa.
+- Verificação posterior.
+
+Não permitir ciclos infinitos de alteração e reversão.
+
+Implementar limites de tentativas, circuit breakers e escalonamento humano.
+
+Nunca apagar ou sobrescrever evidências de incidente durante a recuperação.
+
+---
+
+# 10. SECUREFIX — CORREÇÃO REAL DE VULNERABILIDADES
+
+Desenvolver um motor proprietário de propostas e validação de patches.
+
+Fluxo:
+
+**Finding → Root Cause → Patch Candidate → Test → Review → Deploy → Verify.**
+
+O motor deverá:
+
+- Identificar arquivos afetados.
+- Relacionar achados e evidências.
+- Criar branches isoladas.
+- Produzir diffs.
+- Executar testes.
+- Comparar resultados.
+- Identificar regressões.
+- Registrar alterações.
+- Criar propostas de revisão.
+- Aplicar patches autorizados.
+- Revalidar os problemas.
+
+A IA não poderá afirmar que um patch é seguro apenas porque ele compila.
+
+Exigir testes, verificação contextual e análise de impacto.
+
+---
+
+# 11. SECUREBUILD — SEGURANÇA DE SOFTWARE
+
+Criar uma plataforma própria de Application Security.
+
+Suportar:
+
+- Sites.
+- APIs.
+- Aplicativos.
+- Sistemas web.
+- Softwares empresariais.
+- Projetos desenvolvidos com IA.
+- Sistemas com Supabase.
+- Sistemas com Firebase.
+- Aplicações Node.js.
+- Aplicações React e Next.js.
+- Serviços Python.
+- Outros frameworks relevantes.
+
+Desenvolver:
+
+- SAST.
+- Análise de dependências.
+- Verificação de segredos.
+- Auditoria de configuração.
+- Avaliação de autenticação.
+- Testes de autorização.
+- Auditoria de APIs.
+- Análise de políticas.
+- Verificações de infraestrutura.
+- DAST controlado e autorizado.
+- Geração de relatórios.
+- Recomendações de correção.
+- Retestes.
+
+Criar uma engine própria de regras tipadas e versionadas.
+
+Utilizar bibliotecas e scanners especializados quando sua integração for mais segura do que reinventar seus mecanismos.
+
+---
+
+# 12. ATTACKLAB — LABORATÓRIO OFENSIVO
+
+Criar um Cyber Range privado.
+
+Funcionalidades:
+
+- Gerenciamento de VMs.
+- Redes isoladas.
+- Catálogo de cenários.
+- Aplicações vulneráveis intencionalmente.
+- Exercícios de pentest.
+- Avaliações de controles.
+- Simulações adversárias.
+- Snapshots.
+- Reset de ambiente.
+- Registro de exercícios.
+- Análise de detecções.
+- Relatórios.
+
+Utilizar MITRE ATT&CK para organização metodológica.
+
+Executar simulações somente em ambientes controlados ou expressamente autorizados.
+
+Bloquear roteamento não autorizado para redes externas.
+
+---
+
+# 13. DEFENSEFLOW — MOTOR BLUE TEAM
+
+Desenvolver:
+
+- Ingestão de eventos.
+- Normalização.
+- Regras.
+- Correlação.
+- Alertas.
+- Incidentes.
+- Playbooks.
+- Aprovações.
+- Contenção.
+- Recuperação.
+- Métricas.
+- Relatórios.
+
+Avaliar integração com:
+
+- Wazuh.
+- Suricata.
+- Zeek.
+- Sigma.
+- YARA.
+- Ferramentas de logs.
+- Agentes autorizados.
+
+Criar uma interface central única para operação.
+
+---
+
+# 14. PURPLEMATRIX — RED TEAM + BLUE TEAM
+
+Desenvolver exercícios conjuntos.
+
+Fluxo:
+
+1. Selecionar técnica.
+2. Determinar objetivo defensivo.
+3. Criar cenário controlado.
+4. Executar em laboratório.
+5. Coletar eventos.
+6. Verificar detecção.
+7. Identificar lacunas.
+8. Ajustar controles.
+9. Reexecutar.
+10. Gerar relatório comparativo.
+
+Criar métricas de cobertura fundamentadas em evidências.
+
+Não afirmar cobertura de técnicas que não foram testadas.
+
+---
+
+# 15. DIGITAL FORENSICS — SISTEMAS PROPRIETÁRIOS
+
+Criar os seguintes módulos:
+
+## Sentinel DiskLab
+
+Análise de discos e imagens forenses.
+
+- Importação de imagens.
+- Leitura de formatos suportados.
+- Metadados.
+- Hashes.
+- Navegação de artefatos.
+- Busca.
+- Linha do tempo.
+- Relatórios.
+- Cadeia de custódia.
+
+Inspirar-se nas necessidades atendidas por Autopsy, FTK, EnCase e X-Ways, sem copiar funcionalidades protegidas ou alegar equivalência plena.
+
+## Sentinel MobileScope
+
+Análise de dispositivos móveis a partir de dados legitimamente acessíveis.
+
+- Backups.
+- Exportações.
+- Arquivos de aplicativos.
+- SQLite.
+- Metadados.
+- Artefatos suportados.
+- Linha do tempo.
+- Evidências.
+
+Utilizar alternativas abertas como ALEAPP e iLEAPP quando apropriado.
+
+Não implementar bypass de autenticação ou prometer desbloqueio universal de dispositivos.
+
+## Sentinel DeepTrace
+
+Correlação forense.
+
+- Eventos.
+- Processos.
+- Arquivos.
+- Memória.
+- Conexões.
+- Logs.
+- Linha do tempo.
+- Hipóteses.
+- Evidências.
+- Relatórios.
+
+## Sentinel EvidenceChain
+
+Integridade e cadeia de custódia.
+
+- Registro de evidências.
+- SHA-256.
+- Metadados.
+- Identificador único.
+- Operador.
+- Histórico de acesso.
+- Registro de transferências.
+- Controle de retenção.
+- Exportação documental.
+
+Preservar originais e diferenciar cópias de trabalho.
+
+---
+
+# 16. MALWARE RESEARCH
+
+Criar o:
+
+**Sentinel MalwareLens**
+
+Capacidades:
+
+- Importação protegida de amostras autorizadas.
+- Análise estática.
+- Hashes.
+- Strings.
+- Metadados.
+- Formatos executáveis.
+- Correspondências YARA.
+- Indicadores.
+- Integração com engenharia reversa.
+- Relatórios.
+- Sandbox descartável para análises dinâmicas controladas.
+
+Avaliar integração com Ghidra e Volatility 3.
+
+Não executar arquivos suspeitos diretamente no host.
+
+Não construir funcionalidades destinadas à propagação, persistência clandestina ou evasão de detecção de malware.
+
+---
+
+# 17. NETWORK INTELLIGENCE
+
+Criar:
+
+**Sentinel NetworkTrace**
+
+Funcionalidades:
+
+- Importação de PCAP/PCAPNG.
+- Metadados de fluxos.
+- Estatísticas.
+- Protocolos.
+- Análise de conexões.
+- Identificação de padrões suspeitos.
+- Correlação com alertas.
+- Visualização de relacionamentos.
+- Relatórios.
+
+Integrar ferramentas como Wireshark, Zeek, tcpdump e bibliotecas adequadas.
+
+A captura de tráfego deverá respeitar autorização, privacidade e retenção.
+
+---
+
+# 18. OSINT & THREAT INTELLIGENCE
+
+Criar dois motores complementares.
+
+## Sentinel IntelScope
+
+- Inventário de domínios.
+- Fontes públicas.
+- Certificados.
+- Serviços expostos.
+- Metadados.
+- Grafo de ativos.
+- Relacionamento entre informações.
+- Registro das fontes.
+- Histórico de descobertas.
+
+## Sentinel ThreatPulse
+
+- Ingestão de indicadores.
+- Deduplicação.
+- Correlação.
+- Avaliação de confiabilidade.
+- Priorização.
+- Relação com incidentes.
+- Histórico.
+- Alertas.
+
+Utilizar fontes legítimas e APIs conforme suas políticas.
+
+Não realizar coleta invasiva de informações pessoais.
+
+---
+
+# 19. CRYPTOGUARD — AUDITORIA CRIPTOGRÁFICA
+
+Desenvolver mecanismos para:
+
+- Verificar TLS.
+- Examinar certificados.
+- Identificar algoritmos obsoletos.
+- Auditar armazenamento de credenciais.
+- Avaliar parâmetros de hash de senhas.
+- Detectar configurações fracas.
+- Verificar validade de certificados.
+- Examinar políticas de gestão de chaves.
+- Produzir recomendações.
+- Executar testes de resistência de senhas somente com autorização.
+
+O sistema poderá auxiliar na análise de criptografia, mas não deverá prometer romper algoritmos fortes corretamente implementados.
+
+---
+
+# 20. RISKGRAPH — INTELIGÊNCIA DE RISCO
+
+Criar um motor de correlação entre:
+
+- Organizações.
+- Ativos.
+- Tecnologias.
+- Serviços.
+- Dependências.
+- Vulnerabilidades.
+- Identidades.
+- Permissões.
+- Incidentes.
+- Controles.
+- Evidências.
+- Correções.
+
+Criar uma priorização explicável baseada em:
+
+- Impacto.
+- Exposição.
+- Criticidade.
+- Confiança da evidência.
+- Existência de exploração conhecida.
+- Controles compensatórios.
+- Contexto do negócio.
+
+Utilizar CVSS, EPSS e outras referências apropriadas.
+
+Não classificar toda vulnerabilidade de severidade alta como explorável no ambiente sem evidência.
+
+---
+
+# 21. RESPONSEGRID — RESPOSTA A INCIDENTES
+
+Desenvolver:
+
+- Gestão de incidentes.
+- Playbooks.
+- Etapas de investigação.
+- Responsáveis.
+- Aprovações.
+- Contenção.
+- Erradicação.
+- Recuperação.
+- Comunicação.
+- Evidências.
+- Lições aprendidas.
+- Métricas de resposta.
+
+A resposta deve preservar evidências relevantes e minimizar impactos desnecessários.
+
+O produto também deverá apoiar a documentação necessária a processos de conformidade e notificações, sem substituir análise jurídica.
+
+---
+
+# 22. AI SECURITY — PROJETOS GERADOS COM IA
+
+Criar um módulo dedicado à análise de sistemas desenvolvidos com ferramentas de inteligência artificial.
+
+Objetivos:
+
+- Identificar riscos em código gerado por IA.
+- Verificar bibliotecas.
+- Detectar segredos expostos.
+- Auditar regras de autorização.
+- Inspecionar políticas de bancos.
+- Avaliar APIs.
+- Verificar autenticação.
+- Auditar integrações.
+- Identificar configurações inseguras.
+- Inspecionar agentes e ferramentas conectadas.
+- Avaliar riscos de prompt injection.
+- Verificar permissões excessivas.
+- Criar relatórios.
+- Propor correções.
+- Reexecutar testes.
+
+Utilizar a versão vigente do OWASP Top 10 for LLM Applications e demais referências oficiais pertinentes.
+
+Esse será um diferencial comercial central da I.See Technologies.
+
+---
+
+# 23. INTELIGÊNCIA ARTIFICIAL DO SENTINEL
+
+Criar:
+
+**Sentinel Intelligence Assistant**
+
+A IA deverá ajudar em:
+
+- Triagem.
+- Investigação.
+- Explicação de achados.
+- Interpretação de logs.
+- Correlação de eventos.
+- Priorização.
+- Geração de relatórios.
+- Sugestões de patches.
+- Planejamento de testes.
+- Revisão de regras.
+- Análise de configurações.
+- Documentação técnica.
+
+Arquitetura obrigatória:
+
+- Ferramentas tipadas.
+- Validação de argumentos.
+- Contexto de autorização.
+- Limites de acesso.
+- Registro de ações.
+- Proteção contra prompt injection.
+- Segredos fora do contexto.
+- Acesso mínimo.
+- Revisão de operações de risco.
+- Fontes verificáveis.
+- Estados de incerteza.
+
+A IA não poderá:
+
+- Alterar suas próprias permissões.
+- Executar comandos arbitrários.
+- Acessar sistemas fora de escopo.
+- Ignorar aprovações.
+- Ocultar falhas.
+- Declarar resultados não verificados.
+- Enviar segredos a provedores externos sem autorização.
+
+Priorizar modelos locais quando tecnicamente viáveis.
+
+Modelos externos serão integrações opcionais.
+
+---
+
+# 24. COMMAND CENTER — EXPERIÊNCIA VISUAL
+
+Criar um painel premium, de nível empresarial.
+
+Identidade:
+
+**I.See Sentinel — Cyber Defense Command Center**
+
+Design:
+
+- Dark mode.
+- Grafite e preto profundo.
+- Tipografia moderna.
+- Alto contraste.
+- Componentes técnicos.
+- Interfaces responsivas.
+- Navegação lateral.
+- Gráficos.
+- Eventos em tempo real.
+- Mapa de ativos.
+- Grafos de risco.
+- Linha do tempo.
+- Tabelas avançadas.
+- Pesquisa global.
+- Filtros.
+- Indicadores.
+- Painéis de investigação.
+
+Seções principais:
+
+1. Overview.
+2. SOC.
+3. BarrierMatrix.
+4. AutoDefense.
+5. Self-Healing.
+6. SecureBuild.
+7. AI Security.
+8. Red Team.
+9. Blue Team.
+10. Purple Team.
+11. Cyber Lab.
+12. Digital Forensics.
+13. Mobile Forensics.
+14. Malware Research.
+15. Network Intelligence.
+16. OSINT.
+17. CryptoGuard.
+18. Threat Intelligence.
+19. RiskGraph.
+20. EvidenceChain.
+21. ResponseGrid.
+22. Reports.
+23. Assets.
+24. Policies.
+25. Integrations.
+26. System Health.
+27. Audit Logs.
+28. Settings.
+
+Utilizar animações refinadas somente quando melhorarem compreensão e usabilidade.
+
+Não prejudicar a velocidade da central com efeitos decorativos excessivos.
+
+---
+
+# 25. SISTEMA UNIFICADO DE EVENTOS
+
+Todos os módulos deverão compartilhar um modelo consistente de informações.
+
+Exemplo conceitual:
+
+```text
+Asset
+  → SecurityEvent
+  → Detection
+  → Finding
+  → Evidence
+  → RiskAssessment
+  → Incident
+  → ResponseAction
+  → Remediation
+  → Verification
+  → Report
+```
+
+Implementar identificadores, timestamps, origem, permissões e histórico.
+
+Evitar dependências circulares entre módulos.
+
+Cada evento deverá possuir esquema versionado.
+
+Não utilizar dados simulados como se fossem telemetria real.
+
+---
+
+# 26. INTEGRAÇÃO TOTAL — EXEMPLO OPERACIONAL
+
+Simular o seguinte fluxo com uma aplicação de laboratório.
+
+### Identificação
+
+SecureBuild encontra uma configuração insegura.
+
+### Classificação
+
+RiskGraph determina o impacto contextual.
+
+### Análise
+
+Sentinel Intelligence Assistant explica o problema e relaciona as evidências.
+
+### Contenção
+
+BarrierMatrix identifica controles compensatórios disponíveis.
+
+### Validação
+
+AttackLab executa uma simulação segura no laboratório.
+
+### Defesa
+
+DefenseFlow e PurpleMatrix verificam a telemetria gerada.
+
+### Correção
+
+SecureFix produz um patch.
+
+### Segurança
+
+PolicyGate verifica permissões.
+
+### Testes
+
+AutoDefense executa verificações automatizadas.
+
+### Aplicação
+
+A alteração é aprovada e implantada no ambiente autorizado.
+
+### Verificação
+
+SecureBuild reavalia o achado.
+
+### Recuperação
+
+Self-Healing acompanha a saúde operacional e executa rollback se houver condições previstas.
+
+### Evidências
+
+EvidenceChain preserva os artefatos.
+
+### Relatório
+
+ResponseGrid e Reporting consolidam os resultados.
+
+Toda a operação deverá ser rastreável.
+
+---
+
+# 27. BANCO DE DADOS
+
+Projetar as seguintes entidades principais:
+
+- Users.
+- Roles.
+- Permissions.
+- Organizations.
+- Projects.
+- Engagements.
+- Authorizations.
+- Scopes.
+- Assets.
+- Services.
+- Technologies.
+- SecurityEvents.
+- DetectionRules.
+- Alerts.
+- Incidents.
+- Findings.
+- Vulnerabilities.
+- Evidence.
+- EvidenceTransfers.
+- RiskAssessments.
+- RiskRelationships.
+- DefensePolicies.
+- SecurityBarriers.
+- BarrierEvaluations.
+- ResponseActions.
+- RemediationPlans.
+- PatchCandidates.
+- DeploymentRecords.
+- VerificationResults.
+- RecoveryActions.
+- Exercises.
+- SimulationResults.
+- ThreatIndicators.
+- Reports.
+- Integrations.
+- Jobs.
+- AuditEvents.
+
+Preparar isolamento multiempresa desde a arquitetura.
+
+Na primeira versão, manter acesso interno privado.
+
+---
+
+# 28. LICENCIAMENTO E FERRAMENTAS GRATUITAS
+
+Priorizar integração ou utilização legítima de:
+
+- Wazuh.
+- Suricata.
+- Zeek.
+- Wireshark.
+- Nmap.
+- OWASP ZAP.
+- Trivy.
+- OSV-Scanner.
+- Gitleaks.
+- Semgrep, conforme licença e edição.
+- Autopsy.
+- The Sleuth Kit.
+- Volatility 3.
+- Ghidra.
+- YARA.
+- ALEAPP.
+- iLEAPP.
+- MITRE Caldera.
+- DFIR-IRIS.
+- OpenSSL.
+- Bibliotecas de análise de PCAP.
+- Ferramentas de análise de dependências.
+
+Verificar versões atuais, compatibilidade, permissões de uso comercial e obrigações de licença.
+
+Desenvolver nossas próprias interfaces, workflows, conectores e mecanismos onde houver vantagem técnica.
+
+Ferramentas comerciais de perícia serão referências para análise de requisitos.
+
+Não tentar duplicar capacidades que dependem de hardware especializado sem dispor dos recursos necessários.
+
+---
+
+# 29. ESTRATÉGIA DE CUSTOS
+
+A primeira versão deverá funcionar localmente com custos adicionais mínimos.
+
+Prioridades:
+
+1. Reutilizar Arch Linux.
+2. Usar tecnologias gratuitas.
+3. Evitar serviços pagos obrigatórios.
+4. Utilizar banco local.
+5. Utilizar virtualização gratuita.
+6. Executar somente os serviços necessários.
+7. Evitar infraestrutura superdimensionada.
+8. Aproveitar projetos open source legalmente.
+9. Minimizar consumo de memória.
+10. Disponibilizar ferramentas de diagnóstico.
+
+Antes da instalação, verificar os recursos reais do computador.
+
+Não presumir RAM, GPU ou capacidade de processamento.
+
+Não comprometer arquivos pessoais ou partições existentes.
+
+A futura operação comercial deverá possuir infraestrutura e processos compatíveis com as obrigações assumidas.
+
+---
+
+# 30. REQUISITOS DE SEGURANÇA DO PRÓPRIO SENTINEL
+
+Implementar:
+
+- MFA.
+- Autorização no backend.
+- Menor privilégio.
+- Sessões seguras.
+- Criptografia apropriada.
+- Logs de auditoria.
+- Proteção contra injeções.
+- Controle de arquivos enviados.
+- Prevenção de SSRF.
+- Validação de webhooks.
+- Isolamento de workers.
+- Limites de recursos.
+- Gestão de credenciais.
+- Rotação de segredos.
+- Backups.
+- Testes de restauração.
+- Controle de dependências.
+- Proteção de pipelines.
+- Revisão de permissões.
+- Separação de ambientes.
+- Proteção contra prompt injection.
+- Políticas de execução.
+- Segurança de APIs.
+- Controle multiempresa.
+- Testes de segurança.
+
+A central administrativa não deverá ficar publicamente exposta por padrão.
+
+O acesso remoto deverá utilizar mecanismos seguros de autenticação e rede.
+
+---
+
+# 31. PADRÕES PROFISSIONAIS
+
+Basear a engenharia nas versões vigentes e aplicáveis de:
+
+- OWASP ASVS.
+- OWASP WSTG.
+- OWASP API Security Top 10.
+- OWASP MASVS.
+- OWASP GenAI Security.
+- OWASP Cheat Sheet Series.
+- NIST CSF 2.0.
+- NIST SP 800-207.
+- NIST SP 800-61 Rev. 3.
+- MITRE ATT&CK.
+- MITRE D3FEND.
+- CWE.
+- CVE.
+- CVSS.
+- EPSS.
+- CISA KEV.
+- Sigma.
+- YARA.
+- STIX/TAXII.
+- CycloneDX.
+- SARIF.
+
+Referenciar requisitos específicos e manter rastreabilidade.
+
+Não alegar certificação ou conformidade sem avaliação correspondente.
+
+---
+
+# 32. TESTES OBRIGATÓRIOS
+
+Criar uma estratégia de validação abrangente.
+
+## Testes funcionais
+
+- APIs.
+- Banco.
+- Autenticação.
+- Permissões.
+- Jobs.
+- Relatórios.
+- Evidências.
+- Integrações.
+
+## Testes de segurança
+
+- Acesso indevido.
+- Isolamento entre organizações.
+- Injeções.
+- Uploads.
+- SSRF.
+- Escalada de privilégios.
+- Reutilização de sessão.
+- Vazamento de credenciais.
+- Execução fora de escopo.
+- Abuso de ferramentas por IA.
+
+## Testes da BarrierMatrix
+
+Para cada barreira:
+
+- Validar configuração.
+- Executar teste apropriado.
+- Registrar evidências.
+- Verificar alertas.
+- Confirmar comportamento.
+- Detectar falhas.
+- Verificar recuperação.
+
+## Testes de AutoDefense
+
+- Detecção.
+- Classificação.
+- Patch.
+- Validação.
+- Aprovação.
+- Implantação.
+- Verificação.
+- Rollback.
+
+## Testes de recuperação
+
+- Falha de banco.
+- Interrupção de serviço.
+- Falha de worker.
+- Falta de armazenamento.
+- Arquivos corrompidos.
+- Falha de integração.
+- Recuperação de backup.
+
+Não marcar testes não executados como aprovados.
+
+---
+
+# 33. MÉTRICAS OPERACIONAIS
+
+Desenvolver indicadores como:
+
+- Ativos monitorados.
+- Cobertura de telemetria.
+- Vulnerabilidades identificadas.
+- Vulnerabilidades corrigidas.
+- Correções verificadas.
+- Tempo de triagem.
+- Tempo de detecção.
+- Tempo de resposta.
+- Tempo de recuperação.
+- Alertas falsos positivos.
+- Estado das barreiras.
+- Taxa de sucesso de backups.
+- Taxa de sucesso de restaurações.
+- Cobertura de testes.
+- Exercícios Purple Team realizados.
+- Cobertura demonstrada de controles.
+
+As métricas devem indicar o período e a origem dos dados.
+
+Não inventar percentuais de proteção.
+
+---
+
+# 34. EVOLUÇÃO COMERCIAL
+
+Inicialmente o Sentinel será uma ferramenta exclusiva da I.See Technologies.
+
+Preparar futuramente:
+
+## Serviços profissionais
+
+- Pentest.
+- Auditoria web.
+- Auditoria de API.
+- Auditoria de IA.
+- Gestão de vulnerabilidades.
+- Análise forense.
+- Resposta a incidentes.
+- Avaliação de infraestrutura.
+- Hardening.
+- Consultoria de arquitetura segura.
+
+## Serviços recorrentes
+
+- Monitoramento gerenciado.
+- Gestão de eventos.
+- Análise de riscos.
+- Auditoria contínua.
+- Relatórios periódicos.
+- Acompanhamento de correções.
+
+## Produto de software
+
+- Licenciamento corporativo.
+- Implantação privada.
+- SaaS.
+- API comercial.
+- Integrações.
+- Módulos adicionais.
+
+Não desenvolver cobrança e assinatura antes de consolidar o funcionamento técnico.
+
+---
+
+# 35. DESENVOLVIMENTO INTEGRADO
+
+Todos os módulos deverão estar previstos na arquitetura inicial.
+
+Entretanto, o desenvolvimento deverá ocorrer por entregas integradas e testáveis.
+
+Não construir apenas menus vazios.
+
+Criar interfaces, contratos, banco, serviços e fluxos funcionais para cada capacidade efetivamente implementada.
+
+Prioridade de integração:
+
+**Fundação**
+- Command Center.
+- Autenticação.
+- Banco.
+- PolicyGate.
+- Auditoria.
+- Gestão de ativos.
+
+**Análise**
+- SecureBuild.
+- RiskGraph.
+- EvidenceChain.
+- BarrierMatrix.
+
+**Defesa**
+- DefenseFlow.
+- AutoDefense.
+- SecureFix.
+- Self-Healing.
+
+**Investigação**
+- DeepTrace.
+- NetworkTrace.
+- MalwareLens.
+- IntelScope.
+
+**Laboratório**
+- AttackLab.
+- PurpleMatrix.
+- Simulações.
+- Avaliações defensivas.
+
+**Expansão**
+- MobileScope.
+- CryptoGuard.
+- ThreatPulse.
+- Integrações especializadas.
+- Capacidades comerciais.
+
+A ordem poderá ser refinada com base nas dependências reais.
+
+O objetivo final permanece integrar todos os componentes planejados.
+
+---
+
+# 36. CRITÉRIOS DE ACEITAÇÃO
+
+O sistema só poderá ser considerado operacional quando conseguir demonstrar fluxos reais.
+
+## Demonstração A — Auditoria
+
+Importar um projeto autorizado, executar verificações, registrar achados e produzir relatório.
+
+## Demonstração B — Barreiras
+
+Configurar controles de segurança, verificar seu funcionamento e gerar evidências de sua eficácia.
+
+## Demonstração C — Defesa
+
+Ingerir eventos, detectar um padrão definido, gerar alerta e abrir incidente.
+
+## Demonstração D — AutoDefense
+
+Identificar uma vulnerabilidade em laboratório, criar patch, testar, aprovar, aplicar e reavaliar.
+
+## Demonstração E — Self-Healing
+
+Simular falha controlada, acionar recuperação e verificar integridade.
+
+## Demonstração F — Purple Team
+
+Executar um cenário sintético em laboratório e medir os resultados defensivos.
+
+## Demonstração G — Forense
+
+Importar artefatos autorizados, calcular hashes, registrar cadeia de custódia e gerar linha do tempo.
+
+## Demonstração H — Segurança do Sentinel
+
+Comprovar que operadores sem permissão não conseguem acessar recursos protegidos nem executar ações fora de escopo.
+
+---
+
+# 37. REGRAS DE EXECUÇÃO PARA O MODELO DE IA
+
+Você deve trabalhar como uma equipe de engenharia especializada.
+
+Utilize o maior nível de rigor técnico e raciocínio disponível.
+
+Não produza apenas sugestões superficiais.
+
+Para cada decisão, considere:
+
+- Viabilidade.
+- Segurança.
+- Custo.
+- Desempenho.
+- Escalabilidade.
+- Manutenção.
+- Licenciamento.
+- Dependências.
+- Experiência do operador.
+- Testabilidade.
+- Recuperação.
+
+Quando tiver ferramentas de edição e execução disponíveis, produza código real e testes.
+
+Não afirmar que arquivos foram criados se não foram.
+
+Não afirmar que comandos foram executados se não foram.
+
+Não modificar código não relacionado sem necessidade.
+
+Preservar decisões existentes, salvo quando houver problema técnico demonstrável.
+
+Não comprometer a segurança para acelerar o desenvolvimento.
+
+Não executar testes ofensivos sem escopo e autorização.
+
+Não permitir que agentes de IA executem ações privilegiadas fora das políticas estabelecidas.
+
+Não inventar integrações nem funcionalidades.
+
+Não prometer proteção infalível.
+
+---
+
+# 38. FORMATO DE ENTREGA
+
+Durante o desenvolvimento, forneça:
+
+1. Diagnóstico do estado atual.
+2. Arquitetura.
+3. Decisões técnicas.
+4. Arquivos criados e alterados.
+5. Funcionalidades implementadas.
+6. Medidas de segurança.
+7. Testes executados.
+8. Resultados.
+9. Limitações.
+10. Riscos remanescentes.
+11. Próximos componentes.
+
+Mantenha um documento de decisões arquiteturais, um inventário de módulos e uma matriz de implementação.
+
+A matriz deverá distinguir:
+
+- Planejado.
+- Em desenvolvimento.
+- Implementado.
+- Testado.
+- Validado.
+- Pronto para operação interna.
+- Apto à comercialização.
+
+Não confundir implementação com validação independente.
+
+---
+
+# 39. TAREFA INICIAL — COMEÇAR O PROJETO
+
+Inicie pela análise do ambiente disponível.
+
+Verifique:
+
+- Sistema operacional.
+- Versão do Arch Linux.
+- CPU.
+- RAM.
+- GPU.
+- Armazenamento.
+- Virtualização.
+- Node.js.
+- Python.
+- PostgreSQL.
+- Git.
+- Ferramentas de desenvolvimento.
+- Dependências existentes.
+
+Se não houver acesso ao computador, não invente seus dados.
+
+Forneça comandos seguros de diagnóstico para obtenção das informações necessárias.
+
+Depois:
+
+1. Estabeleça a arquitetura do repositório.
+2. Configure a fundação do projeto.
+3. Implemente autenticação e autorização.
+4. Crie a estrutura de banco de dados.
+5. Desenvolva o Sentinel Command Center.
+6. Desenvolva o PolicyGate.
+7. Crie o registro de evidências.
+8. Estabeleça o modelo de eventos.
+9. Implemente a primeira análise real de segurança.
+10. Integre os primeiros controles da BarrierMatrix.
+11. Crie testes.
+12. Execute verificações.
+13. Corrija os problemas encontrados.
+14. Documente o funcionamento.
+
+Não interrompa uma implementação viável para repetir perguntas já respondidas.
+
+Quando não houver acesso às ferramentas necessárias, apresente o bloqueio exato e a próxima ação executável.
+
+---
+
+# 40. OBJETIVO FINAL — I.SEE SENTINEL
+
+Construir uma plataforma profissional de segurança digital que reúna:
+
+**Proteção multicamadas + Zero Trust + Auditoria de aplicações + IA especializada + Red Team autorizado + Blue Team + Purple Team + SOC + Forense Digital + Análise de Malware + Inteligência de Ameaças + Correção Assistida + Autodefesa + Recuperação + Evidências + Governança.**
+
+A principal inovação da I.See deverá ser a integração consistente dessas capacidades com métodos próprios.
+
+Não basta encontrar problemas.
+
+O Sentinel deverá ajudar a compreender o que aconteceu, limitar danos, corrigir a origem do problema, verificar o resultado e preservar evidências.
+
+O produto deverá começar como uma ferramenta interna profissional, com custo de licenciamento inicial mínimo, e evoluir para uma solução comercial conforme demonstrar confiabilidade, maturidade e eficácia.
+
+**I.See Technologies**  
+**I.See Sentinel — Intelligent Cyber Defense Platform**
+
+**Protect. Detect. Investigate. Remediate. Recover. Verify.**
+
+## COMANDO FINAL
+
+Inicie a implementação do I.See Sentinel com foco em engenharia real, segurança em profundidade, tecnologias gratuitas e componentes proprietários.
+
+Comece pela arquitetura executável, pela validação do ambiente Linux e pela fundação funcional da plataforma.
+
+Implemente os módulos de forma integrada e com testes verificáveis.
+
+Priorize qualidade, rastreabilidade, segurança, correção e recuperação.
+
+Nunca sacrifique a segurança operacional para produzir uma aparência de sistema completo.
+
+O objetivo é desenvolver uma tecnologia de cibersegurança da I.See Technologies que possa ser utilizada profissionalmente, aperfeiçoada continuamente e comercializada futuramente.

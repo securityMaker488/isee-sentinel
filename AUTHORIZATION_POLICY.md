@@ -63,6 +63,30 @@ escopos ainda vigentes.
 
 ## Perfis e limites aplicados
 
+### Manifesto revisado de alvos
+
+O perfil `lab.inventory` exige `targetManifest` versão1, com `targets`
+(`assetId`, IPv4 literal `address`, `ports`) e `exclusions` (`address`). Até100
+alvos e100 exclusões; de1 a16 portas únicas por alvo, contidas em `allowedPorts`.
+Somente IPv4 privado RFC1918 ou loopback, sem DNS, CIDR, URL ou resolução implícita.
+Cada ativo selecionado para inventário precisa constar do manifesto. Exclusões
+bloqueiam o endereço em todos os ativos do pedido, inclusive quando ele consta
+explicitamente dos alvos. A tela Autorizações mostra os termos antes da aprovação.
+
+Manifesto normalizado integra `requestHash` esquema2 e fica imutável na migração010.
+Pedidos sem manifesto preservam hash esquema1. Registros antigos continuam legíveis,
+mas escopos legados e aprovações antigas sem manifesto não permitem cadastrar ou
+executar alvos de rede. É necessário criar e revisar novo pedido; não há consentimento
+retroativo. Os demais perfis conservam sua política existente.
+
+Cadastro e despacho conferem par ativo/endereço, portas reais, exclusões, projeto,
+empresa, revisão e vigência. Após adquirir o job, revalidam a mesma autorização
+antes de despachar; substituição/revogação nesse intervalo impede o processo.
+O histórico do scan preserva `mandateId` e `authorizationRequestHash`, com vínculos
+no banco à organização/ativo/mandato e proteção contra alterações. Scans históricos
+podem ter esses campos nulos. Isso não conclui o plano geral de avaliação nem a
+orquestração/cancelamento de processos já iniciados.
+
 Para ativos gerenciados, o servidor exige simultaneamente a operação básica
 autorizada e o perfil específico do executor. Permitir `scan` em um analisador
 não libera outros executores que compartilhem essa operação. O perfil é definido
@@ -114,7 +138,7 @@ seletor global que libere operações críticas em produção.
 | Acrescentar nota, vincular evidência ou alterar estado do caso | Administrador; vínculo de evidência exige também o mesmo ativo |
 | Criar/aprovar/aplicar/verificar/restaurar plano SecureFix | Administrador, ativo `lab` e ambos os escopos vigentes em cada transição; alvo é cópia armazenada |
 | Baixar conteúdo de evidência / ler configuração de plano | Administrador/analista; leitura auditada, respeitando organização |
-| Executar adaptador Nmap | Ativo de laboratório, alvo cadastrado e autorização válida; limites fixos de endereço/portas/tempo |
+| Executar adaptador Nmap | Ativo lab, alvo cadastrado, mandato e manifesto aprovados para endereço/portas, exclusões respeitadas, vigência cobrindo40s |
 | Resposta crítica, remediação ou recuperação do host | Executor crítico indisponível; não permitido pela política atual |
 
 Os papéis `admin`, `analyst` e `viewer` existem no modelo e nos testes. Isso não

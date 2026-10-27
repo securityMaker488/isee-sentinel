@@ -1,10 +1,47 @@
-# Validação de desenvolvimento — Windows — 26/10/2026
+# Validação de desenvolvimento — Windows — 27/10/2026
 
 Especificação V6.9, versão de desenvolvimento 0.2.0. Resultados de fixtures
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
-## GitHub privado, CI e complemento AttackLab
+## Incremento manifesto de alvos e guia único — 27/10/2026
+
+Código: migração010; core/target-manifest e authorization; API authorization-manager,
+policy/lab; telas AuthorizationView/LabView; testes de política/API/navegador.
+Não reescreve migrações001–009, não atribui autorização histórica nem executa Nmap real.
+Guia único: docs/GUIA-MESTRE-CONSOLIDADO.md; sete fontes integrais/hashes e563
+títulos indexados em docs/PROMPT-COVERAGE.json. Uma fila global0–12 é preservada.
+
+| Verificação | Resultado deste incremento |
+|---|---|
+| TypeScript e build web | Passaram |
+| Suíte completa com Python real | 158 passaram,0 falhas,1 skip POSIX no Windows |
+| Focados autorização/lab | 50 passaram; manifesto puro adicional incluído na suíte completa |
+| API Authorization Manager / PostgreSQL18 restrito | 26 passaram, incluindo migração010 e histórico esquema1 |
+| Restore PostgreSQL nativo | 36 tabelas idênticas,10 migrações,37 mandatos/39 vínculos,3 scans e225 eventos; auditoria íntegra |
+| Navegador | Manifesto preenchido/revisado/exportado, inclusão/exclusão, aprovação/revogação, políticas,390px e console passaram |
+
+Positivos/negativos cobrem pares ativo/endereço, portas por alvo, exclusões que
+prevalecem, formato/capacidade, alteração do hash, imutabilidade, empresa/projeto,
+revogação/expiração, bloqueio legado e rechecagem antes do despacho. O scanner
+é injetado; nenhuma rede foi varrida. Campos de referência no scan preservam a
+revisão original mesmo após substituição da autorização. Cancelamento imediato,
+operação/plano completos e integrações Blue/Purple/Gobuster seguem pendentes.
+
+CI749bf63: [Windows2022 passou](https://github.com/securityMaker488/isee-sentinel/actions/runs/40437546235/job/121969735462)
+em3m59s. [Ubuntu24.04](https://github.com/securityMaker488/isee-sentinel/actions/runs/40437546235/job/121969735715)
+passou no doctor corrigido e em145/146 testes; a perícia rejeitou symlink Python.
+Correção alinha resolução realpath ao worker ZIP, mantendo argumentos fixos,
+ambiente reduzido e Python isolado. Testes locais de perícia:6pass/1skip POSIX.
+A regressão POSIX será executada na próxima CI; resultado remoto ainda não presumido.
+
+Evidências locais: .sentinel/manifest-full-test.log, manifest-focused-test.log,
+manifest-native-test.log, manifest-restore.log, manifest-browser-test.log e
+.sentinel/qa/authorization-approved.png/authorization-mobile.png. Credenciais,
+dumps e evidências de QA não foram incluídos no repositório. Rust/Python isolados
+históricos não foram repetidos localmente, pois suas fontes permanecem inalteradas.
+
+## GitHub privado, CI e complemento AttackLab — histórico de26/10
 
 Repositório privado criado e primeiro envio0a097b1 confirmado por igualdade entre
 HEAD local e main remoto. A verificação anterior ao envio cobriu182 arquivos do
@@ -24,7 +61,8 @@ A CI também recebe o caminho real do Python para não ignorar os testes dos wor
 O complemento AttackLab foi registrado e recebeu auditoria dirigida de código.
 Plano: docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md. Isso não implementou Gobuster,
 Suricata/Sigma/Atomic nem homologou rede isolada, Linux ou execução ativa nova.
-O principal próximo requisito é incluir alvos e exclusões no pedido aprovado.
+Naquele checkpoint, incluir alvos/exclusões no pedido era a próxima tarefa;
+o incremento de27/10 acima a implementa. O próximo passo atual é PROJECT_STATE.md.
 
 ## Incremento Authorization Manager
 
@@ -101,7 +139,8 @@ sem exercitar todos os tipos populados, perda elétrica ou custódia de chave de
 instalação real. Banco temporário em55432, separado do serviço preexistente5432.
 
 Nmap foi testado com executor injetado. Nmap real, Kali/QEMU, redes isoladas,
-desempenho sustentado, fuzzing ampliado, CI remota e Debian permanecem pendentes.
+desempenho sustentado, fuzzing ampliado e Debian permanecem pendentes. Resultados
+de CI remota são discriminados acima por revisão/ambiente.
 Python `-I`, ambiente reduzido e timeout não constituem VM nem bloqueio de rede
 imposto pelo SO. Os workers implementados não acessam rede nem executam entradas.
 

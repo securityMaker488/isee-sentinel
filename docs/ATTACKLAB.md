@@ -1,6 +1,6 @@
 # AttackLab — verificação TCP em laboratório autorizado
 
-O adaptador implementa uma execução controlada de Nmap para um único endereço IPv4 cadastrado e até dezesseis portas TCP escolhidas. O ativo deve pertencer à organização ativa e ao ambiente `lab`, com autorização `scan` vigente. O resultado é analisado pelo parser de artefatos existente, com evidência XML cifrada, histórico de jobs e cadeia de auditoria. Uma porta aberta é um resultado de conectividade; não comprova vulnerabilidade nem exploração.
+O adaptador implementa uma execução controlada de Nmap para um único endereço IPv4 cadastrado e até dezesseis portas TCP escolhidas. O ativo deve pertencer à organização ativa e ao ambiente `lab`, com mandato aprovado, perfil `lab.inventory` e manifesto de endereço/portas vigente. O resultado é analisado pelo parser de artefatos existente, com evidência XML cifrada, histórico de jobs e cadeia de auditoria. Uma porta aberta é um resultado de conectividade; não comprova vulnerabilidade nem exploração.
 
 ## Dependência externa e licença
 
@@ -24,6 +24,11 @@ export SENTINEL_NMAP_PATH=/usr/bin/nmap
 $env:SENTINEL_NMAP_PATH = 'C:\Program Files (x86)\Nmap\nmap.exe'
 ```
 
+Antes de cadastrar, criar/revisar/aprovar o manifesto de IPs, portas e exclusões
+na tela Autorizações. A migração010 vincula esse manifesto ao hash revisado;
+escopos antigos sem endereço aprovado não liberam inventário ativo. Exclusões
+prevalecem. Consulte [AUTHORIZATION_POLICY.md](../AUTHORIZATION_POLICY.md).
+
 Antes de executar, o administrador cadastra um alvo com `assetId`, `address` e `name`. São aceitos endereços literais em `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16` e `127.0.0.0/8`, sempre como um único IPv4. Domínios, URLs, IPv6, endereços públicos, link-local, CIDR, intervalos, listas, notações numéricas alternativas e opções de linha de comando são rejeitados. A relação entre organização, ativo e endereço fica imutável no banco. Estar em faixa privada não comprova autorização: o operador deve conferir que aquele endereço identifica o equipamento autorizado, especialmente após alterações de rede ou DHCP.
 
 O pedido de execução contém somente `targetId` e `ports`, de 1 a 16 inteiros únicos entre 1 e 65535. O backend relê a autorização imediatamente antes de iniciar o processo. Ela precisa continuar válida pelos próximos quarenta segundos. A autorização é verificada no início de cada execução; este adaptador não implementa cancelamento imediato de um processo já iniciado se o operador revogar o escopo durante a execução.
@@ -44,7 +49,9 @@ O processo recebe um ambiente mínimo com localidade e `NMAP_UNPRIVILEGED=1`; ch
 
 ## Evidência, estado e concorrência
 
-Cada pedido aceito cria um job `lab_nmap` e uma linha de histórico. stdout, inclusive quando parcial ou inválido, é limitado a 1 MiB, cifrado com o mecanismo AES-GCM de evidências da plataforma e identificado por SHA-256. stderr e mensagens brutas de erro do subprocesso não são devolvidos ao navegador nem copiados para a auditoria. Erros retornam códigos estáveis; o histórico vincula eventual evidência parcial.
+Cada pedido aceito cria um job `lab_nmap` e uma linha de histórico vinculada
+ao mandato/hash aprovados por FKs de organização/ativo e proteção de alteração.
+Registros históricos sem esse vínculo permanecem nulos; não há consentimento retroativo. stdout, inclusive quando parcial ou inválido, é limitado a 1 MiB, cifrado com o mecanismo AES-GCM de evidências da plataforma e identificado por SHA-256. stderr e mensagens brutas de erro do subprocesso não são devolvidos ao navegador nem copiados para a auditoria. Erros retornam códigos estáveis; o histórico vincula eventual evidência parcial.
 
 Saída válida passa por `analyzeArtifact(kind:'network')`, gera uma análise em `artifact_analyses` e encerra o job como `completed`. Falha de execução, timeout, limite de saída, UTF-8 inválido ou XML rejeitado encerra como `failed`, sem apresentar uma análise concluída. A entrada XML é tratada como dado não confiável pelo parser; não executa comandos, XSL, entidades externas ou conteúdo recebido do alvo.
 
@@ -59,7 +66,7 @@ Eventos `lab.target_registered`, `lab.started`, `lab.output_preserved`, `lab.com
 | `GET /api/lab/status` | `configured`, `pathConfigured`, `adapter`, `mode`, `maxPorts`, `requiresEnvironment`, `versionVerified` |
 | `GET /api/lab/targets` | `items` com `id`, `assetId`, `address`, `name`, `createdAt` |
 | `POST /api/lab/targets` | `{assetId,address,name}`; exige administrador |
-| `GET /api/lab/scans` | `items` com `id`, `targetId`, `assetId`, `ports`, `status`, `createdAt`, `completedAt`, `evidenceId`, `analysisId`, `summary`, `findingCount`, `errorCode` |
+| `GET /api/lab/scans` | `items` com `id`, `targetId`, `assetId`, `ports`, `status`, `createdAt`, `completedAt`, `evidenceId`, `analysisId`, `summary`, `findingCount`, `errorCode`, `mandateId`, `authorizationRequestHash` |
 | `POST /api/lab/scans` | `{targetId,ports}`; resposta de sucesso contém resumo e `report` |
 
 As rotas usam sessão, MFA de login, verificação de origem, CSRF e PolicyGate existentes. Nenhum endpoint aceita uma identidade enviada no corpo como autorização.

@@ -5,6 +5,13 @@ não substitui a ordem geral de [ROADMAP.md](../ROADMAP.md). O pedido mais recen
 determina começar pela auditoria e pelo plano. Este documento registra essa
 entrega; não declara implementados os módulos propostos abaixo.
 
+**Evolução de27/10/2026:** a lacuna de endereço/exclusões descrita nesta auditoria
+histórica foi tratada pela migração010, manifesto no hash revisado e verificações
+de cadastro/despacho. Detalhes em ../AUTHORIZATION_POLICY.md e resultados em
+../VALIDATION_REPORT.md. A operação/plano geral, cancelamento e integrações
+posteriores continuam pendentes. A fila vigente é ../PROJECT_STATE.md e
+../ROADMAP.md, sob GUIA-MESTRE-CONSOLIDADO.md; não reiniciar esta auditoria.
+
 A inspeção partiu de [PROJECT_STATE.md](../PROJECT_STATE.md), das interfaces
 afetadas e das migrações existentes, sem reiniciar a revisão integral do projeto.
 Não foram executadas ferramentas externas ou novas suítes nesta auditoria.

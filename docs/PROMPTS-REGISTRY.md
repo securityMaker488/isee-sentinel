@@ -1,7 +1,16 @@
 # Guias vigentes e memória portátil
 
-Atualizado em 26/10/2026. A memória do projeto fica no próprio repositório;
+Atualizado em 27/10/2026. A memória do projeto fica no próprio repositório;
 não depende da conversa estar disponível em outra máquina.
+
+**Ponto único de requisitos:** [GUIA-MESTRE-CONSOLIDADO.md](GUIA-MESTRE-CONSOLIDADO.md).
+São26 seções temáticas, uma sequência global0–12 e correspondência das fases
+AttackLab1–6. A evolução não reinicia fases nem apaga capacidades entregues.
+[PROMPT-COVERAGE.json](PROMPT-COVERAGE.json) registra7 fontes, SHA-256,563 títulos
+de seção e correspondência das53 seções principais/16 subseções técnicas daV6.9.
+Os três anexos históricos V5.0/V6.3/V6.5 também foram preservados byte a byte em
+ESPECIFICACAO-V5.0.txt, ESPECIFICACAO-V6.3.txt e ESPECIFICACAO-V6.5.txt.
+Esse índice mede rastreabilidade documental, não completude do software.
 
 1. **Guia funcional principal:** ESPECIFICACAO-V6.9.txt, recebido em 25/10/2026.
    SHA256: b2ceb4166505a65158cb6d292fa2b60c3271b1b81d00b751a7590c9739b73fbd.
@@ -32,6 +41,8 @@ não depende da conversa estar disponível em outra máquina.
    reutilizando os componentes verificados e registrando cada lacuna.
 
 V5, V6.3 e V6.5 são contexto histórico. A referência operacional para uma nova
-sessão é AGENTS.md → PROJECT_STATE.md → ROADMAP.md → arquivos da tarefa.
+sessão é AGENTS.md → PROJECT_STATE.md → ROADMAP.md → seção pertinente do guia
+consolidado → arquivos da tarefa. Os originais são fontes históricas, sem filas
+independentes de desenvolvimento.
 Diagnóstico inicial não significa reiniciar ou reescrever código funcional.
 O pedido de “100% Windows” é objetivo de desenvolvimento, não status alcançado.

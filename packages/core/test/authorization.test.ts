@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { EXECUTION_PROFILES, evaluateManagedGrant, type ManagedGrant, type ManagedExecution, type Operation } from '../src/index.js';
 
 const MiB = 1024 * 1024;
-const asset = { projectId: 'project-1', environment: 'staging' };
+const asset = { id: '10000000-0000-4000-8000-000000000001', projectId: 'project-1', environment: 'staging' };
 const grant: ManagedGrant = {
   status: 'approved', projectId: 'project-1', mode: 'assessment', risk: 'low',
   profiles: ['static.scan', 'artifact.analyze', 'archive.inspect', 'forensic.analyze', 'evidence.import', 'events.ingest', 'agent.observe'],
@@ -12,6 +12,7 @@ const grant: ManagedGrant = {
 const labGrant: ManagedGrant = {
   status: 'approved', projectId: 'project-1', mode: 'lab', risk: 'moderate',
   profiles: ['lab.inventory', 'lab.remediate'], limits: { maxInputBytes: 256 * 1024, allowedPorts: [22, 443] },
+  targetManifest: { version: 1, targets: [{ assetId: asset.id, address: '127.0.0.1', ports: [22, 443] }], exclusions: [] },
 };
 const execute = (profile = 'static.scan', inputBytes = 10): ManagedExecution => ({ profile, inputBytes });
 
@@ -54,7 +55,7 @@ test('missing, unknown, duplicate or wildcard profiles fail closed without fallb
 
 test('laboratory profiles require explicit lab mode and asset environment', () => {
   const lab = { ...asset, environment: 'lab' };
-  const inventory: ManagedExecution = { profile: 'lab.inventory', ports: [443] };
+  const inventory: ManagedExecution = { profile: 'lab.inventory', address: '127.0.0.1', ports: [443] };
   assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', inventory).allowed, true);
   assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', execute('lab.remediate')).allowed, true);
   for (const environment of ['staging', 'production', 'development']) {
@@ -66,7 +67,7 @@ test('laboratory profiles require explicit lab mode and asset environment', () =
 
 test('risk floor covers the full approved profile set and unsupported risk cannot bypass it', () => {
   const lab = { ...asset, environment: 'lab' };
-  assert.equal(evaluateManagedGrant({ ...labGrant, risk: 'low' }, lab, 'scan', { profile: 'lab.inventory', ports: [22] }).code, 'RISK_INSUFFICIENT');
+  assert.equal(evaluateManagedGrant({ ...labGrant, risk: 'low' }, lab, 'scan', { profile: 'lab.inventory', address: '127.0.0.1', ports: [22] }).code, 'RISK_INSUFFICIENT');
   assert.equal(evaluateManagedGrant({ ...labGrant, risk: 'low' }, lab, 'scan', execute('lab.remediate')).code, 'RISK_INSUFFICIENT');
   assert.equal(evaluateManagedGrant({ ...grant, risk: 'high' as ManagedGrant['risk'] }, asset, 'scan', execute()).code, 'GRANT_INVALID');
   assert.equal(evaluateManagedGrant({ ...grant, mode: 'production-remediation' as ManagedGrant['mode'] }, asset, 'scan', execute()).code, 'GRANT_INVALID');
@@ -88,11 +89,11 @@ test('byte decisions honor both user and fixed executor limits including UTF-8 b
 
 test('port execution requires a unique nonempty finite subset of the approved ports', () => {
   const lab = { ...asset, environment: 'lab' };
-  assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', { profile: 'lab.inventory', ports: [443, 22] }).allowed, true);
+  assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', { profile: 'lab.inventory', address: '127.0.0.1', ports: [443, 22] }).allowed, true);
   for (const ports of [undefined, [], [80], [22, 80], [22, 22], [0], [65536], [NaN], [22.5], ['22'], Array.from({ length: 17 }, (_, i) => i + 1)]) {
-    assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', { profile: 'lab.inventory', ports: ports as number[] }).code, 'PORT_LIMIT');
+    assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', { profile: 'lab.inventory', address: '127.0.0.1', ports: ports as number[] }).code, 'PORT_LIMIT');
   }
-  assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', { profile: 'lab.inventory', ports: [22], inputBytes: 0 }).code, 'PORT_LIMIT');
+  assert.equal(evaluateManagedGrant(labGrant, lab, 'scan', { profile: 'lab.inventory', address: '127.0.0.1', ports: [22], inputBytes: 0 }).code, 'PORT_LIMIT');
   assert.equal(evaluateManagedGrant(grant, asset, 'scan', { profile: 'static.scan', inputBytes: 1, ports: [22] }).code, 'INPUT_LIMIT');
 });
 

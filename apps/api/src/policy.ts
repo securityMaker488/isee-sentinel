@@ -9,20 +9,30 @@ export function permit(request:FastifyRequest,operation:Operation) {
   if(!decision.allowed)throw new HttpError(403,decision.code,decision.reason);
 }
 /** Trusted executors supply their profile and actual input; a legacy row cannot bypass a managed asset. */
-export async function storedScopeAllowed(sql:Sql,identity:Identity,operation:Operation,asset:any,now:number,execution?:ManagedExecution):Promise<boolean> {
-  if(asset.organization_id!==identity.organizationId)return false;
+export async function storedScopeGrant(sql:Sql,identity:Identity,operation:Operation,asset:any,now:number,execution?:ManagedExecution):Promise<{scopeId:string;mandateId:string|null;requestHash:string|null}|null> {
+  if(asset.organization_id!==identity.organizationId)return null;
   const rows=await sql.query(`SELECT s.*,m.status AS mandate_status,m.project_id AS mandate_project_id,m.mode AS mandate_mode,
-    m.risk AS mandate_risk,m.profiles AS mandate_profiles,m.limits AS mandate_limits
+    m.risk AS mandate_risk,m.profiles AS mandate_profiles,m.limits AS mandate_limits,
+    m.target_manifest AS mandate_targets,m.request_hash AS mandate_request_hash
     FROM authorizations s LEFT JOIN authorization_mandates m ON m.id=s.mandate_id AND m.organization_id=s.organization_id
     WHERE s.organization_id=$1 AND s.asset_id=$2 AND s.revoked_at IS NULL`,[identity.organizationId,asset.id]);
-  return rows.some(row=>{
+  for(const row of rows){
     const base=evaluatePolicy({identity,operation,resource:{organizationId:asset.organization_id,assetId:asset.id,environment:asset.environment},scope:scopeDto(row),now:new Date(now)});
-    if(!base.allowed)return false;
-    if(asset.authorization_mode==='legacy')return row.mandate_id===null;
-    if(asset.authorization_mode!=='managed'||!row.mandate_id)return false;
-    return evaluateManagedGrant({status:row.mandate_status,projectId:row.mandate_project_id,mode:row.mandate_mode,risk:row.mandate_risk,
-      profiles:row.mandate_profiles,limits:row.mandate_limits},{projectId:asset.project_id,environment:asset.environment},operation,execution).allowed;
-  });
+    if(!base.allowed)continue;
+    if(asset.authorization_mode==='legacy'){
+      if(row.mandate_id===null&&execution?.profile!=='lab.inventory')return {scopeId:row.id,mandateId:null,requestHash:null};
+      continue;
+    }
+    if(asset.authorization_mode!=='managed'||!row.mandate_id)continue;
+    if(evaluateManagedGrant({status:row.mandate_status,projectId:row.mandate_project_id,mode:row.mandate_mode,risk:row.mandate_risk,
+      profiles:row.mandate_profiles,limits:row.mandate_limits,targetManifest:row.mandate_targets},{id:asset.id,projectId:asset.project_id,environment:asset.environment},operation,execution).allowed){
+      return {scopeId:row.id,mandateId:row.mandate_id,requestHash:row.mandate_request_hash};
+    }
+  }
+  return null;
+}
+export async function storedScopeAllowed(sql:Sql,identity:Identity,operation:Operation,asset:any,now:number,execution?:ManagedExecution):Promise<boolean> {
+  return Boolean(await storedScopeGrant(sql,identity,operation,asset,now,execution));
 }
 export async function scoped(db:Database,request:FastifyRequest,operation:Operation,assetId:string,now:()=>number,execution?:ManagedExecution) {
   const a=request.actor!;

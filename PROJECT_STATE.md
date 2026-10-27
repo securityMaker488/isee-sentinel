@@ -1,115 +1,99 @@
-# Estado do projeto — 26/10/2026
+# Estado do projeto — 27/10/2026
 
-## Retomada obrigatória
+## Retomada obrigatória — uma linha de desenvolvimento
 
-Guia funcional: docs/ESPECIFICACAO-V6.9.txt + complementos multiplataforma e
-AttackLab Evidence Fusion/Purple Validation recebidos do operador.
-Precedência e hashes: docs/PROMPTS-REGISTRY.md. Retomar deste checkpoint e da
-fila do ROADMAP.md, sem reler blocos grandes já revisados. Corrigir erros no
-escopo encontrado. O usuário pediu terminar o possível no Windows antes de
-migrar; a plataforma inteira e a etapa Windows ainda NÃO estão100% concluídas.
+Requisitos: [guia mestre consolidado](docs/GUIA-MESTRE-CONSOLIDADO.md).
+Fila única: [ROADMAP.md](ROADMAP.md). Fontes/hashes: docs/PROMPT-COVERAGE.json.
+Ao receber “continue”, usar este checkpoint e somente os arquivos da tarefa.
+Não repetir auditoria ampla nem reler todos os prompts. Preservar implementações
+funcionais e corrigir erros encontrados. A ordem global é V6.9 fases 0–12;
+AttackLab 1–6 são etapas internas, não um segundo projeto.
 
-## Concluído neste incremento
+**Posição atual: fase global 1 / núcleo seguro AttackLab A2, parcialmente entregue.**
+Terminar o trabalho possível no Windows antes de Debian. A etapa Windows e a
+plataforma inteira ainda NÃO estão 100% concluídas.
 
-Authorization Manager conectado à tela Autorizações, migração009 e PolicyGate.
-Rascunho imutável registra responsável, comprovação cifrada, projeto, ativos,
-vigência, modo/risco, perfis e limites. Aprovação explícita vincula o hash revisado,
-substitui os escopos anteriores e torna o ativo gerenciado. Revogação não permite
-retorno ao escopo legado. Nove perfis conferem bytes/portas reais nos executores;
-alterações de risco/limites exigem nova revisão. Ativos legados preservados até
-adesão ao fluxo. Não há execução crítica no host nem cancelamento instantâneo.
+## Incremento concluído em 27/10
 
-Fundação privada React/Fastify/PostgreSQL, MFA, recuperação do fundador,
-organizações/projetos/ativos/escopos, evidências cifradas e auditoria preservadas.
-Agente Rust real conecta por HMAC, monitora arquivo explícito com baseline
-aprovada, detecta alteração e respeita revogação/replay/idempotência.
+- Guia único com 26 seções reúne V5.0/V6.3/V6.5/V6.6/V6.9 e complementos
+  multiplataforma/AttackLab. Sete fontes integrais preservadas; 563 títulos
+  indexados, precedência resolvida. Não é declaração de cobertura funcional.
+- Manifesto versão 1 inclui pares ativo/IPv4/portas e exclusões no pedido revisado.
+  Hash esquema 2 e migração 010 preservam termos imutáveis; exclusão prevalece.
+  Cadastro/despacho Nmap exigem endereço exato, portas, mesma revisão e vigência.
+  Escopos antigos sem manifesto não autorizam rede; demais perfis mantêm a
+  política existente. Scans registram mandato/hash com FKs e histórico imutável.
+- Tela Autorizações cria, mostra e exporta manifesto; aprovação segue explícita.
+  Não foi criado consentimento paralelo nem homologado Nmap real.
+- Perícia resolve o Python configurado por caminho real, como o worker ZIP.
+  Corrige rejeição de links simbólicos observada na CI Ubuntu.
 
-Casos têm notas cifradas, evidências, estados e relatório. SecureFix aprova,
-aplica, verifica e restaura CÓPIA de SSH no banco; não altera o host.
-Análises offline: dependências/CycloneDX, NmapXML/HAR, SARIF, IAM/S3,
-identidades, configuração de IA, PE/ELF/scripts, timelines e OpenAPI JSON3.0/3.1.
-RiskGraph está conectado à API e ao painel, com limites e contexto por empresa.
-Perícia Python/API/painel cobre PCAP/PCAPNG/SQLite/plist fornecidos.
+## Validação deste incremento
 
-Universal Import Lab: ZIP até16MiB em quarentena cifrada, projeto herdado do
-ativo, até512 entradas e64MiB expandidos; hashes/CRC/caminhos/links/colisões e
-expansão verificados. Identifica tecnologias por indícios, sem extrair, executar
-ou acessar rede. API, migração008, worker e UI conectados. ZIP64, descriptors,
-arquivos compactados internos, URL, Git e demais formatos não são suportados.
-O adaptador Nmap tem limites e testes injetados, mas Nmap real não foi homologado.
+- TypeScript e build React/Vite passaram.
+- Suíte JS completa com Python real: 158 passaram, 0 falhas, 1 skip POSIX no Windows.
+- Testes focados autorização/laboratório: 50 passaram. Manifesto puro também
+  testado na suíte completa. Nmap é substituto injetado, sem varredura.
+- Authorization Manager em PostgreSQL 18 nativo com runtime restrito: 26 passaram.
+- Backup/restore: 36 tabelas idênticas, 10 migrações, 37 mandatos, 39 vínculos de
+  ativos, 3 scans de laboratório e 225 eventos de auditoria; cadeias válidas.
+- Navegador: rascunho com manifesto, downloads, revisão/aprovação, endereço
+  permitido, exclusões/fora de escopo negados, bytes/perfis, revogação,
+  tela de 390 px e console sem erros passaram.
+- CI anterior 749bf63: Windows2022 passou; Ubuntu24.04 passou no doctor corrigido,
+  mas falhou em 1/146 testes por symlink Python. Correção validada localmente;
+  confirmar o resultado remoto deste incremento em Actions.
 
-## Verificações encerradas
+Logs em .sentinel/manifest-*.log; detalhes e históricos em VALIDATION_REPORT.md.
+Rust/Python isolados anteriores não foram repetidos localmente: fontes inalteradas.
+Debian/Kali/QEMU não foram homologados.
 
-- Setup Windows completo passou: dependências fixadas, build web/Rust e doctor.
-- 146 testes JS/TypeScript passaram, incluindo 13 novos de política, 20 do
-  Authorization Manager e Python real positivo/negativo.
-- Rust18; Python integridade8+1skip Unix; Python perícia16; Python ZIP12;
-  guarda do repositório3 no checkpoint anterior, fontes inalteradas. Não repetidos
-  neste incremento; o total histórico anterior era170pass e1skip.
-- PostgreSQL nativo com runtime restrito: ZIP6 e perícia5 passaram; agentes6
-  haviam passado no checkpoint anterior.
-- Rust real → API → baseline → divergência → alerta → revogação passou.
-- Authorization Manager no PostgreSQL nativo com runtime restrito:20 passaram.
-- Backup/restore atual comparou36 tabelas do banco sintético,9 migrações e
-  auditoria; incluiu30 autorizações estruturadas e31 vínculos de ativos.
-- Browser completo passou: correção/rollback, análises, ZIP, perícia, grafo,
-  download, contexto de empresa/projeto, tela estreita e console sem erros.
-- Correções encontradas: UUID de agente malformado; rótulos acessíveis; teto de
-  requisições do painel insuficiente. Login continua limitado separadamente.
-- Inventário atualizado e npm audit sem vulnerabilidades reportadas na consulta.
+## Base funcional preservada
 
-Detalhes, limitações e reprodução: VALIDATION_REPORT.md e TESTING.md.
-Nenhuma varredura externa, alteração de sistema de cliente ou publicação ocorreu.
-Primeira CI remota executada no commit0a097b1: Windows2022 passou; Ubuntu24.04
-falhou no diagnóstico porque realpath transformava rustc/cargo em rustup.
-Correção preserva o nome do proxy e acrescenta regressão POSIX; consultar
-VALIDATION_REPORT.md e Actions para o resultado da execução corrigida.
-Debian não foi homologado.
+React/Fastify/PostgreSQL; fundador/MFA/recuperação; clientes/projetos/ativos;
+PolicyGate; Authorization Manager com responsável/prova cifrada/aprovação/perfis/
+limites/revogação; evidências cifradas/hashes/auditoria. Agente Rust real com
+HMAC/FIM de arquivo explícito, baseline aprovada, divergência e proteção contra
+replay; não é EDR completo nem serviço Linux homologado. Casos/notas/estados/
+relatórios; SecureFix aprova/aplica/verifica/restaura CÓPIA de SSH no banco, sem
+alterar host. RiskGraph integrado com limites.
 
-## Próxima tarefa concreta no Windows
+Análises offline: dependências/CycloneDX, NmapXML/HAR/SARIF, IAM/S3/identidade/IA,
+PE/ELF/scripts/timelines/OpenAPI JSON 3.0/3.1. Perícia PCAP/PCAPNG/SQLite/plist.
+ZIP até 16 MiB, 512 entradas/64 MiB expandidos, quarentena cifrada e inspeção sem
+extração/execução/rede. ZIP64/descriptors/aninhados e outros formatos pendentes.
 
-1. Fundação/Fase1: recorte do Authorization Manager concluído e validado.
-   Prosseguir no contrato do plano de avaliação, catálogo versionado e vínculo
-   de resultados; fila geral de jobs permanece pendente. Não reimplementar o
-   ciclo de autorização já entregue.
-   Auditoria dirigida do novo complemento AttackLab concluída: falta ligar
-   endereço exato/exclusões ao hash aprovado. Primeiro implementar manifesto
-   imutável de alvos da operação e negação de exclusões, referenciando os mandatos
-   existentes. Não ampliar ferramentas ativas antes disso. Plano detalhado em
-   docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md; nenhuma integração nova foi inventada.
-2. Fase2: estender Universal Import Lab primeiro a TAR/TAR.GZ, depois URL/Git,
-   por adaptadores separados e perfis explícitos;
-   URL exige defesa SSRF, DNS/redirect/limites e associação exata ao alvo autorizado.
-   ZIP já implementado não precisa ser refeito. Integrar plano de avaliação real.
-3. Fase3: ProofLab completo, aplicação local isolada, avaliação reproduzível,
-   correção na cópia, reteste comparável e relatório. Validar isolamento antes
-   de iniciar aplicação desconhecida. SOC sintético não encerra essa fase.
-4. Prosseguir fases4–12 conforme dependências. Não criar centenas de módulos
-   vazios nem declarar as lacunas portáteis como dependência do Debian.
-   O complemento organiza a evolução do AttackLab em seis fases internas;
-   Gobuster começa por importação offline após o núcleo seguro, Blue/Purple por
-   metadados e resultados manuais. Auditoria SUID/SGID e isolamento Kali/QEMU
-   dependem da etapa Linux; normalizadores e contratos podem avançar no Windows.
+## Próximo passo concreto — retomar aqui
 
-## Continuidade e ambiente
+1. Ainda na fase 1, implementar **plano de avaliação versionado** que referencie
+   autorização revisada, projeto/ativos, perfis existentes e resultados. Reutilizar
+   mandato/manifesto; definir contratos e vínculos com jobs/evidências sem catálogo
+   de executores fictícios. Cancelamento supervisionado, limites de recursos e
+   fila recuperável continuam pendentes; tratar as dependências necessárias ao
+   fluxo. Revogação não significa interrupção imediata de processo iniciado.
+2. Fase 2: TAR/TAR.GZ após contrato do plano; depois URL/Git com escopo exato,
+   SSRF/DNS/redirect/limites. Não refazer ZIP. Gobuster começa por importação
+   offline delimitada na mesma linha de importação/assessment.
+3. Fase 3: ProofLab integrado ao plano/importação, isolamento, teste reproduzível,
+   correção na cópia, reteste comparável e relatório. SOC sintético não encerra fase 3.
+4. Seguir fases 4–12 e dependências. Evidence Fusion amplia vínculos/timeline/
+   grafo existentes. Blue/Purple começa por normalizadores, metadados e resultados
+   manuais. Auditoria Linux, agentes/serviços, Suricata/Auditd reais e isolamento
+   Kali/QEMU exigem homologação Debian; contratos/API/UI portáteis ficam no Windows.
 
-AGENTS.md, ROADMAP.md, MODULE_STATUS.md e matriz são registros versionáveis.
-Git local emmain. Repositório privado securityMaker488/isee-sentinel criado em
-26/10/2026 e origin configurado por autorização do operador. Consultar
-GITHUB-PRIVATE.md para o estado da autenticação/sincronização. Pacote e Git
-bundle locais permitem transferir código sem transportar credenciais ou bancos.
-Os pacotes V6.5 e V6.9-windows-dev anteriores são históricos e não incluem este
-incremento de autorização; usar o último commit sincronizado ou bundle atualizado.
+## Ambiente, Git e transferência
 
-Windows10Pro; Node24.21.0; Python3.11.9; Rust/Cargo1.98.1 observados. Não alterados
-partições, boot, Windows, GPU, Kali, firewall ou serviço PostgreSQL preexistente5432.
-Os processos temporários usados foram QA4311 e cluster work/postgres-validation
-em55432. Conferir se estão ativos antes de reutilizar; nunca parar serviço5432.
-Dumps/credenciais de teste estão em work ou .sentinel, fora do Git/pacote.
-O primeiro push de0a097b1 foi confirmado por igualdade HEAD/remoto; a cópia
-local estava limpa. O servidor temporário4311 foi encerrado após QA. Sempre
-conferir processos e git status ao retomar; não inferir estado pelo histórico.
+Repositório privado autorizado: https://github.com/securityMaker488/isee-sentinel.
+Branch main; origin HTTPS observado; GCM autorizado e autenticado. Conferir git
+status e igualdade HEAD/remoto ao retomar. Pacotes antigos são históricos; usar
+commit sincronizado ou bundle com manifesto da revisão correspondente.
+Credenciais, bancos e dumps em work/.sentinel não entram no Git.
 
-docs/CONTINUIDADE.md conserva o histórico. Este checkpoint substitui suas antigas
-instruções de retomada. Consulte o último commit local para identificar a revisão;
-não pressupor que o histórico desta conversa acompanhará a migração.
+Windows10Pro; Node24.21.0; Python3.11.9; Rust/Cargo1.98.1 no checkpoint.
+Cluster de teste exclusivo work/postgres-validation em 127.0.0.1:55432 e QA
+sintético em 4311: conferir processos antes de reutilizar e encerrar ao terminar.
+Nunca parar/alterar PostgreSQL preexistente5432. Não alterados Windows, partições,
+bootloader, firmware, firewall, GPU ou Kali.
+
+CONTINUIDADE e planos anteriores são históricos; este checkpoint determina a
+retomada atual. Não depender da conversa para continuar no Debian.

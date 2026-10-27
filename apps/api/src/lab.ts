@@ -2,13 +2,12 @@ import {execFile} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
 import {access,lstat} from 'node:fs/promises';
 import {constants} from 'node:fs';
-import {isIP} from 'node:net';
 import {basename,dirname,isAbsolute} from 'node:path';
 import type {FastifyInstance,FastifyRequest} from 'fastify';
-import {analyzeArtifact,type ArtifactAnalysisReport,type ManagedExecution} from '@sentinel/core';
+import {analyzeArtifact,isLabIPv4,type ArtifactAnalysisReport,type ManagedExecution} from '@sentinel/core';
 import type {Database} from './db.ts';
 import {HttpError,object,str,uuid} from './auth.ts';
-import {permit,scoped,storedScopeAllowed} from './policy.ts';
+import {permit,scoped,storedScopeGrant} from './policy.ts';
 import {audit} from './audit.ts';
 import {digest,encrypt} from './security.ts';
 
@@ -20,12 +19,7 @@ export type LabRunner=(file:string,args:readonly string[],options:LabRunOptions)
 export interface LabOptions {db:Database;masterKey:Buffer;now?:()=>number;nmapPath?:string;runner?:LabRunner;}
 
 /** Exact IPv4 only. No DNS, octal notation, URI, CIDR, range or alternate family. */
-export function isLabAddress(address:unknown):address is string {
-  if(typeof address!=='string'||isIP(address)!==4)return false;
-  const parts=address.split('.').map(Number);
-  if(parts.join('.')!==address)return false;
-  return parts[0]===127||parts[0]===10||(parts[0]===172&&parts[1]>=16&&parts[1]<=31)||(parts[0]===192&&parts[1]===168);
-}
+export const isLabAddress=isLabIPv4;
 
 function configuredPath(path:unknown):path is string {
   return typeof path==='string'&&isAbsolute(path)&&!/[\x00-\x1f\x7f]/.test(path)
@@ -71,26 +65,29 @@ export const runNmap:LabRunner=async(file,args,options)=>{
   });
 };
 
-async function requireLabScope(db:Database,request:FastifyRequest,assetId:string,now:()=>number,remainingMs=0,ports?:number[]) {
-  const execution:ManagedExecution=ports?{profile:'lab.inventory',ports}:{profile:'lab.inventory',phase:'prepare'};
+async function requireLabScope(db:Database,request:FastifyRequest,assetId:string,address:string,now:()=>number,remainingMs=0,ports?:number[]) {
+  const execution:ManagedExecution=ports?{profile:'lab.inventory',address,ports}:{profile:'lab.inventory',address,phase:'prepare'};
   const asset=await scoped(db,request,'scan',assetId,now,execution);
   if(asset.environment!=='lab')throw new HttpError(403,'LAB_ONLY','A execução nativa exige um ativo no ambiente lab.');
+  const review=await storedScopeGrant(db,request.actor!,'scan',asset,now(),execution);
+  if(!review?.mandateId||!review.requestHash)throw new HttpError(403,'SCOPE_REQUIRED','Manifesto aprovado e vigente é obrigatório para este alvo.');
   if(remainingMs){
-    if(!await storedScopeAllowed(db,request.actor!,'scan',asset,now()+remainingMs,execution)) {
+    const future=await storedScopeGrant(db,request.actor!,'scan',asset,now()+remainingMs,execution);
+    if(future?.mandateId!==review.mandateId||future?.requestHash!==review.requestHash) {
       throw new HttpError(403,'SCOPE_TOO_SHORT','A autorização deve cobrir os próximos 40 segundos de execução.');
     }
   }
-  return asset;
+  return {asset,review,execution};
 }
 
-const selectScans=`SELECT s.id,s.asset_id AS "assetId",s.target_id AS "targetId",s.ports,s.evidence_id AS "evidenceId",s.analysis_id AS "analysisId",s.error_code AS "errorCode",j.status,s.created_at AS "createdAt",j.completed_at AS "completedAt",a.report->'summary' AS summary,jsonb_array_length(a.report->'findings') AS "findingCount" FROM lab_scans s JOIN jobs j ON j.id=s.id LEFT JOIN artifact_analyses a ON a.id=s.analysis_id`;
+const selectScans=`SELECT s.id,s.asset_id AS "assetId",s.target_id AS "targetId",s.ports,s.mandate_id AS "mandateId",s.authorization_request_hash AS "authorizationRequestHash",s.evidence_id AS "evidenceId",s.analysis_id AS "analysisId",s.error_code AS "errorCode",j.status,s.created_at AS "createdAt",j.completed_at AS "completedAt",a.report->'summary' AS summary,jsonb_array_length(a.report->'findings') AS "findingCount" FROM lab_scans s JOIN jobs j ON j.id=s.id LEFT JOIN artifact_analyses a ON a.id=s.analysis_id`;
 
 export async function registerLab(app:FastifyInstance,{db,masterKey,now=Date.now,nmapPath=process.env.SENTINEL_NMAP_PATH,runner=runNmap}:LabOptions) {
   // This also serializes slow injected runners within one process. The DB lock covers other workers.
   let busy=false;
   app.get('/api/lab/status',async request=>{
     permit(request,'assets.read');
-    return {configured:configuredPath(nmapPath),pathConfigured:Boolean(nmapPath),adapter:'nmap',mode:'single_host_tcp_connect',maxPorts:LAB_LIMITS.ports,requiresEnvironment:'lab',versionVerified:false};
+    return {configured:configuredPath(nmapPath),pathConfigured:Boolean(nmapPath),adapter:'nmap',mode:'single_host_tcp_connect',maxPorts:LAB_LIMITS.ports,requiresEnvironment:'lab',requiresTargetManifest:true,versionVerified:false};
   });
   app.get('/api/lab/targets',async request=>{
     permit(request,'assets.read');
@@ -99,12 +96,16 @@ export async function registerLab(app:FastifyInstance,{db,masterKey,now=Date.now
   app.post('/api/lab/targets',{schema:{body:object({assetId:uuid,address:str(15),name:str(120)})}},async request=>{
     permit(request,'assets.create');const a=request.actor!,b=request.body as {assetId:string;address:string;name:string};
     if(!isLabAddress(b.address))throw new HttpError(400,'INVALID_LAB_TARGET','Somente um IPv4 privado RFC1918 ou loopback literal é aceito.');
-    await requireLabScope(db,request,b.assetId,now);
+    const approved=await requireLabScope(db,request,b.assetId,b.address,now);
     const id=randomUUID();
     return db.transaction(async tx=>{
+      await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[a.organizationId]);
+      const [asset]=await tx.query('SELECT * FROM assets WHERE id=$1 AND organization_id=$2 FOR SHARE',[b.assetId,a.organizationId]);
+      const current=asset&&await storedScopeGrant(tx,a,'scan',asset,now(),approved.execution);
+      if(current?.mandateId!==approved.review.mandateId||current?.requestHash!==approved.review.requestHash)throw new HttpError(403,'SCOPE_REQUIRED','A autorização do alvo mudou; revise antes de cadastrar.');
       const [target]=await tx.query('INSERT INTO lab_targets(id,organization_id,asset_id,address,name,created_by) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT(organization_id,asset_id,address) DO NOTHING RETURNING id,asset_id AS "assetId",address,name,created_at AS "createdAt"',[id,a.organizationId,b.assetId,b.address,b.name,a.id]);
       if(!target)throw new HttpError(409,'TARGET_EXISTS','Este alvo já está cadastrado para o ativo.');
-      await audit(tx,a.organizationId,a.id,'lab.target_registered',id,{assetId:b.assetId,address:b.address});return target;
+      await audit(tx,a.organizationId,a.id,'lab.target_registered',id,{assetId:b.assetId,address:b.address,mandateId:current.mandateId,requestHash:current.requestHash});return target;
     });
   });
   app.get('/api/lab/scans',async request=>{
@@ -114,7 +115,7 @@ export async function registerLab(app:FastifyInstance,{db,masterKey,now=Date.now
     const a=request.actor!,b=request.body as {targetId:string;ports:number[]};
     const [target]=await db.query('SELECT * FROM lab_targets WHERE id=$1 AND organization_id=$2',[b.targetId,a.organizationId]);
     if(!target)throw new HttpError(404,'NOT_FOUND','Alvo de laboratório não encontrado.');
-    await requireLabScope(db,request,target.asset_id,now,LAB_LIMITS.timeoutMs,b.ports);
+    const approved=await requireLabScope(db,request,target.asset_id,target.address,now,LAB_LIMITS.timeoutMs,b.ports);
     if(!configuredPath(nmapPath))throw new HttpError(503,'NMAP_UNAVAILABLE','Adaptador indisponível. Configure SENTINEL_NMAP_PATH com o caminho absoluto do Nmap instalado e licenciado.');
     if(busy)throw new HttpError(409,'LAB_BUSY','Já existe uma execução de laboratório em andamento.');
     const id=randomUUID(),ports=[...b.ports].sort((x,y)=>x-y),args=nmapArguments(target.address,ports);
@@ -125,6 +126,11 @@ export async function registerLab(app:FastifyInstance,{db,masterKey,now=Date.now
     let failure:FailureCode='NMAP_EXECUTION_FAILED';
     try {
       await db.transaction(async tx=>{
+        await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[a.organizationId]);
+        const [asset]=await tx.query('SELECT * FROM assets WHERE id=$1 AND organization_id=$2 FOR SHARE',[target.asset_id,a.organizationId]);
+        const current=asset&&await storedScopeGrant(tx,a,'scan',asset,now(),approved.execution);
+        const future=asset&&await storedScopeGrant(tx,a,'scan',asset,now()+LAB_LIMITS.timeoutMs,approved.execution);
+        if(current?.mandateId!==approved.review.mandateId||current?.requestHash!==approved.review.requestHash||future?.scopeId!==current?.scopeId)throw new HttpError(403,'SCOPE_REQUIRED','A autorização do alvo mudou antes da preparação.');
         const [lock]=await tx.query('SELECT l.job_id,l.expires_at,j.status,j.organization_id FROM lab_execution_lock l JOIN jobs j ON j.id=l.job_id WHERE l.slot=1 FOR UPDATE OF l');
         if(lock&&lock.status==='running'&&new Date(lock.expires_at).getTime()>now())throw new HttpError(409,'LAB_BUSY','Já existe uma execução de laboratório em andamento.');
         if(lock){
@@ -138,12 +144,13 @@ export async function registerLab(app:FastifyInstance,{db,masterKey,now=Date.now
         await tx.query("INSERT INTO jobs(id,organization_id,asset_id,kind,status) VALUES($1,$2,$3,'lab_nmap','running')",[id,a.organizationId,target.asset_id]);
         const acquired=await tx.query('INSERT INTO lab_execution_lock(slot,job_id,expires_at) VALUES(1,$1,$2) ON CONFLICT DO NOTHING RETURNING slot',[id,new Date(now()+LAB_LIMITS.leaseMs)]);
         if(!acquired.length)throw new HttpError(409,'LAB_BUSY','Já existe uma execução de laboratório em andamento.');
-        await tx.query('INSERT INTO lab_scans(id,organization_id,asset_id,target_id,ports) VALUES($1,$2,$3,$4,$5)',[id,a.organizationId,target.asset_id,target.id,JSON.stringify(ports)]);
-        await audit(tx,a.organizationId,a.id,'lab.started',id,{targetId:target.id,assetId:target.asset_id,ports,adapter:'nmap',mode:'tcp_connect'});
+        await tx.query('INSERT INTO lab_scans(id,organization_id,asset_id,target_id,ports,mandate_id,authorization_request_hash) VALUES($1,$2,$3,$4,$5,$6,$7)',[id,a.organizationId,target.asset_id,target.id,JSON.stringify(ports),current.mandateId,current.requestHash]);
+        await audit(tx,a.organizationId,a.id,'lab.started',id,{targetId:target.id,assetId:target.asset_id,ports,adapter:'nmap',mode:'tcp_connect',mandateId:current.mandateId,requestHash:current.requestHash});
       });
       started=true;
       // Re-read scope immediately before invoking the fixed executable, after lock acquisition.
-      await requireLabScope(db,request,target.asset_id,now,LAB_LIMITS.timeoutMs,ports);
+      const dispatch=await requireLabScope(db,request,target.asset_id,target.address,now,LAB_LIMITS.timeoutMs,ports);
+      if(dispatch.review.mandateId!==approved.review.mandateId||dispatch.review.requestHash!==approved.review.requestHash)throw new HttpError(403,'SCOPE_REQUIRED','A autorização mudou antes do despacho. Inicie uma nova execução.');
       const result=await runner(nmapPath,Object.freeze(args),{timeout:LAB_LIMITS.timeoutMs,maxBuffer:LAB_LIMITS.outputBytes,shell:false,windowsHide:true,killSignal:'SIGKILL',cwd:dirname(nmapPath),env:childEnvironment()});
       if(!Buffer.isBuffer(result.stdout))throw new Error('invalid runner output');
       output=result.stdout.subarray(0,LAB_LIMITS.outputBytes);

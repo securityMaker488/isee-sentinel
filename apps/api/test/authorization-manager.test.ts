@@ -4,7 +4,7 @@ import {createHmac,randomBytes,randomUUID} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import {openDatabase,migrate,type Database} from '../src/db.ts';
 import {buildApp} from '../src/app.ts';
-import {decrypt,digest,encrypt,randomToken} from '../src/security.ts';
+import {canonical,decrypt,digest,encrypt,randomToken} from '../src/security.ts';
 import {verifyAuditChain} from '../src/audit.ts';
 
 let db:Database,runtime:Database,app:Awaited<ReturnType<typeof buildApp>>,wrongKeyApp:Awaited<ReturnType<typeof buildApp>>;
@@ -21,6 +21,7 @@ const authorityBytes=Buffer.from('SYNTHETIC AUTHORITY EVIDENCE: local tests only
 const base64=authorityBytes.toString('base64');
 const safeConfiguration='PermitRootLogin no\nPasswordAuthentication no\n';
 const nmapXml='<?xml version="1.0"?><nmaprun scanner="nmap"><host><status state="up"/><address addr="127.0.0.1" addrtype="ipv4"/><ports><port protocol="tcp" portid="22"><state state="open"/><service name="ssh" method="table" conf="3"/></port></ports></host><runstats><finished exit="success"/></runstats></nmaprun>';
+const manifest=(assetId:string,address='127.0.0.1',ports=[22])=>({version:1,targets:[{assetId,address,ports}],exclusions:[] as {address:string}[]});
 
 async function asset(options:{organization?:string;projectId?:string|null;environment?:string}={}) {
  const id=randomUUID(),org=options.organization??organization;
@@ -169,7 +170,7 @@ test('shared scan/import operations cannot substitute for another approved execu
 });
 
 test('managed inventory enforces approved ports before the injected Nmap adapter can run',async()=>{
- const target=await asset(),created=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]}});await approve(created.id);
+ const target=await asset(),created=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},targetManifest:manifest(target)});await approve(created.id);
  const registered=await send('/api/lab/targets',{assetId:target,address:'127.0.0.1',name:'Synthetic loopback inventory'});assert.equal(registered.statusCode,200,registered.body);
  const runsBefore=nmapRuns;
  const denied=await send('/api/lab/scans',{targetId:registered.json().id,ports:[443]});assert.equal(denied.statusCode,403,denied.body);assert.equal(nmapRuns,runsBefore);
@@ -321,7 +322,7 @@ test('stored-copy remediation revalidates the current grant before every state t
 });
 
 test('managed inventory requires authorization for the full fixed execution timeout',async()=>{
- const target=await asset(),grant=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},expiresAt:new Date(clock+30000).toISOString()});await approve(grant.id);
+ const target=await asset(),grant=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},targetManifest:manifest(target),expiresAt:new Date(clock+30000).toISOString()});await approve(grant.id);
  const registered=await send('/api/lab/targets',{assetId:target,address:'127.0.0.1',name:'Synthetic short window'});assert.equal(registered.statusCode,200,registered.body);
  const beforeRuns=nmapRuns,response=await send('/api/lab/scans',{targetId:registered.json().id,ports:[22]});
  assert.equal(response.statusCode,403,response.body);assert.equal(response.json().error.code,'SCOPE_TOO_SHORT');assert.equal(nmapRuns,beforeRuns);
@@ -339,4 +340,119 @@ test('managed archive and forensic byte limits reject before worker dispatch or 
   assert.equal((await db.query('SELECT id FROM import_runs WHERE asset_id=$1',[target])).length,0);
   assert.equal((await db.query('SELECT id FROM forensic_runs WHERE asset_id=$1',[target])).length,0);
  }
+});
+
+test('inventory drafts reject missing, unsafe, oversized and mismatched target manifests before preserving evidence',async()=>{
+ const target=await asset(),foreign=await asset({organization:foreignOrganization}),outsideProject=await asset({projectId:otherProject});
+ const base=draft([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22,443]}}),valid=manifest(target);
+ const before=(await db.query('SELECT count(*)::int AS total FROM evidence'))[0].total;
+ const missing=await send(endpoint,base);assert.equal(missing.statusCode,400,missing.body);assert.equal(missing.json().error.code,'TARGET_MANIFEST_REQUIRED');
+ const invalid:any[]=[
+  {...valid,version:2},{...valid,targets:[]},{...valid,extra:true},
+  {...valid,targets:[...valid.targets,...valid.targets]},
+  {...valid,targets:[{...valid.targets[0],assetId:foreign}]},
+  {...valid,targets:[{...valid.targets[0],assetId:outsideProject}]},
+  {...valid,targets:[{...valid.targets[0],ports:[80]}]},
+  {...valid,targets:[{...valid.targets[0],ports:[22,22]}]},
+  {...valid,targets:[{...valid.targets[0],ports:['22']}]},
+  {...valid,targets:[{...valid.targets[0],ports:[]}]},
+  {...valid,targets:[{...valid.targets[0],ports:Array.from({length:17},(_,i)=>i+1)}]},
+  {...valid,targets:Array.from({length:101},(_,i)=>({assetId:target,address:`10.0.0.${i+1}`,ports:[22]}))},
+  {...valid,exclusions:Array.from({length:101},(_,i)=>({address:`10.1.0.${i+1}`}))},
+  {...valid,exclusions:[{address:'10.0.0.1'},{address:'10.0.0.1'}]},
+ ];
+ for(const address of ['localhost','8.8.8.8','127.00.0.1','127.0.0.1/32','127.0.0.1;id','::1','127.0.0.1\n']){
+  invalid.push({...valid,targets:[{...valid.targets[0],address}]},{...valid,exclusions:[{address}]});
+ }
+ for(const targetManifest of invalid){const result=await send(endpoint,{...base,targetManifest});assert.equal(result.statusCode,400,result.body);}
+ assert.equal((await db.query('SELECT count(*)::int AS total FROM evidence'))[0].total,before);
+});
+
+test('reviewed exact asset/address pairs and exclusions constrain registration and dispatch independently of parent ports',async()=>{
+ const first=await asset(),second=await asset();
+ const targetManifest={version:1,targets:[{assetId:first,address:'127.0.0.1',ports:[22]},{assetId:first,address:'10.0.0.2',ports:[22]},{assetId:second,address:'127.0.0.1',ports:[443]}],exclusions:[{address:'10.0.0.2'}]};
+ const grant=await create([first,second],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22,443]},targetManifest});
+ const reviewed=await detail(grant.id);assert.equal(reviewed.requestSchemaVersion,2);
+ assert.deepEqual(reviewed.targetManifest.exclusions,[{address:'10.0.0.2'}]);
+ const beforeRuns=nmapRuns;
+ assert.equal((await send('/api/lab/targets',{assetId:first,address:'127.0.0.1',name:'Not yet approved'})).statusCode,403);
+ await approve(grant.id);
+ for(const address of ['10.0.0.2','127.0.0.2']){
+  const denied=await send('/api/lab/targets',{assetId:first,address,name:'Outside effective consent'});assert.equal(denied.statusCode,403,denied.body);
+ }
+ const one=await send('/api/lab/targets',{assetId:first,address:'127.0.0.1',name:'First exact pair'});assert.equal(one.statusCode,200,one.body);
+ const two=await send('/api/lab/targets',{assetId:second,address:'127.0.0.1',name:'Second exact pair'});assert.equal(two.statusCode,200,two.body);
+ assert.equal((await send('/api/lab/scans',{targetId:one.json().id,ports:[443]})).statusCode,403);
+ assert.equal((await send('/api/lab/scans',{targetId:two.json().id,ports:[22]})).statusCode,403);
+ assert.equal(nmapRuns,beforeRuns);
+ const allowed=await send('/api/lab/scans',{targetId:one.json().id,ports:[22]});assert.equal(allowed.statusCode,200,allowed.body);
+ assert.equal(allowed.json().mandateId,grant.id);assert.equal(allowed.json().authorizationRequestHash,grant.requestHash);assert.equal(nmapRuns,beforeRuns+1);
+ const scanId=allowed.json().id;
+ await assert.rejects(db.query('UPDATE lab_scans SET authorization_request_hash=$2 WHERE id=$1',[scanId,'f'.repeat(64)]));
+ await assert.rejects(db.query('UPDATE lab_scans SET mandate_id=NULL,authorization_request_hash=NULL WHERE id=$1',[scanId]));
+});
+
+test('manifest belongs to the reviewed hash and cannot be replaced or modified by approval input or database update',async()=>{
+ const target=await asset(),targetManifest=manifest(target),grant=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},targetManifest});
+ const current=await detail(grant.id);
+ const expected=digest(canonical({schemaVersion:2,organizationId:organization,projectId:project,assets:[{id:target,environment:'lab'}],mode:current.mode,risk:current.risk,profiles:current.profiles,limits:current.limits,notBefore:current.notBefore,expiresAt:current.expiresAt,details:{responsible:current.responsible,purpose:current.purpose,authority:current.authority},authorityEvidenceId:current.authorityEvidenceId,authorityEvidenceHash:current.authorityEvidenceHash,targetManifest:current.targetManifest}));
+ assert.equal(current.requestHash,expected);
+ const substituted={...current.targetManifest,targets:[{assetId:target,address:'127.0.0.2',ports:[22]}]};
+ assert.equal((await send(`${endpoint}/${grant.id}/approve`,{requestHash:current.requestHash,attested:true,targetManifest:substituted})).statusCode,400);
+ await assert.rejects(db.query('UPDATE authorization_mandates SET target_manifest=$2 WHERE id=$1',[grant.id,JSON.stringify(substituted)]),/immutable/i);
+ await assert.rejects(db.query('UPDATE authorization_mandates SET request_schema_version=1,target_manifest=NULL WHERE id=$1',[grant.id]),/immutable/i);
+ await approve(grant.id);
+ await assert.rejects(db.query('UPDATE authorization_mandates SET target_manifest=$2 WHERE id=$1',[grant.id,JSON.stringify(substituted)]),/immutable/i);
+ assert.deepEqual((await detail(grant.id)).targetManifest,current.targetManifest);
+});
+
+test('an excluded historical registration cannot execute after scope replacement and previous results retain their original review',async()=>{
+ const target=await asset(),first=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},targetManifest:manifest(target)});await approve(first.id);
+ const registered=await send('/api/lab/targets',{assetId:target,address:'127.0.0.1',name:'Previously authorized exact target'});assert.equal(registered.statusCode,200,registered.body);
+ const firstRun=await send('/api/lab/scans',{targetId:registered.json().id,ports:[22]});assert.equal(firstRun.statusCode,200,firstRun.body);
+ const replacementManifest=manifest(target,'127.0.0.2');replacementManifest.targets.push({assetId:target,address:'127.0.0.1',ports:[22]});replacementManifest.exclusions.push({address:'127.0.0.1'});
+ const replacement=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},targetManifest:replacementManifest});await approve(replacement.id);
+ const beforeRuns=nmapRuns,denied=await send('/api/lab/scans',{targetId:registered.json().id,ports:[22]});assert.equal(denied.statusCode,403,denied.body);assert.equal(nmapRuns,beforeRuns);
+ const newTarget=await send('/api/lab/targets',{assetId:target,address:'127.0.0.2',name:'Revised exact target'});assert.equal(newTarget.statusCode,200,newTarget.body);
+ const [old]=await db.query('SELECT mandate_id,authorization_request_hash FROM lab_scans WHERE id=$1',[firstRun.json().id]);assert.equal(old.mandate_id,first.id);assert.equal(old.authorization_request_hash,first.requestHash);
+ assert.equal((await send(`${endpoint}/${replacement.id}/revoke`,{reason:'Synthetic revised scope revoked'})).statusCode,200);
+ assert.equal((await send('/api/lab/scans',{targetId:newTarget.json().id,ports:[22]})).statusCode,403);assert.equal(nmapRuns,beforeRuns);
+});
+
+test('manifest dispatch verifies current project and organization and a future or expired window never runs the adapter',async()=>{
+ const target=await asset(),grant=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},targetManifest:manifest(target),expiresAt:new Date(clock+60000).toISOString()});await approve(grant.id);
+ const registered=await send('/api/lab/targets',{assetId:target,address:'127.0.0.1',name:'Context-bound target'});assert.equal(registered.statusCode,200,registered.body);
+ const input={targetId:registered.json().id,ports:[22]},beforeRuns=nmapRuns;
+ assert.equal((await send('/api/lab/scans',input,true)).statusCode,404);
+ await db.query('UPDATE assets SET project_id=$2 WHERE id=$1',[target,otherProject]);
+ try{assert.equal((await send('/api/lab/scans',input)).statusCode,403);}finally{await db.query('UPDATE assets SET project_id=$2 WHERE id=$1',[target,project]);}
+ clock+=60001;
+ try{assert.equal((await send('/api/lab/scans',input)).statusCode,403);}finally{clock=initialTime;}
+ const future=await create([target],{profiles:['lab.inventory'],risk:'moderate',limits:{maxInputBytes:1024,allowedPorts:[22]},targetManifest:manifest(target),notBefore:new Date(clock+60000).toISOString(),expiresAt:new Date(clock+120000).toISOString()});await approve(future.id);
+ assert.equal((await send('/api/lab/scans',input)).statusCode,403);assert.equal(nmapRuns,beforeRuns);
+});
+
+test('legacy scopes and valid historical schema-one inventory grants do not imply approval for any network address',async()=>{
+ const target=await asset();await legacy(target,['scan']);
+ const registeredId=randomUUID();
+ await db.query('INSERT INTO lab_targets(id,organization_id,asset_id,address,name,created_by) VALUES($1,$2,$3,$4,$5,$6)',[registeredId,organization,target,'127.0.0.1','Historical target without manifest',operator]);
+ const beforeRuns=nmapRuns;
+ assert.equal((await scan(target)).statusCode,200);
+ assert.equal((await send('/api/lab/targets',{assetId:target,address:'127.0.0.2',name:'Legacy does not approve addresses'})).statusCode,403);
+ assert.equal((await send('/api/lab/scans',{targetId:registeredId,ports:[22]})).statusCode,403);
+ // Preserve a valid V1 approval fixture in the pre-manifest format, without rewriting any delivered migration.
+ const id=randomUUID(),evidenceId=randomUUID(),proofHash=digest(authorityBytes),body=draft([target]);
+ const privateDetails={responsible:body.responsible,purpose:body.purpose,authority:{channel:body.authority.channel,reference:body.authority.reference}},serialized=canonical(privateDetails),profiles=['lab.inventory'],limits={maxInputBytes:1024,allowedPorts:[22]};
+ const requestHash=digest(canonical({schemaVersion:1,organizationId:organization,projectId:project,assets:[{id:target,environment:'lab'}],mode:'lab',risk:'moderate',profiles,limits,notBefore:body.notBefore,expiresAt:body.expiresAt,details:privateDetails,authorityEvidenceId:evidenceId,authorityEvidenceHash:proofHash}));
+ await db.transaction(async tx=>{
+  await tx.query('INSERT INTO evidence(id,organization_id,asset_id,name,media_type,sha256,size_bytes,content_cipher,created_by,source) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',[evidenceId,organization,target,'historical-authority.txt','text/plain',proofHash,authorityBytes.length,encrypt(authorityBytes,key,`evidence:${organization}:${evidenceId}`),operator,`authority:${id}`]);
+  await tx.query("INSERT INTO authorization_mandates(id,organization_id,project_id,mode,risk,profiles,limits,not_before,expires_at,details_cipher,details_hash,request_hash,authority_evidence_id,authority_evidence_hash,created_by,status,approved_by,approved_at) VALUES($1,$2,$3,'lab','moderate',$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'approved',$13,$14)",[id,organization,project,JSON.stringify(profiles),JSON.stringify(limits),body.notBefore,body.expiresAt,encrypt(serialized,key,`authorization:${organization}:${id}`),digest(serialized),requestHash,evidenceId,proofHash,operator,new Date(clock)]);
+  await tx.query("INSERT INTO authorization_mandate_assets(mandate_id,organization_id,asset_id,environment) VALUES($1,$2,$3,'lab')",[id,organization,target]);
+  await tx.query("UPDATE assets SET authorization_mode='managed' WHERE id=$1",[target]);
+  await tx.query("INSERT INTO authorizations(id,organization_id,asset_id,environment,operations,authorization_ref,not_before,expires_at,created_by,mandate_id) VALUES($1,$2,$3,'lab',$4,$5,$6,$7,$8,$9)",[randomUUID(),organization,target,JSON.stringify(['scan']),`Historical:${id}`,body.notBefore,body.expiresAt,operator,id]);
+ });
+ const old=await detail(id);assert.equal(old.requestSchemaVersion,1);assert.equal(old.targetManifest,null);assert.equal(old.requestHash,requestHash);
+ assert.equal((await send('/api/lab/targets',{assetId:target,address:'127.0.0.2',name:'Old managed grant without target review'})).statusCode,403);
+ assert.equal((await send('/api/lab/scans',{targetId:registeredId,ports:[22]})).statusCode,403);assert.equal(nmapRuns,beforeRuns);
+ assert.equal(verifyAuditChain(await db.query('SELECT * FROM audit_events WHERE organization_id=$1 ORDER BY sequence',[organization])).valid,true);
 });
