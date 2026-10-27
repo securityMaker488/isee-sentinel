@@ -4,6 +4,28 @@ Especificação V6.9, versão de desenvolvimento 0.2.0. Resultados de fixtures
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
+## GitHub privado, CI e complemento AttackLab
+
+Repositório privado criado e primeiro envio0a097b1 confirmado por igualdade entre
+HEAD local e main remoto. A verificação anterior ao envio cobriu182 arquivos do
+índice e174 blobs históricos; as duas alterações finais de README/metadado do
+relatório receberam verificação adicional no índice e na cópia de trabalho.
+O metadado de especificação dos relatórios foi corrigido de6.6 para6.9; os cinco
+testes de integração OpenAPI/relatório passaram após essa alteração.
+
+A [CI inicial](https://github.com/securityMaker488/isee-sentinel/actions/runs/40401553438)
+passou no Windows2022. Ubuntu24.04 falhou antes do build: o diagnóstico resolvia
+o link rustc/cargo para rustup e comparava a versão do gerenciador à do compilador.
+`scripts/executable-path.mjs` preserva o nome invocado, mantendo o despacho do
+proxy. Dois testes passaram localmente; um de link POSIX foi ignorado no Windows
+e será executado na CI Ubuntu. O doctor completo local passou após a correção.
+A CI também recebe o caminho real do Python para não ignorar os testes dos workers.
+
+O complemento AttackLab foi registrado e recebeu auditoria dirigida de código.
+Plano: docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md. Isso não implementou Gobuster,
+Suricata/Sigma/Atomic nem homologou rede isolada, Linux ou execução ativa nova.
+O principal próximo requisito é incluir alvos e exclusões no pedido aprovado.
+
 ## Incremento Authorization Manager
 
 | Verificação executada em 26/10/2026 | Resultado |

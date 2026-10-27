@@ -1,7 +1,8 @@
 import {spawnSync} from 'node:child_process';
-import {existsSync,realpathSync,statSync} from 'node:fs';
-import {delimiter,dirname,join,resolve} from 'node:path';
+import {existsSync} from 'node:fs';
+import {dirname,join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {findExecutable as executable} from './executable-path.mjs';
 
 // Read-only diagnostics: no environment values, credentials or database connections are printed.
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -12,14 +13,6 @@ if([...flags].some(flag=>!['--json','--require-ready','--help'].includes(flag)))
 if(flags.has('--help')){process.stdout.write('Diagnóstico somente leitura. --json: saída estruturada. --require-ready: exige dependências e builds locais.\n');process.exit(0);}
 const versionParts=value=>String(value).split('.').map(Number);
 const atLeast=(value,minimum)=>{const a=versionParts(value),b=versionParts(minimum);for(let i=0;i<3;i++){if((a[i]??0)!==(b[i]??0))return(a[i]??0)>(b[i]??0);}return true;};
-function executable(name) {
-  const suffixes=process.platform==='win32'?['.exe','.cmd','.bat','']:[''];
-  for(const folder of (process.env.PATH??'').split(delimiter))for(const suffix of suffixes) {
-    const candidate=join(folder.replace(/^"|"$/g,''),name+suffix);
-    try{if(statSync(candidate).isFile())return realpathSync(candidate);}catch{}
-  }
-  return null;
-}
 function run(command,args) {
   const result=spawnSync(command,args,{encoding:'utf8',timeout:8000,maxBuffer:65536,windowsHide:true,shell:false});
   return !result.error&&result.status===0?`${result.stdout??''}\n${result.stderr??''}`:null;

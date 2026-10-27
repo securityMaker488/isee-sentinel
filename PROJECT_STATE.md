@@ -2,7 +2,8 @@
 
 ## Retomada obrigatória
 
-Guia funcional: docs/ESPECIFICACAO-V6.9.txt + complemento multiplataforma.
+Guia funcional: docs/ESPECIFICACAO-V6.9.txt + complementos multiplataforma e
+AttackLab Evidence Fusion/Purple Validation recebidos do operador.
 Precedência e hashes: docs/PROMPTS-REGISTRY.md. Retomar deste checkpoint e da
 fila do ROADMAP.md, sem reler blocos grandes já revisados. Corrigir erros no
 escopo encontrado. O usuário pediu terminar o possível no Windows antes de
@@ -59,7 +60,11 @@ O adaptador Nmap tem limites e testes injetados, mas Nmap real não foi homologa
 
 Detalhes, limitações e reprodução: VALIDATION_REPORT.md e TESTING.md.
 Nenhuma varredura externa, alteração de sistema de cliente ou publicação ocorreu.
-CI Windows/Ubuntu preparada, mas não executada. Debian não foi homologado.
+Primeira CI remota executada no commit0a097b1: Windows2022 passou; Ubuntu24.04
+falhou no diagnóstico porque realpath transformava rustc/cargo em rustup.
+Correção preserva o nome do proxy e acrescenta regressão POSIX; consultar
+VALIDATION_REPORT.md e Actions para o resultado da execução corrigida.
+Debian não foi homologado.
 
 ## Próxima tarefa concreta no Windows
 
@@ -67,6 +72,11 @@ CI Windows/Ubuntu preparada, mas não executada. Debian não foi homologado.
    Prosseguir no contrato do plano de avaliação, catálogo versionado e vínculo
    de resultados; fila geral de jobs permanece pendente. Não reimplementar o
    ciclo de autorização já entregue.
+   Auditoria dirigida do novo complemento AttackLab concluída: falta ligar
+   endereço exato/exclusões ao hash aprovado. Primeiro implementar manifesto
+   imutável de alvos da operação e negação de exclusões, referenciando os mandatos
+   existentes. Não ampliar ferramentas ativas antes disso. Plano detalhado em
+   docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md; nenhuma integração nova foi inventada.
 2. Fase2: estender Universal Import Lab primeiro a TAR/TAR.GZ, depois URL/Git,
    por adaptadores separados e perfis explícitos;
    URL exige defesa SSRF, DNS/redirect/limites e associação exata ao alvo autorizado.
@@ -76,6 +86,10 @@ CI Windows/Ubuntu preparada, mas não executada. Debian não foi homologado.
    de iniciar aplicação desconhecida. SOC sintético não encerra essa fase.
 4. Prosseguir fases4–12 conforme dependências. Não criar centenas de módulos
    vazios nem declarar as lacunas portáteis como dependência do Debian.
+   O complemento organiza a evolução do AttackLab em seis fases internas;
+   Gobuster começa por importação offline após o núcleo seguro, Blue/Purple por
+   metadados e resultados manuais. Auditoria SUID/SGID e isolamento Kali/QEMU
+   dependem da etapa Linux; normalizadores e contratos podem avançar no Windows.
 
 ## Continuidade e ambiente
 
@@ -92,6 +106,9 @@ partições, boot, Windows, GPU, Kali, firewall ou serviço PostgreSQL preexiste
 Os processos temporários usados foram QA4311 e cluster work/postgres-validation
 em55432. Conferir se estão ativos antes de reutilizar; nunca parar serviço5432.
 Dumps/credenciais de teste estão em work ou .sentinel, fora do Git/pacote.
+O primeiro push de0a097b1 foi confirmado por igualdade HEAD/remoto; a cópia
+local estava limpa. O servidor temporário4311 foi encerrado após QA. Sempre
+conferir processos e git status ao retomar; não inferir estado pelo histórico.
 
 docs/CONTINUIDADE.md conserva o histórico. Este checkpoint substitui suas antigas
 instruções de retomada. Consulte o último commit local para identificar a revisão;

@@ -122,3 +122,10 @@ devem ter casos próprios quando aplicáveis (§53 da V6.9).
 A [CI](.github/workflows/ci.yml) prevê Windows e Ubuntu, Node 24, Python 3.11 e
 Rust 1.98.1. Preparar o YAML não comprova execução de runner. Ubuntu não substitui
 homologação Debian 13, e o workflow não executa testes ofensivos em redes externas.
+
+Regressão do diagnóstico: `node --test scripts/executable-path.test.mjs` valida
+ordem do PATH e preservação do nome de proxies como rustc/cargo. O caso de
+dispatch por link simbólico POSIX roda no Ubuntu e é explicitamente ignorado
+no Windows. `node scripts/doctor.mjs --require-ready` valida o ambiente local
+preparado. A CI define o caminho do Python de teste para executar também os
+casos positivos/negativos dos workers reais, em vez de ignorá-los.

@@ -1,6 +1,6 @@
 # Guias vigentes e memória portátil
 
-Atualizado em 25/10/2026. A memória do projeto fica no próprio repositório;
+Atualizado em 26/10/2026. A memória do projeto fica no próprio repositório;
 não depende da conversa estar disponível em outra máquina.
 
 1. **Guia funcional principal:** ESPECIFICACAO-V6.9.txt, recebido em 25/10/2026.
@@ -20,6 +20,16 @@ não depende da conversa estar disponível em outra máquina.
 4. **Preferência do operador:** ao pedir continuação, retomar o ponto registrado
    sem revisar novamente blocos grandes já revisados. A inspeção de portabilidade
    usa inventário, registros e buscas dirigidas; novas alterações são verificadas.
+5. **Complemento AttackLab Evidence Fusion & Purple Validation Engine:**
+   COMPLEMENTO-ATTACKLAB-EVIDENCE-FUSION.md, recebido no chat em26/10/2026.
+   SHA256: 2b8beb5ca7d796bac40582b4909034a750dab9b050c10ce430bb740cbe36403b.
+   Transcrição integral do texto com espaçamento de Markdown normalizado em UTF-8
+   e LF; o hash identifica este arquivo, não bytes originais de um anexo.
+   Acrescenta operação/alvos/exclusões, descoberta controlada, auditoria Linux,
+   fusão de evidências e validação Blue/Purple. Não substitui V6.9 nem antecipa
+   mudança de sistema. Suas fases1–6 são locais ao módulo; plano e correspondência
+   em ATTACKLAB-EVIDENCE-FUSION-PLAN.md. Começar por auditoria dirigida e plano,
+   reutilizando os componentes verificados e registrando cada lacuna.
 
 V5, V6.3 e V6.5 são contexto histórico. A referência operacional para uma nova
 sessão é AGENTS.md → PROJECT_STATE.md → ROADMAP.md → arquivos da tarefa.

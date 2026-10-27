@@ -16,6 +16,11 @@ Fontes vigentes: docs/ESPECIFICACAO-V6.9.txt e o complemento
 docs/COMPLEMENTO-MULTIPLATAFORMA.txt. A matriz central é
 PORTFOLIO_CAPABILITY_MATRIX.md, com dados em docs/portfolio-capabilities.json.
 Preferências mais recentes do operador prevalecem sobre esses arquivos.
+Complemento AttackLab de26/10/2026: docs/COMPLEMENTO-ATTACKLAB-EVIDENCE-FUSION.md.
+Plano/auditoria: docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md. Suas seis fases detalham
+o AttackLab dentro da V6.9; não reiniciar auditoria global nem assumir execução
+Linux/isolamento já validado. Vincular alvos e exclusões ao pedido aprovado antes
+de ampliar executores ativos. Descoberta não equivale a vulnerabilidade confirmada.
 
 ## Arquitetura e convenções
 

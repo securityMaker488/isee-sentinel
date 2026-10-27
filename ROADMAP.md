@@ -34,6 +34,12 @@ parte do checkpoint e das interfaces afetadas, sem repetir revisões amplas.
 
 ## Fila imediata
 
+O complemento AttackLab Evidence Fusion/Purple Validation de26/10/2026 detalha
+as fases deste módulo sem substituir a sequência V6.9. Auditoria dirigida e
+plano: [ATTACKLAB-EVIDENCE-FUSION-PLAN.md](docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md).
+Alvos exatos/exclusões vinculados ao hash aprovado são dependência obrigatória
+antes de ampliar executores ativos; reaproveitar o Authorization Manager.
+
 1. Integrações OpenAPI/RiskGraph, perícia/PostgreSQL restrito, painel e restore
    encerradas neste recorte Windows; resultados em VALIDATION_REPORT.md.
 2. Recorte de fundação do Authorization Manager entregue: rascunho imutável,

@@ -236,9 +236,9 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Apenas alvo explicitamente cadastrado |
 | Licenciamento | Verificação oficial em andamento; não redistribuído |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
-| Limitações | Adaptador opcional; IPv4lab,16portas,30sNmap/40sprocesso,1concorrente. Nmap real não homologado, sem exploração nem isolamentoVM automático |
+| Limitações | Adaptador opcional; IPv4lab,16portas,30sNmap/40sprocesso,1concorrente. Nmap real não homologado, sem exploração nem isolamentoVM automático; endereço/exclusões ainda não integram o hash da autorização. Ampliar somente após manifesto aprovado |
 | Testes necessários / disponíveis | 10 testes com executor injetado; não representam varredura real |
-| Evidências | Código, casos automatizados e resultados registrados; itens pendentes não são prova de operação. |
+| Evidências | Adaptador limitado e testes registrados; auditoria e plano em docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md. Gobuster e demais novos adaptadores ainda ausentes |
 | Estado real | Em validação · M2 |
 | Prioridade | P1 |
 
@@ -248,7 +248,7 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | MITRE ATT&CK / laboratórios Kali |
 | Problema | Validar detecções em laboratório |
-| Funcionalidades desejadas / recorte | Cenário sintético de 5 falhas, teste de alertas; catálogo futuro |
+| Funcionalidades desejadas / recorte | Cenário sintético existente; catálogo Atomic de metadados e validação manual esperada/observada planejados no complemento AttackLab |
 | Módulo | PurpleMatrix / AttackLab |
 | Implementação | Nativa + laboratório futuro |
 | Dependências | VM QEMU/KVM e rede isolada para cenários completos |
@@ -256,7 +256,7 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Laboratório isolado |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
-| Limitações | Cenário sintético não comprova contenção de ataques nem cobertura ATT&CK |
+| Limitações | Cenário sintético não comprova contenção de ataques nem cobertura ATT&CK; Suricata/Sigma/YARA/Auditd/Atomic não integrados |
 | Testes necessários / disponíveis | scripts/browser-qa.cjs cenário sintético |
 | Evidências | Código, casos automatizados e resultados registrados; itens pendentes não são prova de operação. |
 | Estado real | Limitada · M3 |
@@ -536,7 +536,7 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Não |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
-| Limitações | Hash não garante cadeia inteira; administrador de banco pode adulterar; retenção e exportações ampliadas pendentes |
+| Limitações | Hash não garante cadeia inteira; administrador de banco pode adulterar; retenção e exportações ampliadas pendentes; cadeia completa por operação/teste/observação/reteste e comparação ainda pendentes, conforme plano AttackLab |
 | Testes necessários / disponíveis | API evidence/audit tests e restore anterior |
 | Evidências | Código, casos automatizados e resultados registrados; itens pendentes não são prova de operação. |
 | Estado real | Limitada · M3 |
@@ -676,7 +676,7 @@ Atualizada em26/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Administrador cria/aprova/revoga; analista consulta detalhes. Ativo gerenciado não admite retorno ao legado; troca de limites exige novo rascunho |
-| Limitações | Somente executores implementados; bytes por entrada e portas explícitas. Sem cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática |
+| Limitações | Somente executores implementados; bytes por entrada e portas explícitas. Sem cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática; falta manifesto revisado de endereços e exclusões para operações AttackLab |
 | Testes necessários / disponíveis | 13 testes de política e20 de API passaram; API também passou no PostgreSQL restrito. Navegador e restore36 tabelas/9migrações validados no Windows |
 | Evidências | Migração009, authorization-manager.ts, policy.ts, AuthorizationView e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |

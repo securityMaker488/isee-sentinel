@@ -37,11 +37,13 @@ jobs:
       - name: Install verified Rust toolchain
         run: rustup toolchain install 1.98.1 --profile minimal
       - name: Diagnose prerequisites without accessing services
-        run: node scripts/doctor.mjs
+        run: node --test scripts/executable-path.test.mjs && node scripts/doctor.mjs
       - name: Install pinned JavaScript dependencies
         run: npm ci --ignore-scripts
       - name: Build application and run integration checks
-        run: npm run build && npm test
+        run: |
+          export SENTINEL_TEST_PYTHON_PATH="$(python -c 'import sys; print(sys.executable)')"
+          npm run build && npm test
       - name: Check repository boundaries and high confidence secret patterns
         run: npm run test:repository && npm run verify:repository
       - name: Audit JavaScript dependency advisories
