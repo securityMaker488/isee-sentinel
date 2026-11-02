@@ -43,3 +43,4 @@ GRANT SELECT, INSERT ON import_runs TO sentinel_runtime;
 GRANT UPDATE(report,error_code) ON import_runs TO sentinel_runtime;
 GRANT SELECT, INSERT, DELETE ON import_execution_lock TO sentinel_runtime;
 GRANT UPDATE(slot) ON import_execution_lock TO sentinel_runtime;
+GRANT SELECT, INSERT ON assessment_plans, assessment_plan_revisions, assessment_plan_steps, assessment_executions, assessment_execution_evidence TO sentinel_runtime;

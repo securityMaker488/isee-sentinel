@@ -1,6 +1,6 @@
 # Matriz funcional central — I.See Sentinel V6.9
 
-Atualizada em27/10/2026 a partir dos incrementos e testes registrados. M0–M6 é a escala histórica; nenhum módulo alcançou M4–M6. EstadosV6.9 de liberação profissional não são inferidos dos testes locais. Não há recurso liberado para clientes ou distribuição comercial. Dados estruturados: docs/portfolio-capabilities.json. Resultados: VALIDATION_REPORT.md. Referências não implicam equivalência a produtos externos.
+Atualizada em01/11/2026 a partir dos incrementos e testes registrados. M0–M6 é a escala histórica; nenhum módulo alcançou M4–M6. EstadosV6.9 de liberação profissional não são inferidos dos testes locais. Não há recurso liberado para clientes ou distribuição comercial. Dados estruturados: docs/portfolio-capabilities.json. Resultados: VALIDATION_REPORT.md. Referências não implicam equivalência a produtos externos.
 
 ## private-core — Command Center / PolicyGate
 
@@ -676,7 +676,7 @@ Atualizada em27/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Administrador cria/aprova/revoga; analista consulta detalhes. Ativo gerenciado não admite retorno ao legado; troca de limites exige novo rascunho |
-| Limitações | Somente executores implementados; bytes por entrada e portas/alvos explícitos. Sem plano geral, cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática |
+| Limitações | Somente executores implementados; bytes por entrada e portas/alvos explícitos. Planos versionados com static.scan integrado; sem cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática |
 | Testes necessários / disponíveis | 13 testes política+4 manifesto puro;26 API também no PostgreSQL restrito; navegador e restore36tabelas/10migrações passaram no Windows |
 | Evidências | Migrações009–010, authorization-manager.ts, policy.ts, target-manifest.ts, AuthorizationView e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |
@@ -708,18 +708,18 @@ Atualizada em27/10/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | Especificação V6.9; detalhes nos guias do módulo |
 | Problema | Planejar e acompanhar testes de uma aplicação |
-| Funcionalidades desejadas / recorte | Plano versionado, catálogo de testes, execução e reteste |
+| Funcionalidades desejadas / recorte | Plano versionado com etapas/perfis, autorização exata, execução estática integrada e histórico; ampliar vínculos e retestes |
 | Módulo | Security Assessments |
 | Implementação | Nativa |
 | Dependências | PolicyGate/importação/jobs |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
-| Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
-| Limitações | Analisadores existentes não equivalem ao fluxo central completo |
-| Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
-| Evidências | Código e evidências de testes somente para o recorte implementado; limitações explícitas. |
-| Estado real | Não iniciado · M0 |
+| Autorização | Administrador cria/revisa planos; analista pode executar static.scan; cada execução exige mandato/hash vigente, ativo e bytes autorizados |
+| Limitações | Somente static.scan integrado; demais perfis apenas planejáveis. Até25 etapas/100 revisões/100 resultados retornados com aviso. Sem fila geral, comparação/reteste ou integração de importação ainda |
+| Testes necessários / disponíveis | 18 testes API também no PostgreSQL restrito;3 core; navegador390px/exportação/troca de contexto; restore41 tabelas/11 migrações |
+| Evidências | Migração011, assessment-plans.ts, assessment-plan.ts, AssessmentView, docs/ASSESSMENT-PLANS.md e VALIDATION_REPORT.md |
+| Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
 
 ## execution-center — Execution Center

@@ -1,6 +1,6 @@
 # Roadmap V6.9 — fases 0 a 12
 
-Atualizado em 27/10/2026 sob o guia único `docs/GUIA-MESTRE-CONSOLIDADO.md`, conforme `docs/ESPECIFICACAO-V6.9.txt`, §46 e diretriz
+Atualizado em 01/11/2026 sob o guia único `docs/GUIA-MESTRE-CONSOLIDADO.md`, conforme `docs/ESPECIFICACAO-V6.9.txt`, §46 e diretriz
 final. Comparação em `docs/EVOLUCAO-V6.9.md`; resultados recentes e ponto de
 retomada em `PROJECT_STATE.md`. Esta ordem não afirma que testes pendentes passaram.
 
@@ -39,8 +39,9 @@ as fases deste módulo sem substituir a sequência V6.9. Auditoria dirigida e
 plano: [ATTACKLAB-EVIDENCE-FUSION-PLAN.md](docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md).
 Alvos exatos/exclusões no hash aprovado foram implementados na migração010,
 com negação antes do cadastro/despacho. Manter essa dependência ao ampliar
-executores. O próximo passo da fase1 é o plano de avaliação versionado, ligado
-ao mandato revisado, catálogo de perfis existentes, jobs e resultados.
+executores. O plano versionado da fase1 está ligado ao mandato revisado, com
+static.scan integrado a jobs/evidências/resultados (migração011). Próximo passo:
+vincular archive.inspect ao plano antes de ampliar formatos TAR/TAR.GZ.
 
 1. Integrações OpenAPI/RiskGraph, perícia/PostgreSQL restrito, painel e restore
    encerradas neste recorte Windows; resultados em VALIDATION_REPORT.md.
@@ -48,8 +49,9 @@ ao mandato revisado, catálogo de perfis existentes, jobs e resultados.
    comprovação/responsável, projeto, revisão explícita e aplicação de perfis,
    bytes/portas, substituição e revogação; manifesto imutável de IPs/exclusões e
    vínculo da execução à revisão aprovada. A tela Autorizações acompanha o ciclo;
-   detalhes em AUTHORIZATION_POLICY.md. Plano completo de avaliação e jobs gerais
-   continuam pendentes; este recorte não encerra toda a fase 1.
+   detalhes em AUTHORIZATION_POLICY.md. Planos versionados/API/UI e execução
+   estática integrada estão em docs/ASSESSMENT-PLANS.md. Os demais vínculos e jobs
+   gerais continuam pendentes; este recorte não encerra toda a fase 1.
 3. ZIP em quarentena já implementado e testado. Avançar TAR primeiro e depois
    URL/Git por adaptadores separados, com limites e autorizações próprios, junto
    do plano de avaliação. Registrar cada formato efetivamente aceito sem presumir

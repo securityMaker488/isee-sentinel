@@ -23,6 +23,10 @@ Perícia offline e importação exigem Python local configurado no servidor.
 A tela **Autorizações** registra responsável, comprovação cifrada, projeto,
 ativos e limites. A aprovação explícita habilita perfis definidos; revogar não
 restaura permissões antigas. Consulte [AUTHORIZATION_POLICY.md](AUTHORIZATION_POLICY.md).
+A tela **Avaliações** mantém planos e revisões ligados à autorização aprovada.
+A análise estática pode ser executada por etapa, preservando o vínculo com o job
+e as evidências; os demais perfis indicam seu estado de integração.
+Consulte [planos de avaliação](docs/ASSESSMENT-PLANS.md).
 Código e memória de continuidade são sincronizados no
 [repositório privado](https://github.com/securityMaker488/isee-sentinel).
 As pendências Windows continuam registradas; o preparo do GitHub não encerra

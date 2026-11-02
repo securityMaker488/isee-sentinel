@@ -1,8 +1,47 @@
-# Validação de desenvolvimento — Windows — 27/10/2026
+# Validação de desenvolvimento — Windows — 01/11/2026
 
 Especificação V6.9, versão de desenvolvimento 0.2.0. Resultados de fixtures
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
+
+## Incremento planos de avaliação — 01/11/2026
+
+Arquivos: migração011, core/assessment-plan, API assessment-plans e integração
+app.ts/scans, runtime-grants, AssessmentView/css/menu, testes core/API/navegador.
+Contrato e decisões: docs/ASSESSMENT-PLANS.md. Nenhuma migração001–010 foi editada.
+
+| Verificação | Resultado |
+|---|---|
+| TypeScript e build web | Passaram;44 módulos |
+| Suíte completa com Python real | 179 passaram,0 falhas,1 skip POSIX no Windows |
+| Planos/core/API focados | 3 core e18 API passaram |
+| PostgreSQL18 nativo/runtime restrito | 18 testes API passaram |
+| Backup/restore | 41 tabelas idênticas;11 migrações;17 planos,21 revisões,22 etapas,10 execuções/vínculos,34 evidências e138 eventos; auditoria íntegra |
+| Navegador | Criar/revisar/executar/exportar, histórico,390px, resposta antiga descartada na troca de organização e revogação passaram; console sem erros |
+
+Cobertura: identidade/CSRF/papéis, organização/projeto/ativos, UUIDs canônicos,
+revisões concorrentes, hashes/imutabilidade/FKs, bytes, expiração/revogação/
+substituição, exclusões de inventário, ausência de vínculos retroativos e rollback
+integral com falha injetada na segunda evidência. A execução integrada é somente
+estática e usa arquivos sintéticos; inventário é metadado, sem Nmap real.
+O aviso de100 resultados foi testado na UI por resposta sintética explicitamente
+marcada no roteiro. Não representa teste de carga com101 scans.
+
+Ajuste final da consulta obtém lock antes de ler revisões e resultados: evita
+misturar uma execução nova com um histórico lido antes dela.18 testes API
+passaram novamente após esse ajuste. Build/suíte completa/PostgreSQL/restore
+foram executados antes dele; CI final confirmará a revisão enviada.
+
+Logs: .sentinel/assessment-build.log, assessment-full-test.log,
+assessment-api-focused.log, assessment-native-test.log, assessment-restore.log,
+assessment-browser.log. Capturas assessment-completed.png/assessment-mobile.png
+em .sentinel/qa foram inspecionadas. Segredos, dumps e dados de QA ficam fora do Git.
+Rust e workers Python não foram alterados nem repetidos isoladamente neste
+incremento; execução na CI será registrada quando houver resultado observado.
+
+Limites: demais perfis apenas planejáveis, fila/pausa/cancelamento geral ausentes,
+sem vínculo de importação ou comparação/reteste generalizados. Fase Windows e
+produto completo ainda em desenvolvimento; Debian13 KDE não homologado.
 
 ## Incremento manifesto de alvos e guia único — 27/10/2026
 
@@ -33,7 +72,9 @@ em3m59s. [Ubuntu24.04](https://github.com/securityMaker488/isee-sentinel/actions
 passou no doctor corrigido e em145/146 testes; a perícia rejeitou symlink Python.
 Correção alinha resolução realpath ao worker ZIP, mantendo argumentos fixos,
 ambiente reduzido e Python isolado. Testes locais de perícia:6pass/1skip POSIX.
-A regressão POSIX será executada na próxima CI; resultado remoto ainda não presumido.
+A correção foi confirmada na [CI do código dff15a3](https://github.com/securityMaker488/isee-sentinel/actions/runs/40568763223):
+Windows2022 e Ubuntu24.04 passaram; duração total de4m16s. Resultado consultado
+em29/10/2026. Inclui a regressão POSIX no Ubuntu, sem equivaler à homologação Debian.
 
 Evidências locais: .sentinel/manifest-full-test.log, manifest-focused-test.log,
 manifest-native-test.log, manifest-restore.log, manifest-browser-test.log e

@@ -8,10 +8,11 @@ import ForensicView from './ForensicView';
 import RiskGraphView from './RiskGraphView';
 import ImportView from './ImportView';
 import AuthorizationView from './AuthorizationView';
+import AssessmentView from './AssessmentView';
 import {OperationsView} from './OperationsView';
 import './modules.css';
 
-type View = 'overview' | 'assets' | 'securebuild' | 'barriers' | 'evidence' | 'audit' | 'roadmap' | 'soc' | 'endpoints' | 'operations' | 'capabilities' | 'analyses' | 'lab' | 'forensics' | 'graph' | 'imports' | 'authorizations';
+type View = 'overview' | 'assets' | 'securebuild' | 'barriers' | 'evidence' | 'audit' | 'roadmap' | 'soc' | 'endpoints' | 'operations' | 'capabilities' | 'analyses' | 'lab' | 'forensics' | 'graph' | 'imports' | 'authorizations' | 'assessments';
 type IconName = 'shield' | 'grid' | 'box' | 'code' | 'layers' | 'fingerprint' | 'activity' | 'arrow' | 'plus' | 'search' | 'refresh' | 'download' | 'upload' | 'close' | 'lock' | 'logout' | 'check' | 'chevron' | 'map' | 'menu';
 const paths: Record<IconName, ReactNode> = {
   shield: <><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6z"/><path d="m8 12 3 3 5-6"/></>,
@@ -39,6 +40,7 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) { return <
 const nav: { id: View; label: string; icon: IconName; subtitle: string }[] = [
   { id: 'overview', label: 'Overview', icon: 'grid', subtitle: 'Uma visão clara. Cada operação rastreável.' },
   { id: 'authorizations', label: 'Autorizações', icon: 'lock', subtitle: 'Responsáveis, comprovação de autoridade, testes permitidos e limites aprovados.' },
+  { id: 'assessments', label: 'Avaliações', icon: 'layers', subtitle: 'Planos versionados, etapas autorizadas e resultados rastreáveis.' },
   { id: 'imports', label: 'Universal Import Lab', icon: 'upload', subtitle: 'Quarentena e inspeção de projetos ZIP autorizados.' },
   { id: 'soc', label: 'SOC', icon: 'activity', subtitle: 'Eventos, detecções e incidentes da empresa em contexto.' },
   { id: 'endpoints', label: 'Endpoint Agent', icon: 'shield', subtitle: 'Sensores autenticados e integridade de arquivos selecionados.' },
@@ -138,6 +140,7 @@ export default function App() {
       {view === 'forensics' && !contextBusy && <ForensicView key={session.user.organizationId} session={session} assets={data.assets} onChanged={()=>void refresh()}/>}
       {view === 'imports' && !contextBusy && <ImportView key={session.user.organizationId} session={session} assets={data.assets} onChanged={()=>void refresh()}/>}
       {view === 'authorizations' && !contextBusy && <AuthorizationView key={session.user.organizationId} session={session} assets={data.assets} projects={data.projects} onChanged={()=>void refresh()}/>}
+      {view === 'assessments' && !contextBusy && <AssessmentView key={session.user.organizationId} session={session} assets={data.assets} projects={data.projects} onChanged={()=>void refresh()}/>}
       {view === 'graph' && !contextBusy && <RiskGraphView key={session.user.organizationId}/>}
       {view === 'roadmap' && <Roadmap/>}
       <footer className="main-footer"><span>I.See Technologies <i/> Sentinel Private Operator Edition</span><span>Protect. Detect. Investigate. Verify.</span></footer>

@@ -1,6 +1,6 @@
 {
   "specification": "6.9",
-  "recordedAt": "2026-10-27",
+  "recordedAt": "2026-11-01",
   "items": [
     {
       "id": "private-core",
@@ -641,7 +641,7 @@
       "network": "Sem rede durante inspeção offline; futuras integrações conforme escopo",
       "license": "Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas",
       "authorization": "Administrador cria/aprova/revoga; analista consulta detalhes. Ativo gerenciado não admite retorno ao legado; troca de limites exige novo rascunho",
-      "limits": "Somente executores implementados; bytes por entrada e portas/alvos explícitos. Sem plano geral, cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática",
+      "limits": "Somente executores implementados; bytes por entrada e portas/alvos explícitos. Planos versionados com static.scan integrado; sem cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática",
       "tests": "13 testes política+4 manifesto puro;26 API também no PostgreSQL restrito; navegador e restore36tabelas/10migrações passaram no Windows",
       "evidence": "Migrações009–010, authorization-manager.ts, policy.ts, target-manifest.ts, AuthorizationView e VALIDATION_REPORT.md",
       "status": "Parcialmente implementado",
@@ -672,18 +672,18 @@
       "module": "Security Assessments",
       "reference": "Especificação V6.9; detalhes nos guias do módulo",
       "problem": "Planejar e acompanhar testes de uma aplicação",
-      "desired": "Plano versionado, catálogo de testes, execução e reteste",
+      "desired": "Plano versionado com etapas/perfis, autorização exata, execução estática integrada e histórico; ampliar vínculos e retestes",
       "implementation": "Nativa",
       "dependencies": "PolicyGate/importação/jobs",
       "os": "Multiplataforma",
       "network": "Sem rede durante inspeção offline; futuras integrações conforme escopo",
       "license": "Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas",
-      "authorization": "Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados.",
-      "limits": "Analisadores existentes não equivalem ao fluxo central completo",
-      "tests": "Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado",
-      "evidence": "Código e evidências de testes somente para o recorte implementado; limitações explícitas.",
-      "status": "Não iniciado",
-      "maturity": "M0",
+      "authorization": "Administrador cria/revisa planos; analista pode executar static.scan; cada execução exige mandato/hash vigente, ativo e bytes autorizados",
+      "limits": "Somente static.scan integrado; demais perfis apenas planejáveis. Até25 etapas/100 revisões/100 resultados retornados com aviso. Sem fila geral, comparação/reteste ou integração de importação ainda",
+      "tests": "18 testes API também no PostgreSQL restrito;3 core; navegador390px/exportação/troca de contexto; restore41 tabelas/11 migrações",
+      "evidence": "Migração011, assessment-plans.ts, assessment-plan.ts, AssessmentView, docs/ASSESSMENT-PLANS.md e VALIDATION_REPORT.md",
+      "status": "Parcialmente implementado",
+      "maturity": "M3",
       "priority": "P0"
     },
     {

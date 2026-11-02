@@ -1,4 +1,4 @@
-# Estado dos módulos — 27/10/2026
+# Estado dos módulos — 01/11/2026
 
 O guia único é docs/GUIA-MESTRE-CONSOLIDADO.md, sob a sequência V6.9.
 Consulte PORTFOLIO_CAPABILITY_MATRIX.md para
@@ -7,8 +7,9 @@ profissional ou comercial.
 
 | Módulo | Disponível no Windows | Ainda falta |
 |---|---|---|
-| Fundação privada | MFA, clientes/projetos/ativos, escopo, CSRF, evidências e auditoria | Plano de avaliação, retenção e homologação |
-| Authorization Manager | Responsável/prova cifrados, projeto, revisão, nove perfis, limites, manifesto imutável IPv4/portas/exclusões e revogação sem retorno ao legado | Plano geral, catálogo amplo, cotas acumuladas, cancelamento imediato e homologação Debian |
+| Fundação privada | MFA, clientes/projetos/ativos, escopo, CSRF, evidências, auditoria e planos versionados | Vínculos com demais executores, retenção e homologação |
+| Authorization Manager | Responsável/prova cifrados, projeto, revisão, nove perfis, limites, manifesto imutável IPv4/portas/exclusões e revogação sem retorno ao legado | Catálogo amplo, cotas acumuladas, cancelamento imediato e homologação Debian |
+| Planos de avaliação | Revisões imutáveis, etapas vinculadas ao mandato/hash e análise estática com job/evidência/relatório; tela funcional | Integrar os demais executores começando archive.inspect; comparação/reteste e fila gerais |
 | Universal Import Lab | ZIP cifrado, inspeção, hashes, indícios de tecnologia, histórico/JSON | URL, Git, TAR.GZ, instaladores e execução isolada |
 | SecureBuild / análises | Regras estáticas, dependências, NmapXML/HAR, SARIF, cloud, identidade, IA, binários/timelines | SAST/DAST/SCA completos, feeds e avaliações de execução |
 | API Security | Auditoria estática OpenAPI JSON 3.0/3.1 | Testes ativos de autorização e lógica de negócio |
@@ -20,9 +21,9 @@ profissional ou comercial.
 | AttackLab | Nmap limitado, manifesto revisado obrigatório, despacho vinculado ao mandato/hash; testes com substituto | Nmap real, operações completas, novos adaptadores, VMs, isolamento e snapshots |
 | ProofLab / ResilienceLab | Requisitos e cenários-base reaproveitáveis | Aplicação isolada integrada; carga e recuperação medidas |
 | Governança e serviços | Organizações, projetos, evidências e guias | GRC, privacidade, BIA, terceiros, treinamento, equipes e operação gerenciada |
-| Portabilidade | Setup Windows executado; CI Windows passou; scripts Debian preparados; correção de Python Linux em validação remota | Debian13/KDE, serviços e validação operacional entre sistemas |
+| Portabilidade | Setup Windows executado; CI do código dff15a3 passou em Windows2022 e Ubuntu24.04, incluindo correção Python POSIX; scripts Debian preparados | Debian13/KDE, serviços e validação operacional entre sistemas |
 
-URLs/Git/TAR, planos de avaliação, filas/cancelamento e relatórios
+URLs/Git/TAR, demais vínculos do plano, filas/cancelamento e relatórios
 ainda podem evoluir no Windows. Não transferir automaticamente essas
 lacunas para “depende do Debian”. O Debian validará componentes específicos de
 Linux e implantação; não substitui implementação ausente.

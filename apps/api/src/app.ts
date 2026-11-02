@@ -22,6 +22,7 @@ import {registerForensics,type ForensicRunner} from './forensics.ts';
 import {registerGraph} from './graph.ts';
 import {registerImports,type ImportRunner} from './imports.ts';
 import {registerAuthorizationManager} from './authorization-manager.ts';
+import {registerAssessmentPlans,assessmentContextSchema,validateAssessmentExecution,recordAssessmentExecution,recordAssessmentEvidence} from './assessment-plans.ts';
 
 export interface AppOptions {db:Database;masterKey:Buffer;origin?:string;secureCookie?:boolean;now?:()=>number;staticDir?:string;logger?:boolean;nmapPath?:string;labRunner?:LabRunner;pythonPath?:string;forensicRunner?:ForensicRunner;importRunner?:ImportRunner;}
 export async function buildApp(options:AppOptions) {
@@ -97,23 +98,34 @@ export async function buildApp(options:AppOptions) {
     permit(request,'scopes.create');const a=request.actor!,id=(request.params as any).id;
     return db.transaction(async tx=>{await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[a.organizationId]);const rows=await tx.query('UPDATE authorizations SET revoked_at=$3 WHERE id=$1 AND organization_id=$2 AND revoked_at IS NULL RETURNING id',[id,a.organizationId,new Date(now())]);if(!rows.length)throw new HttpError(404,'NOT_FOUND','Autorização não encontrada.');await audit(tx,a.organizationId,a.id,'scope.revoked',id);return {ok:true};});
   });
-  app.post('/api/scans',{schema:{body:object({assetId:uuid,files:{type:'array',minItems:1,maxItems:40,items:object({path:str(240),content:{type:'string',maxLength:262144}})}})}},async request=>{
+  app.post('/api/scans',{schema:{body:object({assetId:uuid,files:{type:'array',minItems:1,maxItems:40,items:object({path:str(240),content:{type:'string',maxLength:262144}})},assessment:assessmentContextSchema},['assetId','files'])}},async request=>{
     const a=request.actor!,b=request.body as any;
-    await scoped(db,request,'scan',b.assetId,now,{profile:'static.scan',inputBytes:b.files.reduce((sum:number,file:{content:string})=>sum+Buffer.byteLength(file.content,'utf8'),0)});
-    let result:ScanResult;
-    try {result=scanFiles(b.files);}catch{throw new HttpError(400,'INVALID_FILES','Arquivos inválidos. Use caminhos relativos, até 40 arquivos, 256 KiB por arquivo e 1 MiB total.');}
+    const execution={profile:'static.scan',inputBytes:b.files.reduce((sum:number,file:{content:string})=>sum+Buffer.byteLength(file.content,'utf8'),0)};
+    await scoped(db,request,'scan',b.assetId,now,execution);
     const id=randomUUID();
-    await db.transaction(async tx=>{await tx.query('INSERT INTO jobs(id,organization_id,asset_id,kind,status) VALUES($1,$2,$3,$4,$5)',[id,a.organizationId,b.assetId,'securebuild','running']);await audit(tx,a.organizationId,a.id,'scan.started',id,{assetId:b.assetId,fileCount:b.files.length});});
-    try {
-      return await db.transaction(async tx=>{
+    const analyze=()=>{try{return scanFiles(b.files);}catch{throw new HttpError(400,'INVALID_FILES','Arquivos inválidos. Use caminhos relativos, até 40 arquivos, 256 KiB por arquivo e 1 MiB total.');}};
+    const start=async(tx:Sql)=>{await tx.query('INSERT INTO jobs(id,organization_id,asset_id,kind,status) VALUES($1,$2,$3,$4,$5)',[id,a.organizationId,b.assetId,'securebuild','running']);await audit(tx,a.organizationId,a.id,'scan.started',id,{assetId:b.assetId,fileCount:b.files.length});};
+    const finish=async(tx:Sql,result:ScanResult)=>{
         const [row]=await tx.query('INSERT INTO scans(id,organization_id,asset_id,result) VALUES($1,$2,$3,$4) RETURNING *',[id,a.organizationId,b.assetId,JSON.stringify(result)]);
         const evidenceIds=new Map<string,string>();
         for(const file of b.files) {const ev=await preserve(tx,{organizationId:a.organizationId,actorId:a.id,assetId:b.assetId,name:file.path,mediaType:'text/plain; charset=utf-8',bytes:Buffer.from(file.content,'utf8'),source:`securebuild:${id}`},masterKey);evidenceIds.set(file.path,ev.id);}
         for(const finding of result.findings)await tx.query('INSERT INTO findings(id,organization_id,asset_id,scan_id,evidence_id,details) VALUES($1,$2,$3,$4,$5,$6)',[randomUUID(),a.organizationId,b.assetId,id,evidenceIds.get(finding.path),JSON.stringify(finding)]);
+        if(b.assessment)await recordAssessmentEvidence(tx,a.organizationId,b.assetId,id,[...evidenceIds.values()]);
         await tx.query('UPDATE jobs SET status=$2,completed_at=$3 WHERE id=$1',[id,'completed',new Date(now())]);
         await tx.query('INSERT INTO security_events(id,organization_id,asset_id,schema_version,type,source,occurred_at,data) VALUES($1,$2,$3,1,$4,$5,$6,$7)',[randomUUID(),a.organizationId,b.assetId,'scan.completed','securebuild',new Date(now()),JSON.stringify({scanId:id,findingCount:result.findings.length})]);
-        await audit(tx,a.organizationId,a.id,'scan.completed',id,{assetId:b.assetId,findings:result.findings.length,inputHash:result.inputHash});return scanDto(row);
-      });
+        await audit(tx,a.organizationId,a.id,'scan.completed',id,{assetId:b.assetId,findings:result.findings.length,inputHash:result.inputHash});return {...scanDto(row),...(b.assessment?{assessment:b.assessment}:{})};
+    };
+    if(b.assessment)return db.transaction(async tx=>{
+      // The bounded, synchronous analyzer and its evidence commit share the scope lock.
+      // A concurrent revocation/replacement cannot race between validation and dispatch.
+      await tx.query('SELECT id FROM organizations WHERE id=$1 FOR UPDATE',[a.organizationId]);
+      await validateAssessmentExecution(tx,a,b.assessment,b.assetId,execution,now());
+      const result=analyze();await start(tx);await recordAssessmentExecution(tx,a,b.assessment,b.assetId,id);
+      return finish(tx,result);
+    });
+    const result=analyze();await db.transaction(start);
+    try {
+      return await db.transaction(tx=>finish(tx,result));
     }catch(error){await db.transaction(async tx=>{await tx.query('UPDATE jobs SET status=$2,completed_at=$3 WHERE id=$1',[id,'failed',new Date(now())]);await audit(tx,a.organizationId,a.id,'scan.failed',id);});throw error;}
   });
   app.get('/api/scans',async request=>{permit(request,'findings.read');return {items:(await db.query('SELECT * FROM scans WHERE organization_id=$1 ORDER BY created_at DESC LIMIT 100',[request.actor!.organizationId])).map(scanDto)};});
@@ -182,6 +194,7 @@ export async function buildApp(options:AppOptions) {
   });
   await registerAgents(app,{db,masterKey,now});
   await registerAuthorizationManager(app,{db,masterKey,now});
+  await registerAssessmentPlans(app,{db,now});
   await registerOperations(app,{db,masterKey,now});
   await registerAnalyses(app,{db,masterKey,now});
   await registerReporting(app,{db,masterKey,now});

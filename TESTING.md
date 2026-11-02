@@ -31,6 +31,7 @@ npx tsx --test apps/api/test/operations.test.ts
 npx tsx --test apps/api/test/imports.test.ts
 npx tsx --test apps/api/test/graph.test.ts
 npx tsx --test packages/core/test/authorization.test.ts apps/api/test/authorization-manager.test.ts
+npx tsx --test packages/core/test/assessment-plan.test.ts apps/api/test/assessment-plans.test.ts
 ```
 
 Importações ZIP também precisam de testes do worker real e dos formatos hostis.
@@ -45,6 +46,16 @@ a decisão pura do PolicyGate gerenciado. `target-manifest.test.ts` cobre
 identidade exata, exclusões, normalização determinística e entradas hostis.
 `lab.test.ts` cobre também revogação após criar o job e antes do despacho. Os testes dos módulos continuam
 necessários: um perfil aprovado não substitui validação do formato ou executor.
+
+Planos de avaliação também precisam de testes de revisão concorrente, vínculos
+imutáveis com job/evidência, contexto de organização/projeto e recusa após
+revogação, expiração ou substituição do mandato. O teste de API usa PGlite por
+padrão; para PostgreSQL nativo isolado, configure
+`SENTINEL_ASSESSMENT_TEST_DATABASE_URL` para migração/fixtures e
+`SENTINEL_ASSESSMENT_TEST_RUNTIME_URL` para o papel restrito. Não imprima URLs
+com credenciais. O teste aplica `ops/runtime-grants.sql` pelo dono do banco.
+O QA dedicado é `node scripts/browser-assessment-qa.cjs`, com `qa:server`
+temporário em4311; não apontar esse fluxo para dados de clientes.
 
 ## Navegador e agente real
 

@@ -8,3 +8,4 @@ export * from './artifact-analysis.js';
 export * from './api-audit.js';
 export * from './authorization.js';
 export * from './target-manifest.js';
+export * from './assessment-plan.js';
