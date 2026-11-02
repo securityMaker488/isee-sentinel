@@ -68,7 +68,8 @@ atribui aprovação retroativa a resultados antigos. A ausência de achados não
 atesta segurança integral.
 
 Fila recuperável, retries, execução em lote, pausa, quotas acumuladas e
-cancelamento de processos já iniciados continuam pendentes. O plano não agenda
+cancelamento geral de processos continuam pendentes; archive.inspect tem
+cancelamento supervisionado opcional descrito abaixo. O plano não agenda
 ações de rede nem instala serviços. A análise estática examina somente os
 arquivos fornecidos e não executa seu conteúdo.
 
@@ -90,7 +91,11 @@ impede despacho ou conclusão. A aprovação não pode ser trocada silenciosamen
 Falhas após a quarentena preservam job/original vinculados; o painel atualiza o
 resultado e oferece o registro JSON. Importação avulsa não é anexada a um plano.
 
-O worker externo não participa da transação SQL. Revogação não mata um processo
-já iniciado nem garante interrupção atômica no intervalo entre validação e
-criação do processo. O resultado só é aceito após nova validação. Cancelamento
-supervisionado e recuperação após interrupção continuam pendentes.
+O worker externo não participa da transação SQL. O resultado só é aceito após
+nova validação. Com supervisor Rust configurado, a API revalida o mesmo mandato/
+hash durante a execução e fecha o pipe ao detectar revogação/expiração; o filho
+é encerrado antes do recibo cancelled. Sem Rust, revogação não mata processo já
+iniciado. Nenhum caminho promete interrupção atômica entre validação/criação.
+Recuperação e cancelamento geral continuam pendentes; docs/RUST-ENGINES.md
+detalha limites. O job guarda failed/SCOPE_REQUIRED e a auditoria guarda o
+recibo cancelled, preservando original e vínculo ao plano.

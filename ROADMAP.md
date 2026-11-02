@@ -1,20 +1,46 @@
-# Roadmap V6.9 — fases 0 a 12
+# Roadmap V11 — marcos0–5, uma linha de desenvolvimento
 
-Atualizado em 02/11/2026 sob o guia único `docs/GUIA-MESTRE-CONSOLIDADO.md`, conforme `docs/ESPECIFICACAO-V6.9.txt`, §46 e diretriz
-final. Comparação em `docs/EVOLUCAO-V6.9.md`; resultados recentes e ponto de
-retomada em `PROJECT_STATE.md`. Esta ordem não afirma que testes pendentes passaram.
+Atualizado em02/11/2026. Guia único: docs/GUIA-MESTRE-CONSOLIDADO.md, G27.
+Checkpoint: PROJECT_STATE.md. A V11 antecipa Rust Core e execução verificável;
+requisitos V6.9/AttackLab continuam no mapa abaixo. Não reescrever componentes
+funcionais nem repetir auditoria ampla. Completar trabalho portátil no Windows;
+parar para Debian13 KDE quando restarem somente dependências reais desse SO.
 
-Prioridade: **fundação segura → Universal Import Lab → Authorization Manager e
-PolicyGate aplicados ao fluxo → ProofLab → auditoria Web/API → Remediation Engine
-→ retestes e relatórios**. Autorização e evidências básicas são pré-requisitos da
-importação, mesmo quando seu aperfeiçoamento continua nas fases seguintes.
+## Marcos vigentes
 
-Preservar recortes já implementados de fases posteriores. Não reiniciar o produto
-nem bloquear desenvolvimento portátil porque Debian ainda não foi homologado.
-Também não encerrar fases com dependências operacionais pendentes. A inspeção
-parte do checkpoint e das interfaces afetadas, sem repetir revisões amplas.
+| Marco | Base comprovada / entrega | Próximo gate | Cobertura anterior |
+|---|---|---|---|
+| M0 Auditoria | Checkpoint/Git, arquitetura real, baseline, inventário110 referências, leitura dirigida de9 e licenças registrados | Manter revisão dirigida de mudanças; não repetir auditoria global. Pesquisa não homologa terceiros | V6.9 fase0; AttackLab A1 |
+| M1 Rust Core — em andamento | Agente existente preservado; novo supervisor archive.inspect, contrato/recibo/limites, revalidação durante execução, API/UI/auditoria integradas | Contenção e encerramento após falha do supervisor, runtime seguro por SO, job model recuperável, cotas e cancelamento; integrar sem substituir PolicyGate/evidência | Fases1/6 e pré-requisitos2/3; A2/A6 |
+| M2 Web/API | Analisador OpenAPI offline existente | Cliente HTTP Rust com URL exata/DNS/IP fixado/SSRF/redirects, crawler limitado, TLS/headers/JWT/achados; importação URL e Git com escopos próprios; ProofLab autorizado antes de DAST amplo | Fases2/3/4 e Evidence Fusion A3/A4 |
+| M3 SecureCode | Regras estáticas, dependências/SARIF existentes | Coordenar Semgrep/Bandit/Trivy/secrets/SCA com licença/versão/limites; correção em cópia/branch, regressão, reteste e relatórios vinculados | Fases4/5; A4 |
+| M4 Detection/Security Operations | Eventos/core/SOC/casos/FIM e perícia parcial existentes | Ingestão Sigma/YARA/Suricata/Zeek, confiança/deduplicação, hunting, evidência/timeline, resposta autorizada e recuperação testada | Fase7; A4/A5/A6 |
+| M5 Advanced Operations | Recortes atuais de Nmap, perícia, RiskGraph e análises especializados preservados | Red/Purple, DFIR/reversão/malware, mobile/cloud/IA/IoT/criptografia; QEMU/Kali e isolamento comprovado. Governança, serviços e liberação somente com gates operacionais anteriores | Fases8–12; A3–A6 |
 
-## Fases e critérios de conclusão
+M0 foi atendido neste recorte dirigido, sem alegação de auditoria exaustiva.
+Nenhum dos marcos funcionais M1–M5 está completo. Os M0–M6 da matriz antiga são
+**maturidade**, distintos desses marcos. Não converter rótulos em prontidão.
+
+## Próximo incremento concreto
+
+1. M1: preservar o supervisor de um único worker confiável. Projetar e implementar
+   contenção de processo/árvore e encerramento quando o supervisor morre, com
+   testes reais de PID e limites por SO. Não aceitar plugins arbitrários enquanto
+   essas garantias estiverem ausentes. Onde a prova exigir Linux, registrar o
+   teste correspondente para Debian sem afirmar validação pelo Windows.
+2. Completar contratos de runtime/job model, cancelamento/recuperação e cotas.
+   Qualquer novo estado SQL exige nova migração, nunca reescrever001–013.
+   Preservar identidade, revisão/hash de autorização, evidência e idempotência.
+3. M2: URL via cliente controlado, depois Git por adaptador próprio. Aprovação
+   Nmap/IPv4 não concede HTTP; testar DNS/redirect/bytes/tempo em servidor sintético.
+   ZIP/TAR e planos já entregues não devem ser refeitos. Gobuster começa offline.
+4. Seguir M3–M5 nas dependências acima, mantendo ProofLab, remediação/reteste,
+   governança e liberação do escopo anterior. Catálogo não é executor implementado.
+
+Auditoria/decisões: docs/RUST-ENGINES.md e registro de pesquisa interno.
+Resultados e limitações de cada incremento: VALIDATION_REPORT.md.
+
+## Cobertura V6.9 preservada — não é uma segunda fila
 
 | Fase | Escopo e base disponível | Próximo incremento / dependências | Evidência de conclusão do recorte |
 | --- | --- | --- | --- |
@@ -24,43 +50,13 @@ parte do checkpoint e das interfaces afetadas, sem repetir revisões amplas.
 | 3 — ProofLab | SOC sintético e SecureFix de cópia reaproveitáveis | Aplicação vulnerável local, isolamento e cenário integrado à importação/avaliação | Importar → avaliar → evidência → corrigir cópia → retestar comparavelmente → relatar, identificado como laboratório; isolamento/recuperação testados |
 | 4 — Security Assessment | Baseline, analisadores offline e OpenAPI JSON integrados | Web/API, catálogo de testes, SAST/SCA e DAST controlado por etapas; ferramentas/feeds com origem/versão/licença | Positivos/negativos, entradas malformadas, limites, evidências e relatório; ausência de achado não implica segurança |
 | 5 — Remediation | Ciclo reversível de cópia SSH cifrada | Git, regressão, homologação, comparação e reteste vinculado ao achado; produção exige aprovação específica | Correção testada, risco residual, original/diff/aprovação, verificação e rollback; cópia no banco não equivale a alteração do host |
-| 6 — Execution Center | APIs, jobs registrados e CLIs específicas | Fila PostgreSQL, prioridade, estados completos, cancelamento, retomada e CLI; antecipar apenas dependências mínimas das fases 2–5 | Consistência após reinício, nenhuma ação duplicada, timeout/cancelamento/limpeza testados e PolicyGate obrigatório |
+| 6 — Execution Center | APIs, jobs registrados e CLIs específicas | Fila PostgreSQL, prioridade, estados completos, cancelamento, retomada e CLI; priorizado agora em M1 pela V11 | Consistência após reinício, nenhuma ação duplicada, timeout/cancelamento/limpeza testados e PolicyGate obrigatório |
 | 7 — SOC e defesa | Correlação, casos, FIM autenticado e 14 camadas registradas | Telemetria Rust ampliada, hunting, regras, ResponseGrid, contenção/recuperação e perícia de resposta | Eventos/ações rastreáveis, falsos positivos avaliados e suporte por SO testado; controles ativos e recuperação demonstrados |
 | 8 — Laboratórios avançados | Cenário sintético e Nmap limitado | QEMU/KVM/Kali, redes/snapshots, Purple Team, ResilienceLab e dinâmica após isolamento | Rotas/DNS/firewall e bloqueio de acesso acidental comprovados; limites de tráfego/CPU/RAM/disco, interrupção/restauração testados |
 | 9 — Segurança empresarial | Importadores cloud/identidade/IA, perícia/triagem parcial e RiskGraph em consolidação | Conectores oficiais, Mobile/IoT/OT/ICS, exposição/risco, investigação especializada e inteligência | Escopo/menor privilégio, compatibilidade, testes e limites por integração; nenhuma equivalência comercial ou aquisição móvel presumida |
 | 10 — Governança | Registros/evidências/clientes reaproveitáveis | GRC, privacidade/LGPD, terceiros, BIA/RTO/RPO, continuidade e treinamento | Fluxos úteis/testados, retenção, planos e exercícios verificáveis; nenhuma certificação/conformidade integral presumida |
 | 11 — Serviços gerenciados | Operador único e organizações/projetos | Monitoramento recorrente, equipes, serviços, incidentes e relatórios por cliente | Isolamento, acesso, responsabilidades e continuidade testados; catálogo comercial limitado aos serviços liberados |
 | 12 — Enterprise | Scripts, CI e documentação preparados | Instalação/atualização/desinstalação, hardening, distribuição, suporte, licença, performance e revisão independente | §53.13 cumprido, operação real/recuperação comprovadas, revisão independente e aprovação registradas |
-
-## Fila imediata
-
-O complemento AttackLab Evidence Fusion/Purple Validation de26/10/2026 detalha
-as fases deste módulo sem substituir a sequência V6.9. Auditoria dirigida e
-plano: [ATTACKLAB-EVIDENCE-FUSION-PLAN.md](docs/ATTACKLAB-EVIDENCE-FUSION-PLAN.md).
-Alvos exatos/exclusões no hash aprovado foram implementados na migração010,
-com negação antes do cadastro/despacho. Manter essa dependência ao ampliar
-executores. O plano versionado da fase1 está ligado ao mandato revisado, com
-static.scan e archive.inspect integrados a jobs/evidências/resultados
-(migrações011/012). TAR/TAR.GZ USTAR foram adicionados na013. Próximo passo:
-importação URL com escopo exato/SSRF e depois Git, antes do ProofLab.
-
-1. Integrações OpenAPI/RiskGraph, perícia/PostgreSQL restrito, painel e restore
-   encerradas neste recorte Windows; resultados em VALIDATION_REPORT.md.
-2. Recorte de fundação do Authorization Manager entregue: rascunho imutável,
-   comprovação/responsável, projeto, revisão explícita e aplicação de perfis,
-   bytes/portas, substituição e revogação; manifesto imutável de IPs/exclusões e
-   vínculo da execução à revisão aprovada. A tela Autorizações acompanha o ciclo;
-   detalhes em AUTHORIZATION_POLICY.md. Planos versionados/API/UI e execução
-   estática e inspeção de arquivos integradas estão em docs/ASSESSMENT-PLANS.md. Os demais vínculos e jobs
-   gerais continuam pendentes; este recorte não encerra toda a fase 1.
-3. ZIP/TAR/TAR.GZ em quarentena e vínculo ao plano implementados/testados.
-   Avançar URL e depois Git por adaptadores separados, com limites e autorizações próprios, junto
-   do plano de avaliação. Registrar cada formato efetivamente aceito sem presumir
-   execução automática nem suporte universal.
-4. Construir ProofLab sobre esse fluxo e isolamento comprovado. O cenário SOC
-   existente não encerra sozinho a nova fase 3.
-5. Ampliar assessment, correção/comparação e, conforme dependências, execução,
-   SOC, laboratórios e portfólio empresarial.
 
 ## Critérios transversais obrigatórios (§53)
 

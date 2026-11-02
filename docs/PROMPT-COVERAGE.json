@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-27",
+  "recordedAt": "2026-11-02",
   "guide": "docs/GUIA-MESTRE-CONSOLIDADO.md",
   "checkpoint": "PROJECT_STATE.md",
   "executionQueue": "ROADMAP.md",
-  "meaning": "Índice de fontes e correspondência temática; não mede percentual de implementação nem prova completude funcional. Originais históricos são preservados integralmente; precedência e síntese em G01/G26.",
+  "meaning": "Índice de fontes e correspondência temática; não mede percentual de implementação nem prova completude funcional. Originais históricos são preservados integralmente; precedência e síntese em G01/G26/G27.",
   "guideSections": [
     {
       "id": "G01",
@@ -109,6 +109,10 @@
     {
       "id": "G26",
       "title": "Conflitos resolvidos e manutenção do guia"
+    },
+    {
+      "id": "G27",
+      "title": "Diretriz V11 — Rust-first, pesquisa e execução verificável"
     }
   ],
   "sources": [
@@ -2727,6 +2731,630 @@
           "heading": "13. RESULTADO ESPERADO",
           "guideSections": [
             "G22"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "docs/ESPECIFICACAO-V11.0.txt",
+      "sha256": "065bf67c8e79682952449ca3cb9627d3b544a99e94112f5af39a4ae3cd223b10",
+      "bytes": 41767,
+      "provenance": "original attachment bytes",
+      "sections": [
+        {
+          "line": 1,
+          "heading": "I.SEE TECHNOLOGIES",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 2,
+          "heading": "I.SEE SENTINEL — MASTER ENGINEERING DIRECTIVE V11.0",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 3,
+          "heading": "RUST-FIRST SECURITY ENGINES · INTEGRAÇÃO DE REFERÊNCIAS AUTORIZADAS · ADVANCED CYBERSECURITY ENGINEERING",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 4,
+          "heading": "Arquitetura proprietária · Engenharia segura · Segurança ofensiva e defensiva · Evidências verificáveis",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 20,
+          "heading": "00 — DIRETRIZ EXECUTIVA",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 56,
+          "heading": "01 — COMPOSIÇÃO DA EQUIPE DE ENGENHARIA",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 100,
+          "heading": "02 — CONHECIMENTO DE REFERÊNCIA: PROJETOS AUTORIZADOS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 110,
+          "heading": "Repositórios identificados",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 112,
+          "heading": "Referência A",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 156,
+          "heading": "Referência B",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 174,
+          "heading": "Referência C",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 200,
+          "heading": "Referência D",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 219,
+          "heading": "Referência E",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 237,
+          "heading": "Referência F",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 252,
+          "heading": "Referência G",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 266,
+          "heading": "Referência H",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 280,
+          "heading": "Referência I",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 288,
+          "heading": "Pesquisa adicional",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 319,
+          "heading": "03 — POLÍTICA DE PROPRIEDADE INTELECTUAL E LICENÇAS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 347,
+          "heading": "04 — AUDITORIA OBRIGATÓRIA DO SENTINEL EXISTENTE",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 386,
+          "heading": "05 — PRINCÍPIO RUST-FIRST",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 429,
+          "heading": "06 — ARQUITETURA RUST SECURITY ENGINES",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 433,
+          "heading": "6.1 Sentinel Execution Engine — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 463,
+          "heading": "6.2 Sentinel Web/API Security Engine — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 487,
+          "heading": "6.3 Sentinel Network Engine — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 507,
+          "heading": "6.4 Sentinel Detection Engine — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 534,
+          "heading": "6.5 Sentinel Evidence Engine — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 555,
+          "heading": "6.6 Sentinel Forensics Processing Engine — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 573,
+          "heading": "6.7 Sentinel Agent Runtime — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 590,
+          "heading": "6.8 Sentinel SecureCode Coordinator — Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 606,
+          "heading": "6.9 Sentinel AI Security Coordinator",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 618,
+          "heading": "07 — ORGANIZAÇÃO DO CÓDIGO RUST",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 671,
+          "heading": "08 — ARQUITETURA MULTILINGUAGEM",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 675,
+          "heading": "Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 679,
+          "heading": "Python",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 690,
+          "heading": "TypeScript / React",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 702,
+          "heading": "Go",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 708,
+          "heading": "Java",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 717,
+          "heading": "C/C++ / Assembly",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 725,
+          "heading": "C# / PowerShell",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 738,
+          "heading": "09 — PLUGIN SDK E TOOL ADAPTER SYSTEM",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 781,
+          "heading": "10 — CATÁLOGO DE FERRAMENTAS A ESTUDAR E INTEGRAR",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 787,
+          "heading": "10.1 Offensive Security / Pentest",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 810,
+          "heading": "10.2 Bug Bounty / Web Hacking",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 828,
+          "heading": "10.3 AppSec / DevSecOps",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 844,
+          "heading": "10.4 Blue Team / SOC",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 859,
+          "heading": "10.5 Forensics / Reverse Engineering",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 875,
+          "heading": "10.6 Cloud / Infrastructure",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 888,
+          "heading": "10.7 Mobile / AI / IoT",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 921,
+          "heading": "11 — WEB/API SECURITY ENGINE",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 925,
+          "heading": "Discovery",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 942,
+          "heading": "Módulos de análise",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 999,
+          "heading": "12 — SECURE CODE ANALYSIS ENGINE",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1003,
+          "heading": "Static Analysis",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1020,
+          "heading": "Linguagens prioritárias",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1030,
+          "heading": "Análises de segurança",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1053,
+          "heading": "13 — BLUE TEAM & DETECTION OPERATIONS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1088,
+          "heading": "14 — PURPLE TEAM OPERATIONS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1111,
+          "heading": "15 — DFIR, MALWARE E REVERSE ENGINEERING",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1136,
+          "heading": "16 — NETWORK, VPN E IDENTITY SECURITY",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1170,
+          "heading": "17 — AI SECURITY",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1195,
+          "heading": "18 — EVIDENCE ENGINE E RELATÓRIOS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1243,
+          "heading": "19 — referência autorizada-INSPIRED VERIFIED EXECUTION",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1278,
+          "heading": "20 — THREAT MODEL DO SENTINEL",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1327,
+          "heading": "21 — SEGURANÇA E AUTORIZAÇÃO DAS OPERAÇÕES",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1354,
+          "heading": "22 — INTERFACE E COMMAND CENTER",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1402,
+          "heading": "23 — I.SEE SECURITY LAB",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1441,
+          "heading": "24 — HARDWARE E OTIMIZAÇÃO",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1473,
+          "heading": "25 — TESTES DE ENGENHARIA E SEGURANÇA",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1475,
+          "heading": "Rust",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1488,
+          "heading": "Python",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1496,
+          "heading": "TypeScript",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1505,
+          "heading": "Go",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1512,
+          "heading": "Java",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1520,
+          "heading": "Plataforma completa",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1540,
+          "heading": "26 — PLANO DE EVOLUÇÃO EM MARCOS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1542,
+          "heading": "MARCO 0 — AUDITORIA",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1557,
+          "heading": "MARCO 1 — RUST CORE",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1572,
+          "heading": "MARCO 2 — WEB/API ENGINE",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1587,
+          "heading": "MARCO 3 — SECURECODE",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1600,
+          "heading": "MARCO 4 — DETECTION & SECURITY OPERATIONS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1613,
+          "heading": "MARCO 5 — ADVANCED OPERATIONS",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1634,
+          "heading": "27 — APRENDIZADO CONTÍNUO E PESQUISA",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1658,
+          "heading": "28 — DOCUMENTAÇÃO E CONTINUIDADE",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1693,
+          "heading": "29 — REGRAS DE EXECUÇÃO AUTÔNOMA",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1729,
+          "heading": "30 — CRITÉRIOS DE ACEITAÇÃO",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1761,
+          "heading": "31 — RELATÓRIO FINAL DE CADA EXECUÇÃO",
+          "guideSections": [
+            "G27"
+          ]
+        },
+        {
+          "line": 1818,
+          "heading": "32 — COMANDO DE EXECUÇÃO FINAL",
+          "guideSections": [
+            "G27"
           ]
         }
       ]

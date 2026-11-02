@@ -143,3 +143,20 @@ dispatch por link simbólico POSIX roda no Ubuntu e é explicitamente ignorado
 no Windows. `node scripts/doctor.mjs --require-ready` valida o ambiente local
 preparado. A CI define o caminho do Python de teste para executar também os
 casos positivos/negativos dos workers reais, em vez de ignorá-los.
+
+
+## Supervisão Rust — testes reais e medição
+
+Compilar o crate e configurar caminhos conforme [RUST-ENGINES.md](docs/RUST-ENGINES.md).
+Executar `npx tsx --test apps/api/test/execution.test.ts apps/api/test/imports.test.ts`.
+Os sete testes de processo usam fixtures próprias e verificam PID encerrado,
+saída limitada, timeout, EOF/AbortSignal, exit code, integridade e contrato.
+Dois casos adicionais da API cobrem recibo integrado e revogação/expiração real.
+Sem os caminhos necessários os testes nativos ficam explicitamente ignorados;
+a CI configura ambos para Windows/Ubuntu.
+
+Medição reproduzível: `npx tsx scripts/benchmark-execution.ts`, com
+`SENTINEL_TEST_PYTHON_PATH` definido e binário debug compilado. São oito inspeções
+seriais por caminho sobre ZIP sintético514 bytes; stdout JSON contém tempos e
+tamanho do binário. Não mede RAM, CPU, carga sustentada ou builds release, nem
+prova ganho de desempenho. Resultados observados ficam em VALIDATION_REPORT.md.

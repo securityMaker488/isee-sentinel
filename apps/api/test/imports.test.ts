@@ -1,10 +1,13 @@
 import {before,after,test} from 'node:test';
 import assert from 'node:assert/strict';
 import {randomBytes,randomUUID} from 'node:crypto';
-import {readFile,access} from 'node:fs/promises';
+import {readFile,access,mkdtemp,writeFile,unlink,rmdir} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 import {openDatabase,migrate,type Database} from '../src/db.ts';
 import {buildApp} from '../src/app.ts';
 import {runImportWorker,type ImportRunner} from '../src/imports.ts';
+import {runSupervisedImport} from '../src/execution.ts';
 import {digest,encrypt,randomToken} from '../src/security.ts';
 let db:Database,runtime:Database,app:Awaited<ReturnType<typeof buildApp>>,seen='';
 const key=randomBytes(32),org=randomUUID(),other=randomUUID(),user=randomUUID(),asset=randomUUID(),project=randomUUID(),token=randomToken(),csrf=randomToken();
@@ -137,4 +140,40 @@ test('revocation or expiry during inspection denies completion without losing or
   const plan=(await app.inject({url:`/api/assessment-plans/${fixture.plan.id}`,headers})).json();assert.equal(plan.results[0].status,'failed');assert.equal(plan.results[0].evidenceIds.length,1);
  }
  const retry=await reviewedPlan();assert.equal((await send(retry.body)).statusCode,200);
+});
+
+test('configured Rust supervision is integrated into real import report, plan and audit',{skip:!process.env.SENTINEL_TEST_EXECUTION_PATH||!process.env.SENTINEL_TEST_PYTHON_PATH},async()=>{
+ const native=await buildApp({db:runtime,masterKey:key,pythonPath,executionPath:process.env.SENTINEL_TEST_EXECUTION_PATH,now:()=>clock});
+ try{
+  const status=(await native.inject({url:'/api/imports/status',headers})).json();assert.equal(status.supervisor,'rust');assert.equal(status.authorizationCancellation,true);
+  for(const format of ['zip','tar','tar.gz']){
+   const fixture=await reviewedPlan(),contentBase64=(await readFile(new URL(`../../../fixtures/lab/import-project.${format}.base64`,import.meta.url),'utf8')).trim();
+   const result=await native.inject({method:'POST',url:'/api/imports',headers,payload:{...fixture.body,format,contentBase64}});assert.equal(result.statusCode,200,result.body);const response=result.json();
+   assert.equal(response.report.execution.engine,'Sentinel Execution');assert.equal(response.report.execution.jobId,response.id);assert.equal(response.report.execution.status,'completed');assert.equal(response.report.execution.exitCode,0);
+   const stored=(await native.inject({url:`/api/imports/${response.id}`,headers})).json();assert.deepEqual(stored.report.execution,response.report.execution);
+   const [event]=await db.query("SELECT details FROM audit_events WHERE resource_id=$1 AND action='import.inspected'",[response.id]);assert.deepEqual(event.details.execution,response.report.execution);
+   assert.equal((await app.inject({url:`/api/assessment-plans/${fixture.plan.id}`,headers})).json().results.length,1);
+  }
+ }finally{await native.close();}
+});
+
+test('revocation and expiry kill the supervised Python worker and preserve evidence with cancellation receipt',{skip:!process.env.SENTINEL_TEST_EXECUTION_PATH||!process.env.SENTINEL_TEST_PYTHON_PATH},async()=>{
+ const folder=await mkdtemp(join(tmpdir(),'sentinel-policy-cancel-')),worker=join(folder,'worker.py'),pidFile=join(folder,'worker.pid');
+ await writeFile(worker,"import os,time\nfrom pathlib import Path\nPath(__file__).with_name('worker.pid').write_text(str(os.getpid()))\nwhile True: time.sleep(0.02)\n");
+ const native=await buildApp({db:runtime,masterKey:key,pythonPath,executionPath:process.env.SENTINEL_TEST_EXECUTION_PATH,now:()=>clock,importRunner:options=>runSupervisedImport({...options,executionPath:process.env.SENTINEL_TEST_EXECUTION_PATH!,workerPath:worker})});
+ try{
+  for(const reason of ['revocation','expiry']){
+   const fixture=await reviewedPlan(),previous=clock;
+   const running=native.inject({method:'POST',url:'/api/imports',headers,payload:fixture.body}).then(result=>result);
+   let pid=0;for(let i=0;i<200;i++){try{pid=Number(await readFile(pidFile,'utf8'));break;}catch{await new Promise(resolve=>setTimeout(resolve,20));}}
+   assert.ok(pid,'real Python worker started');const started=performance.now();
+   try{
+    if(reason==='revocation')assert.equal((await post(`/api/assessment-authorizations/${fixture.grant.id}/revoke`,{reason:'Synthetic native cancellation'})).statusCode,200);else clock+=60001;
+    const result=await running;assert.equal(result.statusCode,403,result.body);assert.ok(performance.now()-started<5000);assert.throws(()=>process.kill(pid,0),{code:'ESRCH'});
+    const [run]=await db.query('SELECT r.*,j.status FROM import_runs r JOIN jobs j ON j.id=r.id WHERE r.asset_id=$1',[fixture.body.assetId]);assert.equal(run.status,'failed');assert.equal(run.error_code,'SCOPE_REQUIRED');assert.equal(run.report,null);
+    const [event]=await db.query("SELECT details FROM audit_events WHERE resource_id=$1 AND action='import.failed'",[run.id]);assert.equal(event.details.execution.status,'cancelled');assert.equal(event.details.execution.jobId,run.id);
+    assert.equal((await app.inject({url:`/api/evidence/${run.evidence_id}`,headers})).json().integrityVerified,true);assert.equal((await db.query('SELECT * FROM import_execution_lock')).length,0);
+   }finally{clock=previous;await unlink(pidFile);}
+  }
+ }finally{await native.close();await unlink(worker);await rmdir(folder);}
 });

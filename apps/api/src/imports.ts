@@ -11,11 +11,12 @@ import {permit,scoped,storedScopeGrant} from './policy.ts';
 import {assessmentContextSchema,validateAssessmentExecution,recordAssessmentExecution,recordAssessmentEvidence,type AssessmentContext} from './assessment-plans.ts';
 import {digest,encrypt} from './security.ts';
 import {audit} from './audit.ts';
+import {runSupervisedImport,type ExecutionReceipt} from './execution.ts';
 
 export type ArchiveFormat='zip'|'tar'|'tar.gz';
 const formats:ArchiveFormat[]=['zip','tar','tar.gz'];
 const mediaTypes:Record<ArchiveFormat,string>={zip:'application/zip',tar:'application/x-tar','tar.gz':'application/gzip'};
-export type ImportRunner=(options:{pythonPath:string;file:string;format:ArchiveFormat})=>Promise<Buffer>;
+export type ImportRunner=(options:{pythonPath:string;file:string;format:ArchiveFormat;jobId?:string;inputSha256?:string;signal?:AbortSignal;onReceipt?:(receipt:ExecutionReceipt)=>void})=>Promise<Buffer>;
 const worker=fileURLToPath(new URL('../../../workers/imports/inspect_archive.py',import.meta.url));
 const maxBytes=16*1024*1024,maxOutput=2*1024*1024;
 export const runImportWorker:ImportRunner=async({pythonPath,file,format})=>{
@@ -26,9 +27,10 @@ export const runImportWorker:ImportRunner=async({pythonPath,file,format})=>{
   if(error){reject(new HttpError(422,(error as any).killed?'IMPORT_TIMEOUT':'IMPORT_REJECTED','Inspeção não concluída: arquivo inválido, limite excedido ou worker indisponível. O original permanece em quarentena.'));return;}accept(Buffer.from(stdout));
  });child.stdin?.end();});
 };
-export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date.now,pythonPath,runner=runImportWorker}:{db:Database;masterKey:Buffer;now?:()=>number;pythonPath?:string;runner?:ImportRunner}){
+export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date.now,pythonPath,executionPath,runner}:{db:Database;masterKey:Buffer;now?:()=>number;pythonPath?:string;executionPath?:string;runner?:ImportRunner}){
+ const execute:ImportRunner=runner??(executionPath?options=>runSupervisedImport({...options,executionPath}):runImportWorker);
  let busy=false;
- app.get('/api/imports/status',async request=>{permit(request,'findings.read');return {configured:!!pythonPath&&isAbsolute(pythonPath),formats,maxBytes,timeoutSeconds:45,quarantineOnly:true,executionAvailable:false,networkAccess:false};});
+ app.get('/api/imports/status',async request=>{permit(request,'findings.read');return {configured:!!pythonPath&&isAbsolute(pythonPath),formats,maxBytes,timeoutSeconds:45,quarantineOnly:true,executionAvailable:false,networkAccess:false,supervisor:executionPath?'rust':'node',authorizationCancellation:!!executionPath};});
  app.get('/api/imports',async request=>{permit(request,'findings.read');return {items:await db.query('SELECT r.id,r.format,r.asset_id AS "assetId",r.project_id AS "projectId",r.evidence_id AS "evidenceId",r.created_at AS "createdAt",r.error_code AS "errorCode",j.status FROM import_runs r JOIN jobs j ON j.id=r.id WHERE r.organization_id=$1 ORDER BY r.created_at DESC LIMIT 100',[request.actor!.organizationId])};});
  app.get('/api/imports/:id',{schema:{params:object({id:uuid})}},async request=>{
   permit(request,'reports.read');const a=request.actor!,id=(request.params as any).id;
@@ -54,7 +56,7 @@ export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date
   }
   if(!pythonPath||!isAbsolute(pythonPath))throw new HttpError(503,'PYTHON_UNAVAILABLE','Python local não configurado.');
   if(busy)throw new HttpError(409,'IMPORT_BUSY','Há uma inspeção em andamento.');busy=true;
-  const id=randomUUID(),evidenceId=randomUUID(),sha256=digest(bytes);let started=false,folder:string|undefined;
+  const id=randomUUID(),evidenceId=randomUUID(),sha256=digest(bytes);let started=false,folder:string|undefined,receipt:ExecutionReceipt|undefined;
   try{
    await db.transaction(async tx=>{
     await validate(tx);
@@ -70,17 +72,28 @@ export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date
    });started=true;
    folder=await mkdtemp(join(tmpdir(),'sentinel-import-'));const file=join(folder,'input.archive');await writeFile(file,bytes,{flag:'wx',mode:0o600});
    await db.transaction(validate);
-   const output=await runner({pythonPath,file,format:b.format});if(output.length>maxOutput)throw new HttpError(422,'IMPORT_OUTPUT_LIMIT','Resultado excede o limite.');
+   const controller=new AbortController();let policyError:unknown,pending:Promise<void>|undefined,stopped=false;
+   const timer=executionPath?setInterval(()=>{
+    if(pending||stopped)return;
+    pending=db.transaction(validate).catch(error=>{policyError=error;controller.abort();}).finally(()=>{pending=undefined;});
+   },250):undefined;
+   let output:Buffer|undefined,workerError:unknown;
+   try{output=await execute({pythonPath,file,format:b.format,jobId:id,inputSha256:sha256,signal:controller.signal,onReceipt:value=>{receipt=value;}});}
+   catch(error){workerError=error;}
+   finally{stopped=true;if(timer)clearInterval(timer);await pending;}
+   if(policyError)throw policyError;if(workerError)throw workerError;
+   if(!output)throw new HttpError(422,'IMPORT_REJECTED','Worker sem resultado.');
+   if(output.length>maxOutput)throw new HttpError(422,'IMPORT_OUTPUT_LIMIT','Resultado excede o limite.');
    let report:any;try{report=JSON.parse(output.toString('utf8'));}catch{throw new HttpError(422,'INVALID_IMPORT_REPORT','Relatório inválido.');}
    if(report?.schemaVersion!=='1.0'||report.engine!=='Sentinel Import Inspector'||report.quarantineOnly!==true||report.input?.sha256!==sha256||report.input?.bytes!==bytes.length||report.input?.unchanged!==true||report.input?.format!==b.format||!Array.isArray(report.entries)||report.entries.length>512)throw new HttpError(409,'IMPORT_INTEGRITY','Relatório não comprova a integridade da importação.');
-   report.input.name=b.name;
+   report.input.name=b.name;if(receipt)report.execution=receipt;
    await db.transaction(async tx=>{
     await validate(tx);
     if(!(await tx.query("SELECT id FROM jobs WHERE id=$1 AND status='running' FOR UPDATE",[id])).length)throw new HttpError(409,'IMPORT_INTERRUPTED','Importação interrompida.');
-    await tx.query('UPDATE import_runs SET report=$2 WHERE id=$1',[id,JSON.stringify(report)]);await tx.query("UPDATE jobs SET status='completed',completed_at=$2 WHERE id=$1",[id,new Date(now())]);await audit(tx,a.organizationId,a.id,'import.inspected',id,{evidenceId,sha256,format:b.format,entries:report.entries.length,quarantineOnly:true});
+    await tx.query('UPDATE import_runs SET report=$2 WHERE id=$1',[id,JSON.stringify(report)]);await tx.query("UPDATE jobs SET status='completed',completed_at=$2 WHERE id=$1",[id,new Date(now())]);await audit(tx,a.organizationId,a.id,'import.inspected',id,{evidenceId,sha256,format:b.format,entries:report.entries.length,quarantineOnly:true,...(receipt?{execution:receipt}:{})});
    });return {id,format:b.format,assetId:b.assetId,projectId:asset.project_id??null,evidenceId,status:'completed',quarantineOnly:true,report,...(b.assessment?{assessment:b.assessment}:{})};
   }catch(error){
-   if(started)await db.transaction(async tx=>{const code=error instanceof HttpError?error.code:'IMPORT_FAILED';await tx.query("UPDATE jobs SET status='failed',completed_at=$2 WHERE id=$1 AND status='running'",[id,new Date(now())]);await tx.query('UPDATE import_runs SET error_code=$2 WHERE id=$1',[id,code]);await audit(tx,a.organizationId,a.id,'import.failed',id,{code,evidenceId});});throw error;
+   if(started)await db.transaction(async tx=>{const code=error instanceof HttpError?error.code:'IMPORT_FAILED';await tx.query("UPDATE jobs SET status='failed',completed_at=$2 WHERE id=$1 AND status='running'",[id,new Date(now())]);await tx.query('UPDATE import_runs SET error_code=$2 WHERE id=$1',[id,code]);await audit(tx,a.organizationId,a.id,'import.failed',id,{code,evidenceId,...(receipt?{execution:receipt}:{})});});throw error;
   }finally{
    try{if(folder){const parent=resolve(tmpdir());if(dirname(resolve(folder))!==parent||!resolve(folder).startsWith(join(parent,'sentinel-import-')))throw new Error('Unexpected temporary path');await unlink(join(folder,'input.archive')).catch(e=>{if(e.code!=='ENOENT')throw e;});await rmdir(folder);}}
    finally{try{if(started)await db.query('DELETE FROM import_execution_lock WHERE slot=1 AND job_id=$1',[id]);}finally{busy=false;}}

@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "I.See Sentinel — Private Operator Edition, specification V6.9",
+  "description": "I.See Sentinel — Private Operator Edition, directive V11.0",
   "engines": {
     "node": ">=24 <25"
   },

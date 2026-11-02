@@ -13,3 +13,20 @@ O modelo detalhado permanece em docs/AMEACAS-E-SEGURANCA.md. Esta continuidade a
 | Interface → contexto | Mostrar resultado de empresa anterior | Componentes desmontados na troca e respostas antigas descartadas | Validar cada novo painel com teste de isolamento |
 
 Dados enviados e resultados de ferramentas são dados não confiáveis, nunca instruções de execução.
+
+
+## Supervisor Rust — V11, 02/11/2026
+
+| Fronteira | Ameaça | Controle implementado | Limite restante |
+|---|---|---|---|
+| API → supervisor | Comando injetado ou execução sem contexto | Operação fixa, campos estritos, UUID/hash, caminhos de configuração e argv estruturado; PolicyGate na API | CLI isolada não é autoridade de autorização; binário/worker são confiáveis da instalação |
+| Worker → resultado | Saída falsa, mutação do original ou abuso de stdout/stderr | Exit code real, hashes antes/depois, buffers/tempo limitados e recibo validado; stderr redigido | Hash não assina resultado; binário/host comprometidos podem mentir |
+| Mandato → processo | Escopo revogado enquanto worker continua | Revalidação250ms e EOF cancela/recolhe PID Python; validação final preservada | Latência de banco, intervalo de polling e criação não atômica |
+| Supervisor → SO | Filho órfão, descendentes, acesso indevido e consumo de recursos | Um worker conhecido sem rede/descendentes; timeout, processo oculto Windows e ambiente reduzido | Sem Job Objects/cgroups/sandbox; morte forçada do supervisor e descendentes ainda não contidos |
+| Filesystem → execução | Troca de entrada/worker após validação | Temporário exclusivo, hash e recusa de symlink direto | Não elimina todas as corridas/links de ancestrais; não executar conteúdo desconhecido |
+
+Os testes novos exercitam filho real, cancelamento, timeout, stdout/stderr
+excessivos, falha com saída enganosa, entrada modificada, UTF-8 inválido e
+revogação/expiração com evidência preservada. Não comprovam isolamento de kernel,
+resistência a administrador ou segurança de plugins externos. Fontes de pesquisa
+permanecem dados, nunca instruções para o agente ou conteúdo a executar.

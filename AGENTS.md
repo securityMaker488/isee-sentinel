@@ -13,7 +13,8 @@ novos/alterados e dependências necessárias antes de editar. Não pular fases n
 marcar implantação Debian como concluída por testes no Windows.
 
 Guia único de requisitos: docs/GUIA-MESTRE-CONSOLIDADO.md. Ele reúne V5.0,
-V6.3, V6.5, V6.6, V6.9 e os dois complementos, com conflitos resolvidos.
+V6.3, V6.5, V6.6, V6.9, V11.0 e os dois complementos, com conflitos resolvidos.
+V11 rege os marcos0–5; as fases antigas preservam cobertura, sem fila paralela.
 Consultar só suas seções pertinentes à tarefa; originais e hashes ficam em
 docs/PROMPT-COVERAGE.json e docs/PROMPTS-REGISTRY.md. Não abrir filas paralelas.
 A matriz central é
@@ -38,6 +39,8 @@ o próximo passo atual é determinado apenas por PROJECT_STATE.md e ROADMAP.md.
   acesso ao disco/rede ou execução do conteúdo analisado.
 - packages/endpoint-agent: Rust, consentimento, escopo, coleta explícita,
   autenticação de serviço. Nenhum shell remoto nem autopersistência silenciosa.
+- packages/execution-engine: supervisor Rust opcional do worker confiável de
+  arquivos; contrato estrito e recibos, sem sandbox geral. docs/RUST-ENGINES.md.
 - workers: Python isolado, entradas explícitas, originais preservados e limites.
 - Runtimes de referência: Node24, Python3.11+, Rust/Cargo com lockfile.
   Scripts e docs devem funcionar sem caminhos pessoais absolutos.
@@ -66,6 +69,8 @@ Correções de cópias de laboratório não equivalem a executar mudanças no ho
 
 No root: npm ci --ignore-scripts; npm run check; npm run inventory.
 Agente: cargo test --locked --manifest-path packages/endpoint-agent/Cargo.toml.
+Supervisor: cargo fmt/clippy/test/build conforme docs/RUST-ENGINES.md.
+Testes reais exigem SENTINEL_TEST_EXECUTION_PATH e SENTINEL_TEST_PYTHON_PATH.
 Python: python -m unittest discover -s workers/integrity e
 python -m unittest discover -s workers/forensics.
 Integração real do sensor: npm run verify:agent após compilar o binário.

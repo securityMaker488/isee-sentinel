@@ -1,6 +1,6 @@
-# Matriz funcional central — I.See Sentinel V6.9
+# Matriz funcional central — I.See Sentinel V11.0
 
-Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 é a escala histórica; nenhum módulo alcançou M4–M6. EstadosV6.9 de liberação profissional não são inferidos dos testes locais. Não há recurso liberado para clientes ou distribuição comercial. Dados estruturados: docs/portfolio-capabilities.json. Resultados: VALIDATION_REPORT.md. Referências não implicam equivalência a produtos externos.
+Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 é a escala histórica de maturidade, distinta dos marcos V11;  nenhum módulo alcançou M4–M6. EstadosV6.9 de liberação profissional não são inferidos dos testes locais. Não há recurso liberado para clientes ou distribuição comercial. Dados estruturados: docs/portfolio-capabilities.json. Resultados: VALIDATION_REPORT.md. Referências não implicam equivalência a produtos externos.
 
 ## private-core — Command Center / PolicyGate
 
@@ -606,19 +606,19 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 
 | Campo | Registro |
 |---|---|
-| Ferramenta de referência | Especificação V6.9; detalhes nos guias do módulo |
+| Ferramenta de referência | V11.0 e requisitos compatíveis V6.9 |
 | Problema | Inspeção de projetos autorizados antes da avaliação |
 | Funcionalidades desejadas / recorte | ZIP/TAR/TAR.GZ USTAR em quarentena cifrada, hashes, inventário, tecnologias indicativas e vínculo à revisão do plano |
 | Módulo | Universal Import Lab |
 | Implementação | Nativa |
-| Dependências | Python3.11+, PostgreSQL |
+| Dependências | Python3.11+, PostgreSQL; supervisor Rust opcional |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
-| Autorização | Dois escopos vigentes para archive.inspect, ativo/bytes e mandato/hash exatos revalidados antes do worker e antes da conclusão; revisão exata quando vinculada ao plano |
-| Limitações | Sem extrair/executar;16MiB/512 entradas/8MiB por entrada/64MiB total; sem ZIP64/descritores/PAX/GNU/sparse/links/nested archives. Sem URL/Git ou cancelamento supervisionado |
-| Testes necessários / disponíveis | 24 testes worker;12 API também no PostgreSQL restrito; navegador real ZIP/TAR/TAR.GZ, falhas e390px; restore41 tabelas/13 migrações |
-| Evidências | Migrações008/012/013, imports.ts, inspect_archive.py, ImportView/AssessmentView e VALIDATION_REPORT.md |
+| Autorização | Dois escopos vigentes, ativo/bytes, mandato/hash e revisão exatos; com Rust configurado, revalidação durante a execução e cancelamento ao detectar perda de autorização |
+| Limitações | Sem extrair/executar;16MiB/512 entradas/8MiB por entrada/64MiB total; formatos limitados. Sem URL/Git, sandbox de SO ou contenção após morte forçada do supervisor |
+| Testes necessários / disponíveis | 24 testes worker no incremento TAR;14 API também no PostgreSQL restrito;7 processos nativos; navegador real ZIP/TAR/TAR.GZ e390px; restore41 tabelas/13 migrações |
+| Evidências | Migrações008/012/013, imports.ts/execution.ts, crate execution-engine, worker e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
 
@@ -716,8 +716,8 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Administrador cria/revisa planos; analista pode executar static.scan/archive.inspect; cada execução exige mandato/hash vigente, ativo e bytes autorizados |
-| Limitações | static.scan/archive.inspect integrados; demais perfis apenas planejáveis. Até25 etapas/100 revisões/100 resultados retornados com aviso. Sem fila geral ou comparação/reteste |
-| Testes necessários / disponíveis | 18 API de planos e12 de importações;3 core; navegador estático e arquivos;12 importações também no PostgreSQL restrito; restore41 tabelas/13 migrações |
+| Limitações | static.scan/archive.inspect integrados; demais perfis apenas planejáveis. Até25 etapas/100 revisões/100 resultados com aviso. Cancelamento do worker de arquivos depende de Rust; sem fila geral ou comparação/reteste |
+| Testes necessários / disponíveis | 18 API de planos e14 de importações;3 core; navegador estático/arquivos;14 importações no PostgreSQL restrito; restore41 tabelas/13 migrações |
 | Evidências | Migrações011/012/013, assessment-plans.ts, assessment-plan.ts, imports.ts, AssessmentView, docs/ASSESSMENT-PLANS.md e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
@@ -726,19 +726,19 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 
 | Campo | Registro |
 |---|---|
-| Ferramenta de referência | Especificação V6.9; detalhes nos guias do módulo |
+| Ferramenta de referência | Diretriz V11.0; Referência B como pesquisa conceitual, sem código incorporado |
 | Problema | Orquestrar trabalhos persistentes |
-| Funcionalidades desejadas / recorte | Jobs básicos existentes; fila, prioridades, aprovação, cancelamento e CLI unificada pendentes |
+| Funcionalidades desejadas / recorte | Supervisor Rust de archive.inspect com recibos/limites/exit code e cancelamento; ampliar runtime e jobs recuperáveis |
 | Módulo | Execution Center |
 | Implementação | Nativa |
-| Dependências | PostgreSQL |
+| Dependências | Rust/serde/serde_json/sha2, Python, PostgreSQL |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
-| Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
-| Limitações | Estados atuais running/completed/failed/interrupted; não cobre todos estadosV6.9 |
-| Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
-| Evidências | Código e evidências de testes somente para o recorte implementado; limitações explícitas. |
+| Autorização | PolicyGate na API, identidade/mandato/hash preservados; pipe de controle cancela após perda de autorização detectada |
+| Limitações | Somente worker confiável sem descendentes. Sem sandbox/cgroups/Job Objects/fila/cotas gerais. Job running/completed/failed/interrupted; recibo tem estados próprios. Morte forçada do supervisor pode deixar filho ativo |
+| Testes necessários / disponíveis | 4 Rust,7 processos reais,2 casos API adicionais dentro de14 importações; PostgreSQL restrito, restore e navegador; fmt/clippy passaram |
+| Evidências | packages/execution-engine, apps/api/src/execution.ts, imports.ts; docs/RUST-ENGINES.md; VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M2 |
 | Prioridade | P0 |
 

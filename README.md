@@ -1,6 +1,6 @@
 # I.See Sentinel · Private Operator Edition 0.2
 
-Implementação incremental conforme especificação **Elite V6.9**, com um único
+Implementação incremental conforme diretriz **V11.0**, preservando requisitos anteriores, com um único
 operador fundador e empresas/projetos separados. O núcleo conecta análise,
 evidências, detecção, investigação e relatórios. O agente Rust possui envio
 autenticado e monitoramento limitado de arquivos; SecureFix mantém correções
@@ -12,19 +12,21 @@ alegada. Arquivos do laboratório são sintéticos e identificados como tal.
 
 ## Iniciar localmente
 
-Os requisitos dos sete prompts estão no [guia mestre consolidado](docs/GUIA-MESTRE-CONSOLIDADO.md).
+Os requisitos das oito fontes estão no [guia mestre consolidado](docs/GUIA-MESTRE-CONSOLIDADO.md).
 Para retomar, use [PROJECT_STATE.md](PROJECT_STATE.md) e a fila única do ROADMAP.
 O manifesto de alvos inclui IPs, portas e exclusões na aprovação do inventário.
 Estado real: [MODULE_STATUS.md](MODULE_STATUS.md). Resultados Windows:
-[VALIDATION_REPORT.md](VALIDATION_REPORT.md). O Universal Import Lab inspeciona ZIP
+[VALIDATION_REPORT.md](VALIDATION_REPORT.md). O Universal Import Lab inspeciona ZIP/TAR/TAR.GZ
 em quarentena; [IMPORT_PIPELINE.md](IMPORT_PIPELINE.md) descreve os limites.
 Perícia offline e importação exigem Python local configurado no servidor.
+A importação pode usar o [supervisor Rust](docs/RUST-ENGINES.md), com recibos
+de integridade e cancelamento após revogação/expiração detectada.
 
 A tela **Autorizações** registra responsável, comprovação cifrada, projeto,
 ativos e limites. A aprovação explícita habilita perfis definidos; revogar não
 restaura permissões antigas. Consulte [AUTHORIZATION_POLICY.md](AUTHORIZATION_POLICY.md).
 A tela **Avaliações** mantém planos e revisões ligados à autorização aprovada.
-A análise estática pode ser executada por etapa, preservando o vínculo com o job
+A análise estática e a inspeção de arquivos podem ser executadas por etapa, preservando o vínculo com o job
 e as evidências; os demais perfis indicam seu estado de integração.
 Consulte [planos de avaliação](docs/ASSESSMENT-PLANS.md).
 Código e memória de continuidade são sincronizados no

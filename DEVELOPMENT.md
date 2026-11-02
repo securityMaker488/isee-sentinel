@@ -95,3 +95,18 @@ os dois conjuntos de alterações, resolver e testar; não descarte arquivos par
 
 CI foi preparada para Windows e Ubuntu; resultado de runner não substitui
 homologação Debian13. Estado de execução está em VALIDATION_REPORT.md.
+
+
+## Supervisor Rust opcional
+
+Compilar o crate da máquina atual com `cargo build --locked --manifest-path
+packages/execution-engine/Cargo.toml`. Definir `SENTINEL_EXECUTION_PATH` com o
+caminho absoluto de target/debug/sentinel-execution (`.exe` no Windows) dentro
+desse pacote; manter `SENTINEL_PYTHON_PATH` apontando ao Python local. Caminho
+configurado inválido falha, sem fallback para outro executor. O setup existente
+não habilita esse supervisor automaticamente.
+
+Para testes reais, configurar `SENTINEL_TEST_EXECUTION_PATH` e
+`SENTINEL_TEST_PYTHON_PATH`; para QA, a primeira variável é a operacional
+`SENTINEL_EXECUTION_PATH`. [RUST-ENGINES.md](docs/RUST-ENGINES.md) contém contrato,
+comandos fmt/clippy/test, limitações e critérios antes de novos adaptadores.

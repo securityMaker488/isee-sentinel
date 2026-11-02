@@ -24,7 +24,7 @@ import {registerImports,type ImportRunner} from './imports.ts';
 import {registerAuthorizationManager} from './authorization-manager.ts';
 import {registerAssessmentPlans,assessmentContextSchema,validateAssessmentExecution,recordAssessmentExecution,recordAssessmentEvidence} from './assessment-plans.ts';
 
-export interface AppOptions {db:Database;masterKey:Buffer;origin?:string;secureCookie?:boolean;now?:()=>number;staticDir?:string;logger?:boolean;nmapPath?:string;labRunner?:LabRunner;pythonPath?:string;forensicRunner?:ForensicRunner;importRunner?:ImportRunner;}
+export interface AppOptions {db:Database;masterKey:Buffer;origin?:string;secureCookie?:boolean;now?:()=>number;staticDir?:string;logger?:boolean;nmapPath?:string;labRunner?:LabRunner;pythonPath?:string;forensicRunner?:ForensicRunner;importRunner?:ImportRunner;executionPath?:string;}
 export async function buildApp(options:AppOptions) {
   const {db,masterKey}=options,now=options.now??Date.now,origin=options.origin??'http://127.0.0.1:4310';
   const app=Fastify({bodyLimit:3*1024*1024,requestTimeout:30000,trustProxy:false,logger:options.logger?{level:'info',redact:['req.headers.cookie','req.headers.authorization','req.headers["x-csrf-token"]']}:false,disableRequestLogging:true,ajv:{customOptions:{removeAdditional:false,coerceTypes:false}}});
@@ -201,7 +201,7 @@ export async function buildApp(options:AppOptions) {
   await registerLab(app,{db,masterKey,now,nmapPath:options.nmapPath??process.env.SENTINEL_NMAP_PATH,runner:options.labRunner});
   await registerForensics(app,{db,masterKey,now,pythonPath:options.pythonPath??process.env.SENTINEL_PYTHON_PATH,runner:options.forensicRunner});
   await registerGraph(app,{db});
-  await registerImports(app,{db,masterKey,now,pythonPath:options.pythonPath??process.env.SENTINEL_PYTHON_PATH,runner:options.importRunner});
+  await registerImports(app,{db,masterKey,now,pythonPath:options.pythonPath??process.env.SENTINEL_PYTHON_PATH,runner:options.importRunner,executionPath:options.executionPath??process.env.SENTINEL_EXECUTION_PATH});
   if(options.staticDir&&existsSync(options.staticDir))await app.register(staticFiles,{root:options.staticDir,prefix:'/',index:['index.html']});
   await app.ready();return app;
 }

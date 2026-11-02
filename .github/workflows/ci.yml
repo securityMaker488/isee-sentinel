@@ -35,14 +35,21 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install verified Rust toolchain
-        run: rustup toolchain install 1.98.1 --profile minimal
+        run: rustup toolchain install 1.98.1 --profile minimal --component rustfmt --component clippy
       - name: Diagnose prerequisites without accessing services
         run: node --test scripts/executable-path.test.mjs && node scripts/doctor.mjs
       - name: Install pinned JavaScript dependencies
         run: npm ci --ignore-scripts
+      - name: Build and verify the bounded Rust supervisor
+        run: |
+          cargo fmt --manifest-path packages/execution-engine/Cargo.toml -- --check
+          cargo clippy --locked --manifest-path packages/execution-engine/Cargo.toml --all-targets -- -D warnings
+          cargo test --locked --manifest-path packages/execution-engine/Cargo.toml
+          cargo build --locked --manifest-path packages/execution-engine/Cargo.toml
       - name: Build application and run integration checks
         run: |
           export SENTINEL_TEST_PYTHON_PATH="$(python -c 'import sys; print(sys.executable)')"
+          export SENTINEL_TEST_EXECUTION_PATH="$(python -c 'import pathlib,sys; print((pathlib.Path("packages/execution-engine/target/debug") / ("sentinel-execution.exe" if sys.platform == "win32" else "sentinel-execution")).resolve())')"
           npm run build && npm test
       - name: Check repository boundaries and high confidence secret patterns
         run: npm run test:repository && npm run verify:repository

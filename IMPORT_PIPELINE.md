@@ -14,7 +14,8 @@ aplicação. Identificação de tecnologia é indicativa, não certificação de
    contexto e CSRF, além do base64 canônico.
 3. Criar job `import.zip`, `import.tar` ou `import.tar.gz`, referência ao ativo/projeto e evidência original com
    SHA-256/AES-GCM. Os bytes permanecem preservados se a inspeção posterior falhar.
-4. Preparar arquivo temporário exclusivo, iniciar o Python confiável configurado
+4. Preparar arquivo temporário exclusivo, iniciar diretamente ou pelo supervisor
+   Rust opcional o Python confiável configurado
    em `SENTINEL_PYTHON_PATH` com `-I -B`, sem shell e com ambiente reduzido.
 5. Inspecionar estrutura, caminhos, metadados, tamanhos, CRC e conteúdo limitado;
    calcular hashes de membros e indicar tecnologias/testes compatíveis pelo nome
@@ -58,7 +59,7 @@ razão100. Detalhes: [worker](docs/IMPORT-ARCHIVE-WORKER.md).
 
 | Método e rota | Contrato |
 | --- | --- |
-| `GET /api/imports/status` | Configuração, formatos aceitos, tamanho/tempo, `quarantineOnly`, `executionAvailable:false`, `networkAccess:false` |
+| `GET /api/imports/status` | Configuração, formatos aceitos, tamanho/tempo, `quarantineOnly`, `executionAvailable:false`, `networkAccess:false`, `supervisor`, `authorizationCancellation` |
 | `POST /api/imports` | `{assetId,name,format,contentBase64,assessment?}`; exige ambos os escopos |
 | `GET /api/imports` | Últimas 100 execuções da empresa, estado, ativo/projeto, evidência e erro |
 | `GET /api/imports/:id` | Relatório/estado e vínculo da evidência; leitura auditada |
@@ -70,7 +71,11 @@ Sucesso retorna `id`, `assetId`, `projectId`, `evidenceId`, `status`,
 A012 preserva identidade/mandato/hash; a013 amplia formatos. Migrações anteriores
 não foram modificadas. O backend revalida a autorização exata na preservação,
 antes do worker e na aceitação do resultado. Falha mantém o original ligado ao
-plano quando enviado; revogação não interrompe um processo já iniciado.
+plano quando enviado. Com `SENTINEL_EXECUTION_PATH` configurado, a API também
+revalida durante a execução e cancela o filho ao detectar perda de autorização.
+Sem Rust, a revalidação anterior/posterior não interrompe o processo iniciado.
+Contrato/limites: [supervisor](docs/RUST-ENGINES.md). O recibo validado aparece em
+`report.execution` e auditoria, inclusive falhas posteriores ao início do worker.
 
 `configured:true` verifica presença de caminho absoluto de Python, não todos os
 requisitos operacionais. Ausência de configuração retorna `PYTHON_UNAVAILABLE`;
@@ -87,7 +92,8 @@ python -m unittest discover -s workers/imports
 npx tsx --test apps/api/test/imports.test.ts
 ```
 
-Em02/11 passaram24 testes do worker e12 de API, também no PostgreSQL com
+Em02/11 passaram24 testes do worker no incremento TAR e14 de API no incremento
+Rust, também no PostgreSQL com
 runtime restrito. Incluem Python real nos três formatos, bytes divergentes,
 revogação, falhas, vínculo ao plano e limpeza. A evidência final de versão/ambiente e o resultado do roteiro de painel
 pertencem a `VALIDATION_REPORT.md`; essa contagem não representa homologação de

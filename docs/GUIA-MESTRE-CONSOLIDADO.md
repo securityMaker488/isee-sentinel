@@ -1,9 +1,10 @@
 # I.See Sentinel — guia mestre consolidado
 
 **Proprietária:** I.See Technologies · **Divisão:** I.See Cybersecurity.
-**Consolidação:** 27/10/2026 · **Base funcional:** V6.9, com requisitos compatíveis
-de V5.0, V6.3, V6.5 e V6.6, complemento multiplataforma e complemento AttackLab
-Evidence Fusion & Purple Validation Engine.
+**Consolidação:** 02/11/2026 · **Diretriz vigente:** V11.0, com requisitos
+compatíveis de V5.0, V6.3, V6.5, V6.6 e V6.9, complemento multiplataforma e
+complemento AttackLab Evidence Fusion & Purple Validation Engine.
+G27 incorpora a evolução Rust-first; 27 seções, 8 fontes e 651 títulos rastreados.
 
 Este é o ponto único de consulta dos **requisitos de desenvolvimento**. O estado
 mutável e o ponto exato de retomada ficam em [PROJECT_STATE.md](../PROJECT_STATE.md);
@@ -26,8 +27,9 @@ Ao receber “continue o que estava fazendo”:
    atualizar o checkpoint com a próxima ação concreta antes de encerrar.
 
 Uma evolução de prompt acrescenta requisitos; não apaga o progresso. A instrução
-mais recente do operador prevalece. A V6.9 governa a sequência global 0–12; o
-complemento AttackLab detalha seis fases internas. O complemento multiplataforma
+mais recente do operador prevalece. A V11 governa os marcos0–5 (G27/ROADMAP);
+as fases V6.9 0–12 mantêm requisitos e cobertura, sem outra fila. O complemento
+AttackLab detalha seis fases internas. O complemento multiplataforma
 governa continuidade, Git e reprodução de ambiente. Detalhes compatíveis antigos
 continuam neste guia. As numerações V6.5 0–10 e V6.6 0–16 são históricas.
 
@@ -84,6 +86,7 @@ Manter o monorepositório privado `isee-sentinel` e reutilizar seus componentes:
 | `apps/api` | Node.js LTS compatível, Fastify/TypeScript, REST/OpenAPI, autenticação, autorização, contratos, orquestração, auditoria e PostgreSQL |
 | `packages/core` | Motores determinísticos tipados e versionados; sem subprocesso, disco/rede ou execução de conteúdo analisado |
 | `packages/endpoint-agent` | Rust, APIs nativas, telemetria autorizada, integridade, supervisão e comunicação autenticada; adaptadores distintos por SO |
+| `packages/execution-engine` | Novo supervisor Rust do worker confiável de arquivos; contrato e limites em RUST-ENGINES.md; não substitui PolicyGate, agente ou workers |
 | `workers` | Python em ambientes isolados, processamento especializado e ferramentas por adaptadores; entradas explícitas, limites e preservação de originais |
 | Persistência | PostgreSQL local administrado para operação; PGlite somente desenvolvimento/testes explícitos, migrações imutáveis após aplicação, checksums e runtime restrito |
 | Infraestrutura | Debian 13 Stable/KDE, systemd quando necessário, Git, backups, QEMU/KVM, libvirt/virt-manager e Kali sob demanda |
@@ -688,7 +691,10 @@ resolver conflitos preservando trabalho, nunca sobrescrever alterações não
 sincronizadas. Backup/bundle sem segredos é alternativa de transporte, não cópia
 do banco operacional. Instalação de SO é distinta do desenvolvimento autorizado.
 
-## G24 — Linha única de fases e critérios
+## G24 — Cobertura histórica das fases e critérios
+
+A ordem vigente é M0–M5 da V11 em G27 e ROADMAP. Esta tabela conserva o escopo
+e os gates da V6.9 para impedir perda de requisitos; não é outra fila de execução.
 
 | Fase global V6.9 | Entrega e gate |
 |---|---|
@@ -763,7 +769,9 @@ etapa Debian, enquanto contratos/parsers/API/UI podem avançar no Windows.
 |---|---|
 | Arch principal / Ubuntu Server recomendado (V5) | Debian 13 KDE principal futuro, Windows atual preservado; Ubuntu é compatibilidade/CI, não migração concluída |
 | Começar só depois da migração (V6.3 e fases antigas) | Preferência posterior: completar trabalho Windows possível, homologar capacidades Linux no Debian |
-| Fases V6.5 0–10 / V6.6 0–16 | Uma sequência global V6.9 0–12; a antiga migração tornou-se dependência transversal |
+| Fases V6.5 0–10 / V6.6 0–16 / V6.9 0–12 | Marcos V11 0–5 com mapa de cobertura em ROADMAP; migração permanece dependência transversal |
+| Prioridade V6.9 de URL/Git antes do Execution Center | V11 antecipa Rust Core e runtime seguro; URL/Git seguem como dependências do M2, preservando importação existente |
+| Lista de engines, ferramentas e competências V11 | Plano de evolução; não prova implementação nem exige abrir agentes ou tarefas simultâneas |
 | SaaS/produto comercial no horizonte | Private Operator primeiro; arquitetura extensível sem complexidade pública/comercial prematura |
 | Repetir auditoria integral antes de toda modificação | Auditoria inicial preservada; checkpoint e inspeção dirigida em continuação, conforme instrução posterior do operador |
 | Autonomia crítica emergencial genérica da V5 | Ação crítica/produção exige aprovação específica e controles; automação não amplia a própria autoridade |
@@ -776,3 +784,35 @@ de cobertura, preservar fonte/hashes, inserir dependências na fila existente e
 registrar o ponto de retomada. Se houver divergência de status, consultar o último
 checkpoint, commit e evidência, corrigindo o documento desatualizado. Não ler
 todos os originais novamente sem uma razão concreta.
+
+## G27 — Diretriz V11: Rust-first, pesquisa e execução verificável
+
+Fonte integral: ESPECIFICACAO-V11.0.txt, §§00–32, preservada com SHA-256 no índice.
+A V11 acrescenta as regras abaixo; G01–G26 permanecem onde compatíveis. Não
+reescrever componentes adequados nem apresentar propostas como código concluído.
+
+| Seções V11 | Requisito integrado |
+|---|---|
+| 00–01, 04, 29, 32 | Auditoria dirigida do estado real/Git/testes, competências de engenharia, menor incremento utilizável e continuidade; preservar autorização já concedida. Ações destrutivas/privilegiadas e mudanças de SO exigem aprovação específica |
+| 02–03, 27 | Pesquisar projetos de referência autorizados por versão/commit, código e testes, distinguindo README de implementação; registrar licença, dependências, riscos, compatibilidade Debian e potencial de laboratório. Não executar repositórios desconhecidos nem copiar material sem licença adequada. Matriz em registro de pesquisa interno/JSON |
+| 05–08 | Rust preferencial nos novos motores críticos, safe Rust; unsafe exige justificativa, isolamento e testes. TS/React/Fastify mantém controle/interface, Python integrações especializadas; Go/Java/C/C++/C#/PowerShell somente com necessidade demonstrada. Não migrar tudo nem criar crates vazios |
+| 06 | Nove engines propostos: Execution, Web/API, Network, Detection, Evidence, Forensics, Agent Runtime, SecureCode Coordinator e AI Security Coordinator. Estado individual em RUST-ENGINES.md; agente existente preservado |
+| 07, 09 | Contratos versionados, modelos de jobs/escopo/evidência, logging/erros/observabilidade; adapters com manifesto, versão/licença, permissões, entradas/saídas, limites e capabilities. Plugins não podem ampliar autorização; shell e argumentos livres não são API |
+| 10–12 | Catálogo de ferramentas por domínio permanece integral em V11§10. Integração exige disponibilidade/licença/testes. Web/API: cliente HTTP, descoberta/crawler limitados, TLS/headers/JWT e testes autorizados; SecureCode: Semgrep/Bandit/Trivy/SARIF, segredos/SCA/regressão, preservando analisadores existentes |
+| 13–17 | Blue: ingestão/correlação/regras Sigma/YARA/Suricata/Zeek; Purple: testes e cobertura vinculados; DFIR/malware/reversão, rede/VPN/identidade e IA com laboratórios/escopos específicos. Modelos e conteúdo externo não recebem autoridade de executar ações |
+| 18–19 | Originais, hashes, proveniência, transformações e relatórios; operação→ativo→teste→evidência→achado→correção→reteste. Sucesso requer resultado real do processo, integridade e teste, não declaração do próprio conteúdo. Alteração inesperada deve negar aceitação |
+| 20–21 | Modelar frontend/API/banco/worker/plugin/agente/laboratório/IA e suprimentos. Menor privilégio, autenticação/CSRF/tenants, scope gate, timeout/cancelamento, segredos e logs redigidos. Dados descobertos não concedem autorização |
+| 22–24 | Command Center com recursos reais e falhas claras, identidade visual, responsividade e baixa sobrecarga. Debian13 KDE host/Kali4GB sob demanda; isolamento deve bloquear acesso indevido ao host, além da internet. Snapshots, restauração, redes e cotas comprovados antes de testes destrutivos |
+| 25, 30–31 | Testes aplicáveis por linguagem, positivos/negativos, integração/segurança/recuperação; Rust fmt/clippy/test e cargo audit quando disponível. Medir desempenho, registrar limitações. Relatório A–G: diagnóstico, referências, implementação, segurança, testes, desempenho, continuidade |
+| 26, 28 | Uma sequência M0–M5, checkpoint e docs no Git privado; não reiniciar auditorias nem perder requisitos antigos |
+
+Ordem única: **M0 auditoria/pesquisa → M1 Rust Core/runtime → M2 Web/API → M3
+SecureCode → M4 Detection/Security Operations → M5 operações avançadas**. GRC,
+serviços, remediação, ProofLab e liberação das versões anteriores continuam
+obrigatórios nas dependências registradas em ROADMAP. Não declarar um marco
+completo por entregar apenas seu primeiro recorte.
+
+O primeiro recorte M1 é supervisão opcional de `archive.inspect`, integrada ao
+plano, autorização e evidências existentes. Acesso HTTP controlado e URL/Git
+aguardam os controles M1 necessários. Limites atuais e próximo incremento ficam
+em PROJECT_STATE.md, sem segunda linha de desenvolvimento.

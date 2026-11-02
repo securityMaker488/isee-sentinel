@@ -1,8 +1,126 @@
 # Validação de desenvolvimento — Windows — atualizado em02/11/2026
 
-Especificação V6.9, versão de desenvolvimento 0.2.0. Resultados de fixtures
+Diretriz V11.0 e requisitos anteriores, versão de desenvolvimento 0.2.0. Resultados de fixtures
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
+
+## Incremento V11 — supervisão Rust e pesquisa — 02/11/2026
+
+### A. Estado inicial
+
+Branch main, árvore inicialmente limpa, commit
+`d67e95b39bd950b2c129e15d1ff6c4e23020f1d5`. Reutilizados planos/mandatos,
+13 migrações, importação ZIP/TAR/TAR.GZ e worker Python1.1, agente Rust e UI.
+Baseline JS185 passaram/1 POSIX skip; agente Rust14 unitários+4 CLI passaram.
+[CI d67e95b](https://github.com/securityMaker488/isee-sentinel/actions/runs/41486645508)
+confirmada em02/11: Windows2022 e Ubuntu24.04 concluíram com sucesso.
+A revisão focou novos requisitos e interfaces afetadas, preservando a auditoria.
+Lacunas iniciais relevantes: revogação não encerrava worker; não havia recibo
+nativo/engine de execução Rust, contenção geral, fila recuperável ou cliente HTTP.
+
+### B. Pesquisa
+
+110 repositórios públicos paginados:106 projetos de referência autorizados e4 projetos de referência autorizados. Nove referências
+solicitadas examinadas em revisões fixas: Referência A, Referência B, Referência C,
+Referência D, Referência E, Referência F, Referência G, Referência H e Referência I.
+[Pesquisa](registro de pesquisa interno) e [registro](registro de pesquisa interno)
+contêm commits, manifests/licenças, arquivos lidos/hashes, testes localizados,
+compatibilidade não comprovada e decisões. Nenhum terceiro foi compilado,
+executado ou incorporado. Referência I só contém README nessa revisão. Referência F
+contém LICENSE AGPL e license.md CC-BY-NC-SA; não tratar como licença resolvida.
+Conceitos aproveitados: exit code real e integridade antes/depois, com código próprio.
+
+### C. Implementação e decisões
+
+Criados `packages/execution-engine/{Cargo.toml,Cargo.lock,src/lib.rs,src/main.rs}`,
+`apps/api/src/execution.ts`, `apps/api/test/execution.test.ts` e
+`scripts/benchmark-execution.ts`. Alterados API app/imports e teste imports,
+ImportView, .env.example e workflow CI. Nenhuma migração ou parser foi alterado.
+A nova CLI0.1.0 usa contrato JSON v1, um worker confiável, ambiente reduzido,
+hashes, códigos de saída, buffers limitados, timeout e cancelamento por pipe.
+API conserva autorização/transações; revalida durante inspeção quando Rust está
+configurado, valida recibo e o persiste em relatório/auditoria. UI identifica a
+configuração. O caminho direto anterior permanece sem cancelamento durante execução.
+
+Documentação criada: fonte V11 byte a byte, pesquisa MD/JSON, RUST-ENGINES/ADR
+e inventário de dependências. Atualizados guia/índice/registro, AGENTS,
+PROJECT_STATE/ROADMAP, arquitetura/ameaças/licenças, matriz/estado de módulos,
+README, operação/testes/continuidade e contratos de importação/planos. Guia único
+agora contém27 seções/8 fontes/651 títulos. A V11 governa marcos0–5, sem apagar
+requisitos nem abrir fila paralela. O crate independente evita migrar o agente,
+reescrever o parser ou adicionar runtime assíncrono sem necessidade demonstrada.
+
+### D. Segurança e limitações
+
+Melhorias verificadas: perda de escopo encerra Python; resposta não pode converter
+exit7 em sucesso; divergência de original/worker/recibo nega aceitação; stdout/
+stderr têm limites e stderr não vaza conteúdo. Campos desconhecidos e comandos
+arbitrários são recusados. A UI/HTTP não escolhe executável ou argumentos.
+MFA/CSRF/organização/projeto/PolicyGate continuam nos caminhos existentes.
+Rust próprio usa `forbid(unsafe_code)`; isso não audita dependências transitivas.
+21 pacotes externos no lockfile novo, sem alteração de dependências JS/agente.
+
+Limites: worker deve ser confiável e não criar descendentes; não há sandbox de
+SO, bloqueio de rede, Job Objects/cgroups ou cotas CPU/RAM. Morte forçada do
+supervisor pode deixar filho ativo. Polling250ms soma latência do banco e não é
+atômico. Recibo cancelled não muda schema SQL: job failed/SCOPE_REQUIRED e
+original preservado. Hash não assina evidências nem protege host comprometido.
+Não habilitar outros plugins neste runtime antes da contenção. Não foram
+alterados Windows/rede/firewall/sudoers/VMs; somente ferramentas do usuário e
+serviços dedicados de QA usados. Nenhum teste ofensivo externo foi iniciado.
+
+### E. Testes executados
+
+| Comando/fluxo | Resultado observado |
+|---|---|
+| cargo fmt --manifest-path packages/execution-engine/Cargo.toml -- --check | Passou |
+| cargo clippy --locked --manifest-path packages/execution-engine/Cargo.toml --all-targets -- -D warnings | Passou |
+| cargo test/build --locked com esse manifest | 4 testes Rust passaram; build debug concluído |
+| npx tsx --test apps/api/test/execution.test.ts | 7 passaram, processos reais;3,018s |
+| npx tsx --test apps/api/test/imports.test.ts | 14 passaram em PGlite; também14 em PostgreSQL18/runtime restrito,6,184s |
+| npm run check com Python/binário Rust reais | TypeScript/build44 módulos;194 passaram,0 falhas,1 skip POSIX;195 casos,37,678s |
+| Backup/restore do banco de testes nativo | 41 tabelas idênticas,13 migrações,22 importações/jobs,14 planos/revisões/etapas/execuções/vínculos,36 evidências e126 eventos; auditoria íntegra |
+| node scripts/browser-archive-qa.cjs | ZIP/TAR/TAR.GZ reais pelo plano, exportação, falha preservada, revogação, TAR.GZ avulso e390px passaram; JSONs exportados confirmam recibos Rust completed |
+| cargo audit --version | Comando indisponível; auditoria de advisories não executada |
+
+Os sete casos nativos cobrem contrato desconhecido/hash/budgets, env reduzido,
+exit7 enganoso, AbortSignal com PID encerrado, excesso stdout/stderr, mutação do
+original, UTF-8 inválido, timeout800ms e EOF. Dois novos testes da API verificam
+recibo real nos três formatos e cancelamento por revogação/expiração, preservando
+plano/original/auditoria e liberando o bloqueio persistido. Estão incluídos nos14,
+que por sua vez estão incluídos nos195; não somar contagens repetidas.
+
+Uma tentativa inicial de baseline falhou por leitura negada do esbuild fora da
+raiz restrita; repetição com acesso ao workspace real passou. Não foi defeito do
+produto nem motivo para modificar dependências. Fastify mantém aviso conhecido
+de disableRequestLogging depreciado. Python/imports24 passou no incremento TAR;
+o parser não mudou nem sua suíte foi repetida localmente nesta etapa.
+Logs: .sentinel/v11-baseline-unrestricted.log, v11-rust-baseline.log,
+v11-supervisor-test.log, v11-imports-test.log, v11-final-check.log,
+v11-native.log, v11-restore.log e v11-browser.log. Não versionar dados de QA,
+credenciais, dumps ou screenshots com dados privados. Nova CI será consultada
+após o push; o resultado d67e95b acima não é atribuído ao código novo.
+
+### F. Desempenho
+
+Medição serial do ZIP sintético514 bytes,8 amostras por caminho, Windows/debug,
+binário873984 bytes. `npx tsx scripts/benchmark-execution.ts`, Python local e
+nenhum banco/rede envolvidos. Originalmente medianas131,89ms direto/194,00ms
+Rust; reprodução pelo script versionado:128,11ms/186,51ms, mínimos123,85/172,64ms
+e máximos139,54/204,73ms. Logs v11-performance.json e v11-performance-repro.json.
+A supervisão adiciona processo e verificações; **não houve ganho de velocidade**.
+Não medidos: RAM/CPU, carga sustentada, release, outros tamanhos, Linux/Debian.
+Não interpretar pequena amostra como benchmark de capacidade operacional.
+
+### G. Continuidade
+
+M0 atendido como auditoria/pesquisa dirigida; M1 parcial. Próxima tarefa única:
+contenção/encerramento após morte do supervisor, contratos e testes por SO;
+depois runtime/job model recuperável e cotas, antes do cliente HTTP M2/URL/Git.
+ADR/limites em docs/RUST-ENGINES.md; checkpoint/ordem em PROJECT_STATE/ROADMAP.
+Não há bloqueio externo para avançar código portátil Windows. Debian13/KDE,
+Nmap real, serviço do agente, QEMU/Kali e isolamento continuam sem homologação.
+QA4311 e PostgreSQL dedicado55432 encerrados; serviço5432 preexistente preservado.
 
 ## Incremento inspeção no plano e TAR — 02/11/2026
 
@@ -37,8 +155,9 @@ antes de aceitar o resultado. Não há cancelamento atômico no intervalo de cri
 do processo. Os limites de stream não equivalem a cotas de memória do SO.
 URL/Git, fila geral, recuperação, ProofLab e homologação Debian permanecem abertos.
 Serviços temporários4311/55432 encerrados após testes em02/11;5432 preservado.
-CI deste incremento ainda pendente de verificação; o resultado antigo abaixo
-não é atribuído a este código. Rust e demais workers não foram repetidos localmente.
+CI d67e95b confirmada em02/11: Windows2022/Ubuntu24.04 passaram,
+run41486645508. Rust e demais workers não foram repetidos localmente nesse
+incremento TAR; o baseline do incremento V11 está registrado acima.
 
 ## Incremento planos de avaliação — 01/11/2026
 

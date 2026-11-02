@@ -1,4 +1,4 @@
-# Retomada vigente — V6.9 — 26/10/2026
+# Retomada vigente — V11.0 — 02/11/2026
 
 Leia primeiro ../PROJECT_STATE.md e ../ROADMAP.md. As seções abaixo são histórico; não reiniciar os trabalhos já encerrados.
 

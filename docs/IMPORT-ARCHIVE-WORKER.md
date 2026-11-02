@@ -45,3 +45,10 @@ Nenhum novo pacote Python foi adicionado. Testes TAR: `test_inspect_tar.py`.
 
 Referências de implementação: [formato TAR/USTAR no manual GNU](https://www.gnu.org/software/tar/manual/html_node/Standard.html)
 e [descompressão limitada da biblioteca Python](https://docs.python.org/3/library/zlib.html#zlib.Decompress.decompress).
+
+
+Desde o incremento V11, a API pode supervisionar este mesmo worker com
+`SENTINEL_EXECUTION_PATH`. O parser não mudou: o Rust acrescenta contrato,
+limites de processo, hashes e recibos, além de receber cancelamento por perda
+de escopo. Não é sandbox nem permite outros executáveis/descendentes.
+Configuração e limitações: [RUST-ENGINES.md](RUST-ENGINES.md).
