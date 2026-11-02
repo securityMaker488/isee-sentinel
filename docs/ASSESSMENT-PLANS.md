@@ -44,6 +44,11 @@ A criação usa `name`, `projectId`, `mandateId`, `authorizationRequestHash`,
 quando aplicável, `address` e `ports`. Revisões posteriores mantêm nome/projeto e
 recebem os demais campos mais `parentHash`. Há até 25 etapas e 100 revisões.
 
+O detalhe retorna os 100 resultados mais recentes do plano e indica
+`resultsTruncated` quando existem anteriores. A UI e a exportação exibem esse
+limite; ausência de uma revisão nesse recorte não comprova falta de execução.
+Consulta e exportação paginadas de todo o histórico continuam pendentes.
+
 O contexto de execução é `{planId, revisionId, revisionHash, stepId}`. O frontend
 envia a identidade exata da revisão consultada, sem aceitar que o servidor a
 substitua silenciosamente pela mais recente. Uma revisão histórica só pode ser

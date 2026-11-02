@@ -1,4 +1,4 @@
-# Validação de desenvolvimento — Windows — 01/11/2026
+# Validação de desenvolvimento — Windows — atualizado em02/11/2026
 
 Especificação V6.9, versão de desenvolvimento 0.2.0. Resultados de fixtures
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
@@ -30,14 +30,26 @@ marcada no roteiro. Não representa teste de carga com101 scans.
 Ajuste final da consulta obtém lock antes de ler revisões e resultados: evita
 misturar uma execução nova com um histórico lido antes dela.18 testes API
 passaram novamente após esse ajuste. Build/suíte completa/PostgreSQL/restore
-foram executados antes dele; CI final confirmará a revisão enviada.
+foram executados antes dele; a CI final confirmou o código enviado, incluindo
+o ajuste de leitura sob lock e a compilação final.
+
+[CI do código d16ec25](https://github.com/securityMaker488/isee-sentinel/actions/runs/41372768013):
+Windows2022 e Ubuntu24.04 passaram, duração total4m48s. Resultado observado
+em01/11 e registrado em02/11. Inclui build/suíte JS, verificação de repositório,
+auditoria de dependências, Rust e workers Python. Esse resultado corresponde a
+d16ec25f3f1cd4a0f2532e790aaf3f3f30a81c51; o commit posterior de fechamento altera
+somente documentação e usa [skip ci]. Ubuntu não substitui homologação Debian.
+
+Verificação local antes do envio do código:203 arquivos candidatos/203 blobs no
+índice/256 históricos, sem padrões bloqueados. Serviços temporários4311/55432
+encerrados após validação; PostgreSQL preexistente5432 preservado.
 
 Logs: .sentinel/assessment-build.log, assessment-full-test.log,
 assessment-api-focused.log, assessment-native-test.log, assessment-restore.log,
 assessment-browser.log. Capturas assessment-completed.png/assessment-mobile.png
 em .sentinel/qa foram inspecionadas. Segredos, dumps e dados de QA ficam fora do Git.
 Rust e workers Python não foram alterados nem repetidos isoladamente neste
-incremento; execução na CI será registrada quando houver resultado observado.
+incremento local; sua execução na CI passou conforme registro acima.
 
 Limites: demais perfis apenas planejáveis, fila/pausa/cancelamento geral ausentes,
 sem vínculo de importação ou comparação/reteste generalizados. Fase Windows e

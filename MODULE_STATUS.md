@@ -21,7 +21,7 @@ profissional ou comercial.
 | AttackLab | Nmap limitado, manifesto revisado obrigatório, despacho vinculado ao mandato/hash; testes com substituto | Nmap real, operações completas, novos adaptadores, VMs, isolamento e snapshots |
 | ProofLab / ResilienceLab | Requisitos e cenários-base reaproveitáveis | Aplicação isolada integrada; carga e recuperação medidas |
 | Governança e serviços | Organizações, projetos, evidências e guias | GRC, privacidade, BIA, terceiros, treinamento, equipes e operação gerenciada |
-| Portabilidade | Setup Windows executado; CI do código dff15a3 passou em Windows2022 e Ubuntu24.04, incluindo correção Python POSIX; scripts Debian preparados | Debian13/KDE, serviços e validação operacional entre sistemas |
+| Portabilidade | Setup Windows executado; CI do código d16ec25 passou em Windows2022 e Ubuntu24.04; scripts Debian preparados | Debian13/KDE, serviços e validação operacional entre sistemas |
 
 URLs/Git/TAR, demais vínculos do plano, filas/cancelamento e relatórios
 ainda podem evoluir no Windows. Não transferir automaticamente essas

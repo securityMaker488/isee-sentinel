@@ -1,4 +1,4 @@
-# Estado do projeto — 01/11/2026
+# Estado do projeto — 02/11/2026
 
 ## Retomada — uma linha de desenvolvimento
 
@@ -40,8 +40,11 @@ como se fosse apenas homologação Linux.
 - QA navegador: criação/revisão, análise real estática, exportações/hashes,
   revogação,390px, resposta antiga descartada na troca de organização, sem erros
   de console. Truncamento testado com resposta sintética identificada.
-- CI anterior dff15a3 passou Windows2022/Ubuntu24.04, run40568763223.
-  CI deste incremento será registrada após envio; não presumir resultado.
+- CI do código d16ec25 passou em Windows2022 e Ubuntu24.04, em4m48s:
+  https://github.com/securityMaker488/isee-sentinel/actions/runs/41372768013.
+  Inclui build/suíte JS, verificação do repositório, dependências, Rust e workers
+  Python. Resultado observado em01/11 e registrado em02/11; alterações posteriores
+  deste fechamento são somente documentais, sem nova alegação de teste do código.
 
 Logs .sentinel/assessment-*.log; capturas/JSON .sentinel/qa. Ver VALIDATION_REPORT.
 Rust/Python isolados históricos não repetidos localmente: fontes inalteradas.
@@ -80,7 +83,8 @@ Credenciais/bancos/dumps/.sentinel/dependências não entram no Git. Pacotes ant
 são históricos; usar commit sincronizado ou bundle correspondente.
 
 QA dedicado work/postgres-validation,127.0.0.1:55432; servidor sintético4311.
-Conferir processos e encerrar temporários ao terminar. Nunca alterar PostgreSQL
+Ambos foram encerrados após validação em01/11. Conferir processos antes de
+reutilizar e encerrar temporários ao terminar. Nunca alterar PostgreSQL
 preexistente5432. Não alterados Windows, partições, bootloader, firmware, firewall,
 GPU ou Kali. CONTINUIDADE e planos anteriores são históricos; este checkpoint
 orienta a retomada. Não depender da conversa no Debian.
