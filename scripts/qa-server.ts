@@ -12,6 +12,6 @@ await db.query('INSERT INTO private_operator(slot,user_id,recovery_hash) VALUES(
 await db.query('INSERT INTO operator_organizations(operator_id,organization_id) VALUES($1,$2)',[id,org]);
 await mkdir(resolve('.sentinel/qa'),{recursive:true,mode:0o700});
 await writeFile(resolve('.sentinel/qa/browser-session.json'),JSON.stringify({email,password,secret:enrollment.secret}),{mode:0o600});
-const app=await buildApp({db,masterKey:key,origin:'http://127.0.0.1:4311',staticDir:resolve('apps/web/dist')});
+const app=await buildApp({db,masterKey:key,origin:'http://127.0.0.1:4311',staticDir:resolve('apps/web/dist'),pythonPath:process.env.SENTINEL_TEST_PYTHON_PATH});
 await app.listen({host:'127.0.0.1',port:4311});console.info('QA server listening on 4311; synthetic temporary database.');
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>void app.close().then(()=>db.close()).then(()=>process.exit(0)));

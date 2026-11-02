@@ -14,13 +14,13 @@ PolicyGate, da vigência e dos limites da autorização original.
 4. Para alterar o plano, criar outra revisão indicando o hash da revisão anterior.
    Revisões antigas permanecem disponíveis; uma atualização concorrente exige
    recarregar o histórico antes de tentar novamente.
-5. Executar a análise estática de uma etapa selecionada. O backend verifica a
+5. Executar a análise estática ou inspeção de arquivo de uma etapa selecionada. O backend verifica a
    revisão exata e a autorização vigente e registra o vínculo com o job, o scan
    e as evidências preservadas. Resultados não são anexados retroativamente.
 6. Consultar o histórico e exportar os metadados do plano e dos resultados.
    O download de originais continua submetido às permissões de evidências.
 
-Somente `static.scan` possui execução integrada ao plano neste incremento.
+`static.scan` e `archive.inspect` possuem execução integrada ao plano.
 Os demais perfis podem compor o planejamento; seus executores próprios não
 recebem automaticamente vínculos com planos. Isso aparece no catálogo e na UI.
 Um plano não transforma serviço descoberto em vulnerabilidade confirmada.
@@ -38,6 +38,7 @@ CSRF. O catálogo informa limites e suporte real de execução por perfil.
 | GET `/api/assessment-plans/:id` | Revisões preservadas e resultados vinculados |
 | POST `/api/assessment-plans/:id/revisions` | Nova revisão com `parentHash` |
 | POST `/api/scans` | Análise estática existente, com contexto opcional `assessment` |
+| POST `/api/imports` | Inspeção ZIP/TAR/TAR.GZ, com o mesmo contexto opcional `assessment` |
 
 A criação usa `name`, `projectId`, `mandateId`, `authorizationRequestHash`,
 `objective` e `steps`. Cada etapa contém `id`, `name`, `assetId`, `profile` e,
@@ -74,3 +75,22 @@ arquivos fornecidos e não executa seu conteúdo.
 Validação efetivamente realizada: [VALIDATION_REPORT.md](../VALIDATION_REPORT.md).
 Ponto único de retomada: [PROJECT_STATE.md](../PROJECT_STATE.md). O próximo
 incremento deve preservar estes vínculos ao ampliar os importadores.
+
+## Inspeção vinculada ao plano — 02/11/2026
+
+O envio carrega a revisão exata, etapa, formato explícito e arquivo. A mesma
+transação preserva job, original cifrado e vínculos ao plano. A migração012
+conserva mandato/hash no registro de importação, com identidade imutável e FKs
+por organização/ativo. Importações anteriores permanecem históricas, sem
+atribuição retroativa de autorização ou plano. A migração013 amplia formatos.
+
+A autorização é revalidada na preservação, imediatamente antes de chamar o
+worker e antes de aceitar o relatório. Revogação/expiração/substituição detectada
+impede despacho ou conclusão. A aprovação não pode ser trocada silenciosamente.
+Falhas após a quarentena preservam job/original vinculados; o painel atualiza o
+resultado e oferece o registro JSON. Importação avulsa não é anexada a um plano.
+
+O worker externo não participa da transação SQL. Revogação não mata um processo
+já iniciado nem garante interrupção atômica no intervalo entre validação e
+criação do processo. O resultado só é aceito após nova validação. Cancelamento
+supervisionado e recuperação após interrupção continuam pendentes.

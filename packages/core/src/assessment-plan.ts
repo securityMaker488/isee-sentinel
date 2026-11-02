@@ -11,7 +11,7 @@ export interface AssessmentStep {
 }
 export const ASSESSMENT_PLAN_LIMITS = Object.freeze({ maxSteps: 25, maxRevisions: 100 });
 /** Integration is explicit: an existing executor is not automatically an assessment executor. */
-export const ASSESSMENT_EXECUTION_PROFILES: readonly string[] = Object.freeze(['static.scan']);
+export const ASSESSMENT_EXECUTION_PROFILES: readonly string[] = Object.freeze(['static.scan', 'archive.inspect']);
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export function validAssessmentText(value: unknown, max: number): value is string {

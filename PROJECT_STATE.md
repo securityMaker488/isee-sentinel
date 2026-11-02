@@ -2,89 +2,82 @@
 
 ## Retomada — uma linha de desenvolvimento
 
-Requisitos: docs/GUIA-MESTRE-CONSOLIDADO.md. Fila: ROADMAP.md.
-Fontes/hashes: docs/PROMPT-COVERAGE.json. Ao receber “continue”, usar este
-checkpoint e somente os arquivos da tarefa. Não repetir auditoria ampla nem
-reler todos os prompts. Ordem global V6.9 fases0–12; AttackLab A1–A6 internas.
+Guia: docs/GUIA-MESTRE-CONSOLIDADO.md. Fila: ROADMAP.md. Fontes/hashes:
+docs/PROMPT-COVERAGE.json. Ao receber “continue”, retomar este checkpoint e
+somente os arquivos da tarefa. Não repetir auditoria ampla nem reler os prompts.
+Ordem global V6.9 fases0–12; AttackLab A1–A6 internas.
 
-**Posição: fase global1 / AttackLab A2, parcialmente entregue.** Plano versionado
-com execução estática integrada concluído neste recorte. Windows e plataforma
-inteira ainda NÃO estão100% concluídos. Completar desenvolvimento portátil no
-Windows; quando restarem somente tarefas dependentes de Linux, parar e continuar
-pelo repositório no Debian13 KDE Plasma. Não transferir implementação ausente
-como se fosse apenas homologação Linux.
+**Posição: fase global2 / AttackLab A2, parcialmente entregue.** Fundação de
+planos e autorizações reutilizada; importação ZIP/TAR/TAR.GZ vinculada ao plano
+entregue neste recorte. Windows e plataforma inteira ainda NÃO estão100%
+concluídos. Completar desenvolvimento portátil aqui; quando restarem somente
+tarefas dependentes de Linux, parar e continuar pelo GitHub no Debian13 KDE.
+Não transferir implementação ausente como se fosse apenas homologação Linux.
 
-## Incremento concluído — planos de avaliação
+## Incremento concluído — inspeção vinculada ao plano e TAR
 
-- Migração011: planos, revisões, etapas, vínculos imutáveis de execução/evidência.
-  Reutiliza autorização/manifesto/hash revisado; não cria aprovação paralela.
-- API cria/lista/revisa/consulta;25 etapas,100 revisões, últimos100 resultados
-  com aviso de truncamento. SHA-256 canônico, parentHash, locks e FKs protegem
-  história e isolamento de organização/projeto/ativo.
-- static.scan integra etapa exata, validação, análise, job e evidências em uma
-  transação. Revogação/substituição não atravessa esse despacho. Falha de
-  preservação desfaz tudo; resultados antigos não recebem autorização retroativa.
-- Tela Avaliações cria/revisa/executa análise estática, consulta história e exporta
-  relatórios. Outros oito perfis apenas planejáveis; vínculos ainda pendentes.
-- Corrigidos UUID canônico antes do hash, tipos nulos, truncamento na interface,
-  estado ao trocar organização e leitura de histórico serializada com escrita.
+- archive.inspect integra etapa/revisão exatas, job e original cifrado na mesma
+  transação. Autorização revalidada na preservação, antes do worker e na aceitação
+  do resultado. Revogação/expiração/substituição detectadas negam despacho ou
+  conclusão, sem atribuição retroativa. Original permanece se a inspeção falhar.
+- Migração012: identidade da importação/mandato/hash imutáveis e FKs por ativo.
+  Migração013: amplia formatos. Nenhuma migração001–011 foi alterada.
+- Worker1.1: ZIP e TAR/TAR.GZ USTAR, formato explícito, hashes/metadados sem
+  extrair/executar/conectar à rede.16MiB original,512 entradas,8MiB por entrada,
+  64MiB de conteúdo, razão100. Recusa PAX/GNU/sparse/links/dispositivos e membros
+  gzip concatenados; limites detalhados em docs/IMPORT-ARCHIVE-WORKER.md.
+- Telas Avaliações/Import Lab enviam três formatos e exportam registros reais.
+  Falhas atualizam o resultado do plano e mantêm evidência. Sem seleção de etapa,
+  o formulário pede a seleção antes de apresentar campos do arquivo.
+- static.scan segue integrado; sete outros perfis somente planejáveis.
+  Revogação não mata processo já iniciado. Cancelamento supervisionado, fila
+  recuperável e cotas acumuladas ainda pendentes.
 
-## Validação
+## Validação local deste incremento
 
-- TypeScript/build web passaram (44 módulos).
-- Suíte JS com Python real:179 passaram,0 falhas,1 skip POSIX no Windows.
-- Planos:18 API+3 core passaram;18 API também em PostgreSQL18 nativo/runtime
-  restrito. Após ajuste final da leitura sob lock,18 API passaram novamente.
-- Restore:41 tabelas idênticas,11 migrações,17 planos,21 revisões,22 etapas,
-  10 execuções/vínculos,34 evidências,138 eventos; auditoria íntegra.
-- QA navegador: criação/revisão, análise real estática, exportações/hashes,
-  revogação,390px, resposta antiga descartada na troca de organização, sem erros
-  de console. Truncamento testado com resposta sintética identificada.
-- CI do código d16ec25 passou em Windows2022 e Ubuntu24.04, em4m48s:
-  https://github.com/securityMaker488/isee-sentinel/actions/runs/41372768013.
-  Inclui build/suíte JS, verificação do repositório, dependências, Rust e workers
-  Python. Resultado observado em01/11 e registrado em02/11; alterações posteriores
-  deste fechamento são somente documentais, sem nova alegação de teste do código.
-
-Logs .sentinel/assessment-*.log; capturas/JSON .sentinel/qa. Ver VALIDATION_REPORT.
-Rust/Python isolados históricos não repetidos localmente: fontes inalteradas.
-Debian/Kali/QEMU e serviços não homologados. Nenhuma varredura de rede realizada.
-
-## Base preservada
-
-Guia26 seções/7 fontes/563 títulos; React/Fastify/PostgreSQL; fundador/MFA/
-recuperação; clientes/projetos/ativos; PolicyGate; autorizações com prova cifrada,
-perfis/limites, revisão, manifesto exato IPv4/portas/exclusões e revogação;
-evidências cifradas/hashes/auditoria. Rust HMAC/FIM explícito/baseline/replay,
-sem alegar EDR completo. Casos/relatórios; SecureFix CÓPIA SSH no banco; RiskGraph.
-Análises offline/perícia PCAP/PCAPNG/SQLite/plist; ZIP em quarentena sem executar,
-extrair ou acessar rede (16MiB original,512 entradas/64MiB expandidos).
+- TypeScript/build passaram,44 módulos. Suíte JS com Python real:185 passaram,
+  0 falhas,1 skip POSIX no Windows. Python/imports:24 passaram.
+- Importações:12 API passaram também em PostgreSQL18 nativo/runtime restrito,
+  incluindo processo Python real ZIP/TAR/TAR.GZ e recusas.
+- Backup/restore:41 tabelas idênticas,13 migrações,17 importações/jobs,9 planos/
+  revisões/etapas/execuções/vínculos,26 evidências e87 eventos; auditoria íntegra.
+- QA navegador de arquivos e regressão estática passaram: upload real, revisão,
+  exportação, falha preservada, revogação,390px e troca de organização no roteiro
+  estático. Último ajuste de apresentação recompilado e QA de arquivos repetido.
+- Logs .sentinel/archive-*.log; capturas/JSON .sentinel/qa. VALIDATION_REPORT.md
+  mantém o histórico. Rust e workers não alterados fora de imports não foram
+  repetidos localmente. Nova CI ainda não verificada neste checkpoint.
 
 ## Próximo passo concreto
 
-1. Integrar archive.inspect ao plano existente: autorização exata antes do worker,
-   job/evidência/falhas e painel. Reutilizar assessment-plans.ts/imports.ts;
-   não refazer plano/ZIP. Somente static.scan já está integrado.
-2. Fase2: TAR/TAR.GZ após esse vínculo; depois URL/Git com escopo exato,
-   SSRF/DNS/redirects/limites. Gobuster começa por importação offline delimitada.
+1. Fase2: projetar/implementar importação URL como adaptador separado, integrado
+   ao plano e evidência. Primeiro contrato de autorização para URL exata,
+   esquemas/portas/endereço resolvido, bloqueio SSRF/DNS/redirects e limites de
+   bytes/tempo. Usar servidor sintético local no teste; nenhuma busca arbitrária
+   externa deve nascer de permissões amplas. Não reutilizar o manifesto IPv4 de
+   Nmap como autorização implícita para HTTP. Não reescrever ZIP/TAR ou planos.
+2. Depois, importação Git com escopo/transporte/submódulos/hooks/limites próprios.
+   Gobuster começa por importação offline delimitada. Manter um fluxo por vez.
 3. Fase3: ProofLab sobre plano/importação, isolamento, teste reproduzível,
-   correção na cópia, reteste comparável e relatório; SOC sintético não encerra fase3.
-4. Seguir fases4–12. Fila recuperável, cancelamento supervisionado, cotas/CPU/RAM,
-   demais vínculos/executores, Evidence Fusion, Blue/Purple e relatórios pendentes.
-   Contratos/parsers/API/UI portáteis ficam no Windows. Linux SUID/SGID, Auditd/
-   Suricata reais, serviços e isolamento QEMU/KVM/Kali exigem Debian. Revogar
-   permissão não significa interromper um processo já iniciado.
+   correção em cópia, reteste comparável e relatório. SOC sintético não encerra3.
+4. Seguir fases4–12. Contratos/parsers/API/UI portáteis continuam no Windows.
+   Linux SUID/SGID, Auditd/Suricata reais, serviços e QEMU/KVM/Kali exigem Debian.
+   As fases anteriores continuam parciais onde houver dependências registradas.
 
-## Ambiente e transferência
+## Base e continuidade
+
+Guia26 seções/7 fontes/563 títulos; React/Fastify/PostgreSQL, fundador/MFA,
+clientes/projetos/ativos, PolicyGate, mandatos com comprovação e manifesto exato,
+evidências cifradas e auditoria. Rust HMAC/FIM finito, casos, análises offline,
+SecureFix CÓPIA SSH no banco, RiskGraph e perícia PCAP/PCAPNG/SQLite/plist mantidos.
+Não presumir EDR completo, pentest geral, implantação Linux ou isolamento de VM.
 
 Privado autorizado: https://github.com/securityMaker488/isee-sentinel; main,
-origin HTTPS conferido, GCM autorizado. Conferir status/HEAD/remoto ao retomar.
+origin HTTPS e privacidade confirmados pela API em02/11. GCM autorizado.
 Credenciais/bancos/dumps/.sentinel/dependências não entram no Git. Pacotes antigos
-são históricos; usar commit sincronizado ou bundle correspondente.
+são históricos; usar o commit sincronizado. Não depender da conversa no Debian.
 
-QA dedicado work/postgres-validation,127.0.0.1:55432; servidor sintético4311.
-Ambos foram encerrados após validação em01/11. Conferir processos antes de
-reutilizar e encerrar temporários ao terminar. Nunca alterar PostgreSQL
-preexistente5432. Não alterados Windows, partições, bootloader, firmware, firewall,
-GPU ou Kali. CONTINUIDADE e planos anteriores são históricos; este checkpoint
-orienta a retomada. Não depender da conversa no Debian.
+QA dedicado work/postgres-validation em127.0.0.1:55432 e servidor sintético4311
+encerrados após os testes em02/11. Conferir processos antes de reutilizar.
+Nunca alterar PostgreSQL preexistente5432. Windows/partições/bootloader/firmware/
+firewall/Kali não foram alterados. CONTINUIDADE e planos anteriores são históricos.

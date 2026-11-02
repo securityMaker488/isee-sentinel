@@ -18,6 +18,7 @@ npm run check
 cargo test --locked --manifest-path packages/endpoint-agent/Cargo.toml
 python -m unittest discover -s workers/integrity
 python -m unittest discover -s workers/forensics
+python -m unittest discover -s workers/imports
 ```
 
 Debian/Linux:
@@ -28,6 +29,7 @@ npm run check
 cargo test --locked --manifest-path packages/endpoint-agent/Cargo.toml
 python3 -m unittest discover -s workers/integrity
 python3 -m unittest discover -s workers/forensics
+python3 -m unittest discover -s workers/imports
 ```
 
 Não copie node_modules, target, binários compilados ou .venv entre sistemas.
@@ -46,6 +48,11 @@ npm run qa:browser
 ```
 O servidor de QA usa porta4311 e dados temporários. Credenciais e resultados
 ficam em .sentinel/qa, ignorado pelo Git. Encerre-o após o teste.
+Para QA de inspeções reais, configure `SENTINEL_TEST_PYTHON_PATH` com o caminho
+absoluto do Python antes de iniciar `qa:server`; execute
+`node scripts/browser-archive-qa.cjs` em outro terminal. O roteiro usa somente
+fixtures e dados sintéticos, incluindo TAR/TAR.GZ e vínculo ao plano.
+
 Para validar o sensor compilado: npm run verify:agent. Não é um teste no Debian.
 
 ## Instância privada operacional

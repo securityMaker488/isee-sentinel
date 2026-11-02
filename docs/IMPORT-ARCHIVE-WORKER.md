@@ -1,4 +1,4 @@
-# Inspetor ZIP 1.0
+# Inspetor de arquivos 1.1
 
 Contrato integrado e limites completos: [IMPORT_PIPELINE.md](../IMPORT_PIPELINE.md).
 Implementação: `workers/imports/inspect_archive.py`, Python3.11+, somente biblioteca
@@ -7,11 +7,11 @@ padrão. Não instala dependências, extrai membros, executa código ou acessa r
 CLI, sobre cópia autorizada:
 
 ```text
-python -I -B workers/imports/inspect_archive.py --consent --file CAMINHO.zip
+python -I -B workers/imports/inspect_archive.py --consent --format zip --file CAMINHO.zip
 ```
 
 Saída JSON: `schemaVersion:1.0`, engine `Sentinel Import Inspector`, input com
-SHA-256/tamanho/nome/unchanged, `quarantineOnly:true`, entradas com hash/tamanho,
+SHA-256/tamanho/nome/formato/unchanged, `quarantineOnly:true`, entradas com hash/tamanho,
 tecnologias indicativas, sugestões de análises e limitações. Sugestões são dados;
 não executam testes. Erros retornam código2 sem conteúdo dos membros.
 
@@ -29,3 +29,19 @@ prévia é um recorte experimental e não autoriza executar o pacote no host.
 Testes: `python -m unittest discover -s workers/imports`. Fixture sintética
 determinística: `fixture_project.py`; cópia base64 em fixtures/lab. O código
 importado nesse exemplo é inerte e não é uma aplicação de ProofLab completa.
+
+TAR e TAR.GZ usam `--format tar` e `--format tar.gz` explicitamente. Só USTAR
+UTF-8 com arquivos regulares e diretórios: checksum de cabeçalho, campos octais,
+prefixo/nome, padding nulo e pelo menos dois blocos finais nulos são verificados.
+PAX, extensões GNU, sparse, números base-256, links e dispositivos são recusados.
+Caminhos com `./` também são recusados pelo contrato portátil; não pressupor que
+qualquer TAR gerado pelas opções padrão de outra ferramenta será aceito.
+
+Gzip aceita um membro, verifica CRC/fim de stream e recusa concatenação/sobra.
+A expansão é limitada antes de alocar todo o conteúdo: menor entre100 vezes o
+original e `MAX_TOTAL + MAX_ENTRIES*1024 + 10240` bytes para estrutura TAR.
+O limite64MiB continua sendo a soma de conteúdos, separada de cabeçalhos/padding.
+Nenhum novo pacote Python foi adicionado. Testes TAR: `test_inspect_tar.py`.
+
+Referências de implementação: [formato TAR/USTAR no manual GNU](https://www.gnu.org/software/tar/manual/html_node/Standard.html)
+e [descompressão limitada da biblioteca Python](https://docs.python.org/3/library/zlib.html#zlib.Decompress.decompress).

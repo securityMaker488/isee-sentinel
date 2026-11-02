@@ -4,6 +4,42 @@ Especificação V6.9, versão de desenvolvimento 0.2.0. Resultados de fixtures
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
+## Incremento inspeção no plano e TAR — 02/11/2026
+
+Arquivos criados: migrações012/013, test_inspect_tar.py, fixtures base64 TAR e
+TAR.GZ, browser-archive-qa.cjs. Alterados: core/assessment-plan, API
+assessment-plans/imports, testes de planos/imports, AssessmentView/ImportView/menu,
+qa-server, inspect_archive/fixture_project e documentação/matriz/checkpoint.
+Decisões: reutilizar os vínculos existentes; separar formato explícito do nome;
+revalidar mandato/hash em cada fronteira; não executar nem extrair conteúdo.
+Contratos: docs/ASSESSMENT-PLANS.md, IMPORT_PIPELINE.md e docs/IMPORT-ARCHIVE-WORKER.md.
+Migrações001–011 preservadas. Sem nova dependência.
+
+| Verificação | Resultado |
+|---|---|
+| TypeScript/build | Passaram,44 módulos; último ajuste visual recompilado |
+| Suíte JS com Python real | 185 passaram,0 falhas,1 skip POSIX no Windows |
+| Worker imports | 24 passaram, incluindo12 de TAR/gzip e regressão ZIP |
+| API imports em PostgreSQL18/runtime restrito | 12 passaram, sem skips, com worker real nos três formatos |
+| Backup/restore | 41 tabelas idênticas,13 migrações,17 importações/jobs,9 planos/revisões/etapas/execuções/vínculos,26 evidências e87 eventos; auditoria íntegra |
+| Navegador arquivos | Três uploads reais pelo plano, exportações/identidade/hashes, falha preservada, revisão ao mudar formato, TAR.GZ avulso,390px e revogação passaram |
+| Regressão navegador estático | Criação/revisão/execução/exportação, truncamento identificado,390px, troca de contexto e revogação passaram |
+
+A primeira execução apontou um ponto e vírgula em comentário da nova migração012
+incompatível com o splitter local. Corrigido antes da entrega; os testes acima
+foram executados após a correção. QA de arquivos foi repetido após o ajuste final
+que oculta campos até selecionar uma etapa. Logs .sentinel/archive-*.log,
+captura archive-plan-mobile.png inspecionada e JSONs em .sentinel/qa.
+
+TAR limitado a USTAR UTF-8 regular/diretório, sem PAX/GNU/sparse/base-256.
+Revogação não interrompe um processo iniciado: há revalidação antes do worker e
+antes de aceitar o resultado. Não há cancelamento atômico no intervalo de criação
+do processo. Os limites de stream não equivalem a cotas de memória do SO.
+URL/Git, fila geral, recuperação, ProofLab e homologação Debian permanecem abertos.
+Serviços temporários4311/55432 encerrados após testes em02/11;5432 preservado.
+CI deste incremento ainda pendente de verificação; o resultado antigo abaixo
+não é atribuído a este código. Rust e demais workers não foram repetidos localmente.
+
 ## Incremento planos de avaliação — 01/11/2026
 
 Arquivos: migração011, core/assessment-plan, API assessment-plans e integração

@@ -82,8 +82,8 @@ test('plan API requires authentication, CSRF and administrator for mutations; re
 test('catalog identifies the implemented plan executor without implying dispatch for every existing profile',async()=>{
  const response=await get(`${endpoint}/catalog`);assert.equal(response.statusCode,200,response.body);const catalog=response.json();
  assert.equal(catalog.schemaVersion,1);assert.equal(catalog.limits.maxSteps,25);assert.equal(catalog.limits.maxRevisions,100);
- assert.deepEqual(catalog.profiles.filter((p:any)=>p.planExecutionSupported).map((p:any)=>p.id),['static.scan']);
- assert.equal(catalog.profiles.find((p:any)=>p.id==='archive.inspect').planExecutionSupported,false);
+ assert.deepEqual(catalog.profiles.filter((p:any)=>p.planExecutionSupported).map((p:any)=>p.id),['static.scan','archive.inspect']);
+ assert.equal(catalog.profiles.find((p:any)=>p.id==='archive.inspect').planExecutionSupported,true);
  assert.ok(catalog.limitations.length>0);assert.ok(!catalog.profiles.some((p:any)=>p.id==='response.execute'));
 });
 

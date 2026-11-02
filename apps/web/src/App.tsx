@@ -41,7 +41,7 @@ const nav: { id: View; label: string; icon: IconName; subtitle: string }[] = [
   { id: 'overview', label: 'Overview', icon: 'grid', subtitle: 'Uma visão clara. Cada operação rastreável.' },
   { id: 'authorizations', label: 'Autorizações', icon: 'lock', subtitle: 'Responsáveis, comprovação de autoridade, testes permitidos e limites aprovados.' },
   { id: 'assessments', label: 'Avaliações', icon: 'layers', subtitle: 'Planos versionados, etapas autorizadas e resultados rastreáveis.' },
-  { id: 'imports', label: 'Universal Import Lab', icon: 'upload', subtitle: 'Quarentena e inspeção de projetos ZIP autorizados.' },
+  { id: 'imports', label: 'Universal Import Lab', icon: 'upload', subtitle: 'Quarentena e inspeção de projetos ZIP, TAR e TAR.GZ autorizados.' },
   { id: 'soc', label: 'SOC', icon: 'activity', subtitle: 'Eventos, detecções e incidentes da empresa em contexto.' },
   { id: 'endpoints', label: 'Endpoint Agent', icon: 'shield', subtitle: 'Sensores autenticados e integridade de arquivos selecionados.' },
   { id: 'operations', label: 'Investigar e corrigir', icon: 'fingerprint', subtitle: 'Casos, evidências e correções reversíveis de artefatos no laboratório.' },

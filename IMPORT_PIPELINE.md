@@ -1,6 +1,6 @@
-# Universal Import Lab — recorte ZIP em quarentena
+# Universal Import Lab — inspeção ZIP/TAR/TAR.GZ em quarentena
 
-Implementação experimental de 26/10/2026: API, painel e inspetor Python de ZIP.
+Implementação experimental ampliada em02/11/2026: API, painel e inspetor Python.
 O original é preservado cifrado; os membros são examinados em memória sem
 extração para o sistema de arquivos, execução ou consulta de rede. A inspeção
 concluída mantém `quarantineOnly: true`; não existe ação de liberar ou iniciar a
@@ -10,34 +10,34 @@ aplicação. Identificação de tecnologia é indicativa, não certificação de
 
 1. Escolher ativo autorizado no painel **Universal Import Lab**. Para registrar
    o projeto, associá-lo previamente ao ativo: a importação herda esse vínculo.
-2. Enviar ZIP de até 16 MiB. O backend verifica `scan` e `evidence.import`, sessão,
+2. Selecionar o formato real e enviar ZIP, TAR ou TAR.GZ de até16MiB. O backend verifica `scan` e `evidence.import`, sessão,
    contexto e CSRF, além do base64 canônico.
-3. Criar job `import.zip`, referência ao ativo/projeto e evidência original com
+3. Criar job `import.zip`, `import.tar` ou `import.tar.gz`, referência ao ativo/projeto e evidência original com
    SHA-256/AES-GCM. Os bytes permanecem preservados se a inspeção posterior falhar.
 4. Preparar arquivo temporário exclusivo, iniciar o Python confiável configurado
    em `SENTINEL_PYTHON_PATH` com `-I -B`, sem shell e com ambiente reduzido.
 5. Inspecionar estrutura, caminhos, metadados, tamanhos, CRC e conteúdo limitado;
    calcular hashes de membros e indicar tecnologias/testes compatíveis pelo nome
    de arquivos reconhecidos. Não instalar dependências do projeto importado.
-6. Validar schema do relatório, hash/tamanho do original e indicação de integridade;
+6. Validar schema do relatório, formato/hash/tamanho do original e indicação de integridade;
    armazenar relatório ou código de falha, auditar e remover a cópia temporária.
 7. Consultar histórico e baixar o registro JSON. Original e relatório continuam
    associados à empresa autenticada.
 
-Projeto ausente no ativo produz `projectId: null` no recorte atual. A exigência
-formal de avaliação/plano por projeto da V6.9 ainda precisa ser ampliada; não
-presumir que um vínculo opcional entrega todo o Authorization Manager.
+Projeto ausente no ativo produz `projectId: null` no recorte atual. Planos exigem projeto e podem executar `archive.inspect` com o contexto exato
+da revisão em `assessment`. O fluxo avulso permanece disponível, sem vínculo
+retroativo. Regras e limites: [planos](docs/ASSESSMENT-PLANS.md).
 
 ## Formatos e limites
 
 | Controle | Implementado |
 | --- | --- |
-| Formato | ZIP canônico, compressão Stored ou Deflate |
+| Formatos | ZIP Stored/Deflate; TAR USTAR regular/diretório; TAR.GZ com um membro gzip |
 | Original recebido | Até 16 MiB; corpo HTTP até 24 MiB por causa de base64/JSON |
 | Entradas | Até 512 |
 | Membro descomprimido | Até 8 MiB |
 | Soma descomprimida | Até 64 MiB |
-| Razão de expansão | Até 100 por membro |
+| Razão de expansão | Até100 por membro ZIP; TAR.GZ até100 vezes o original, incluindo estrutura TAR |
 | Processo | Timeout externo de 45 segundos; saída até 2 MiB |
 | Concorrência | Uma inspeção ativa por banco, com bloqueio local e registro persistido |
 
@@ -48,19 +48,29 @@ descriptors, métodos de compressão não suportados, arquivos aninhados e regis
 inconsistentes. Tamanhos declarados não bastam: conteúdo expandido e CRC também
 são verificados. Esses controles não provam ausência de vulnerabilidades no parser.
 
+TAR exige USTAR UTF-8, campos octais, cabeçalhos com checksum, padding nulo e
+dois blocos finais nulos. Recusa PAX/GNU/sparse/base-256, links e dispositivos.
+O formato é explícito: extensão do nome não decide o parser. Gzip recusa múltiplos
+membros e limita a estrutura expandida a64MiB +512*1024 +10240 bytes, além da
+razão100. Detalhes: [worker](docs/IMPORT-ARCHIVE-WORKER.md).
+
 ## Contrato HTTP
 
 | Método e rota | Contrato |
 | --- | --- |
-| `GET /api/imports/status` | Configuração, formato ZIP, tamanho/tempo, `quarantineOnly`, `executionAvailable:false`, `networkAccess:false` |
-| `POST /api/imports` | `{assetId,name,format:"zip",contentBase64}`; exige ambos os escopos |
+| `GET /api/imports/status` | Configuração, formatos aceitos, tamanho/tempo, `quarantineOnly`, `executionAvailable:false`, `networkAccess:false` |
+| `POST /api/imports` | `{assetId,name,format,contentBase64,assessment?}`; exige ambos os escopos |
 | `GET /api/imports` | Últimas 100 execuções da empresa, estado, ativo/projeto, evidência e erro |
 | `GET /api/imports/:id` | Relatório/estado e vínculo da evidência; leitura auditada |
 
 Sucesso retorna `id`, `assetId`, `projectId`, `evidenceId`, `status`,
-`quarantineOnly` e `report`. O relatório usa `schemaVersion:"1.0"` e engine
+`format`, `quarantineOnly`, `report` e contexto `assessment` quando enviado. O relatório usa `schemaVersion:"1.0"` e engine
 `Sentinel Import Inspector`; inclui `input`, `entries` e limitações. A migração
 `008_import_quarantine.sql` adiciona `import_runs` e `import_execution_lock`.
+A012 preserva identidade/mandato/hash; a013 amplia formatos. Migrações anteriores
+não foram modificadas. O backend revalida a autorização exata na preservação,
+antes do worker e na aceitação do resultado. Falha mantém o original ligado ao
+plano quando enviado; revogação não interrompe um processo já iniciado.
 
 `configured:true` verifica presença de caminho absoluto de Python, não todos os
 requisitos operacionais. Ausência de configuração retorna `PYTHON_UNAVAILABLE`;
@@ -73,24 +83,24 @@ cancelamento pelo painel, reexecução automática ou fila central completa.
 Testes dirigidos disponíveis:
 
 ```text
-python -m unittest discover -s workers/imports -p test_inspect_archive.py
+python -m unittest discover -s workers/imports
 npx tsx --test apps/api/test/imports.test.ts
 ```
 
-Foram comunicados no desenvolvimento Windows 12 testes de worker e 6 de API,
-incluindo processo Python real com ZIP positivo de projeto e recusa de ZIP
-malformado. A evidência final de versão/ambiente e o resultado do roteiro de painel
+Em02/11 passaram24 testes do worker e12 de API, também no PostgreSQL com
+runtime restrito. Incluem Python real nos três formatos, bytes divergentes,
+revogação, falhas, vínculo ao plano e limpeza. A evidência final de versão/ambiente e o resultado do roteiro de painel
 pertencem a `VALIDATION_REPORT.md`; essa contagem não representa homologação de
 clientes, Debian ou isolamento de VM.
 
 `-I -B` reduz influência da configuração Python; não cria isolamento de sistema
 operacional. `networkAccess:false` significa que este fluxo não implementa acesso
 à rede, não que exista firewall/VM já homologado. O diretório temporário contém
-somente a cópia ZIP e é removido no término normal; não há garantia de sobrescrita
+somente a cópia do arquivo recebido e é removido no término normal; não há garantia de sobrescrita
 física dos bytes ou limpeza após falha elétrica. A evidência cifrada tem retenção
 separada e permanece no banco.
 
-Não implementados neste módulo: URL/Git/TAR.GZ, EXE/MSI/DEB/RPM/AppImage/ELF como
+Não implementados neste módulo: URL/Git, EXE/MSI/DEB/RPM/AppImage/ELF como
 aplicações executáveis, APK/AAB/IPA, extração/instalação, ambientes QEMU/KVM,
 execução de testes sugeridos ou ProofLab completo. A inspeção pode sugerir análise,
 mas não a executa automaticamente. Próximos passos: [ROADMAP.md](ROADMAP.md).

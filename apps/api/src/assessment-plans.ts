@@ -18,7 +18,7 @@ export const assessmentContextSchema = object({ planId: uuid, revisionId: uuid, 
 export interface AssessmentContext { planId: string; revisionId: string; revisionHash: string; stepId: string }
 const limitations = [
   'Criar ou revisar um plano não executa testes e não concede autorização adicional.',
-  'Somente static.scan integra execução e evidências ao plano neste recorte. Os demais perfis são planejamento.',
+  'Análise estática e inspeção de arquivos integram execução e evidências ao plano. Os demais perfis são planejamento.',
   'Cada execução revalida a revisão exata e a autorização vigente. Uma nova revisão preserva o histórico anterior.',
   'Fila recuperável, cancelamento supervisionado e limites gerais de recursos continuam pendentes.',
 ];
@@ -93,7 +93,7 @@ async function detail(sql: Sql, org: string, plan: any) {
     if (!normalizeAssessmentSteps(steps) || revisionHash(revision, steps) !== revision.revision_hash) throw new HttpError(409, 'PLAN_INTEGRITY', 'A revisão do plano não corresponde ao registro preservado.');
     return { ...revisionMeta(revision), steps };
   });
-  const results = await sql.query(`SELECT x.revision_id AS "revisionId",x.step_id AS "stepId",x.job_id AS "jobId",j.status,x.created_at AS "createdAt",j.completed_at AS "completedAt",
+  const results = await sql.query(`SELECT x.revision_id AS "revisionId",x.step_id AS "stepId",x.job_id AS "jobId",j.kind,j.status,x.created_at AS "createdAt",j.completed_at AS "completedAt",
     ARRAY(SELECT e.evidence_id FROM assessment_execution_evidence e WHERE e.organization_id=x.organization_id AND e.job_id=x.job_id ORDER BY e.evidence_id) AS "evidenceIds"
     FROM assessment_executions x JOIN assessment_plan_revisions r ON r.id=x.revision_id AND r.organization_id=x.organization_id
     JOIN jobs j ON j.id=x.job_id AND j.organization_id=x.organization_id WHERE x.organization_id=$1 AND r.plan_id=$2
@@ -171,9 +171,9 @@ export async function validateAssessmentExecution(sql: Sql, actor: Identity, con
     if (!grant || grant.mandateId !== revision.mandate_id || grant.requestHash !== revision.authorization_request_hash) throw new HttpError(403, 'SCOPE_REQUIRED', 'A autorização exata desta revisão não está vigente ou não cobre a entrada.');
   }
 }
-export async function recordAssessmentExecution(sql: Sql, actor: Identity, context: AssessmentContext, assetId: string, jobId: string) {
+export async function recordAssessmentExecution(sql: Sql, actor: Identity, context: AssessmentContext, assetId: string, jobId: string, profile = 'static.scan') {
   await sql.query('INSERT INTO assessment_executions(job_id,organization_id,revision_id,revision_hash,step_id,asset_id,created_by) VALUES($1,$2,$3,$4,$5,$6,$7)', [jobId, actor.organizationId, context.revisionId, context.revisionHash, context.stepId, assetId, actor.id]);
-  await audit(sql, actor.organizationId, actor.id, 'assessment.execution.started', jobId, { planId: context.planId, revisionId: context.revisionId, revisionHash: context.revisionHash, stepId: context.stepId, assetId, profile: 'static.scan' });
+  await audit(sql, actor.organizationId, actor.id, 'assessment.execution.started', jobId, { planId: context.planId, revisionId: context.revisionId, revisionHash: context.revisionHash, stepId: context.stepId, assetId, profile });
 }
 export async function recordAssessmentEvidence(sql: Sql, org: string, assetId: string, jobId: string, evidenceIds: string[]) {
   for (const evidenceId of evidenceIds) await sql.query('INSERT INTO assessment_execution_evidence(organization_id,job_id,asset_id,evidence_id) VALUES($1,$2,$3,$4)', [org, jobId, assetId, evidenceId]);
