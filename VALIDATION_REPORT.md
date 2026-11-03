@@ -45,11 +45,14 @@ persistentes. API e binário devem ser atualizados juntos; recibo antigo é recu
 | npm run check com Python e Rust reais | Build44 módulos;196 passaram,0 falhas,2 skips por SO;198 casos,34,105s |
 | API imports/PostgreSQL18/runtime restrito | 14 passaram;6,410s, recibos0.1.1 e modo persistidos |
 | Backup/restore nativo | 41 tabelas idênticas,13 migrações,22 importações/jobs,14 planos/revisões/etapas/execuções/vínculos,36 evidências e126 eventos; auditoria íntegra |
+| Guarda antes do commit0026313 | Passou:222 candidatos/índice,351 blobs históricos; sem padrões de alta confiança ou caminhos proibidos encontrados |
+| CI0026313 | Windows2022 e Ubuntu24.04 passaram; run41557312004,5min18s; final02/11 às22:10:01 America/Bahia (03/11 01:10:01 UTC) |
 
 Casos novos: morte forçada do supervisor encerra Python; no Windows encerra
 neto sintético também. Caso Linux recusa set-ID antes do worker; fixture de
-sucesso observa NoNewPrivs. Ambos os últimos controles Linux aguardam CI, sem
-alegação de execução local. PID zumbi após morte do pai conta como terminado,
+sucesso observa NoNewPrivs. Os controles Linux passaram na CI Ubuntu24.04;
+não foram executados no host Windows nem homologados no Debian. PID zumbi após
+morte do pai conta como terminado,
 aguardando o reaper do sistema. Testes removem somente seus próprios temporários.
 Não somar9/14 aos196: já fazem parte da suíte. Navegador/parser/agente inalterados
 não foram repetidos localmente; resultados anteriores continuam históricos.
@@ -59,7 +62,9 @@ corrigido antes da suíte completa. A primeira inicialização de QA sem porta
 explícita encontrou o serviço já existente; repetida com127.0.0.1:55432 passou,
 sem alterar5432. Cluster dedicado encerrado após restore. Fastify mantém aviso
 de depreciação conhecido. cargo audit não disponível. Logs .sentinel/lifetime-*.log.
-CI deste incremento ainda será consultada após push; não atribuir a ele a CI0a76557.
+[CI0026313](https://github.com/securityMaker488/isee-sentinel/actions/runs/41557312004)
+confirmada com sucesso nos dois jobs. Registro final documental usa [skip ci],
+sem alteração de código/workflow/dependências e sem alegar nova execução.
 
 ### F. Performance e G. Continuidade
 
@@ -72,8 +77,8 @@ pequenas não constituem prova estatística de regressão ou melhora.
 
 M1 continua parcial. Próximo incremento: árvores/cancelamento/timeout sem pipes
 presos, limites por SO, depois job model recuperável/cotas; preservar escopos e
-evidências. Linux será verificado em CI Ubuntu e depois no Debian13 KDE, sem
-confundir os ambientes. PROJECT_STATE/ROADMAP mantêm a fila única.
+evidências. Linux passou na CI Ubuntu e ainda requer homologação no Debian13
+KDE. PROJECT_STATE/ROADMAP mantêm a fila única.
 
 ## Incremento V11 — supervisão Rust e pesquisa — 02/11/2026
 

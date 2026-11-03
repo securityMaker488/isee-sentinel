@@ -737,7 +737,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | PolicyGate na API, identidade/mandato/hash preservados; pipe de controle cancela após perda de autorização detectada |
 | Limitações | Worker confiável. Job Object Windows e PDEATHSIG/NO_NEW_PRIVS Linux para filho direto; sem sandbox/cgroups/cotas/fila. Árvores Linux/pipes herdados no cancelamento geral ainda pendentes; job e recibo têm estados distintos |
-| Testes necessários / disponíveis | 4 Rust,10 casos de processo por SO (9 passam/1 skip Windows),14 API/PostgreSQL restrito e restore;196 JS passam/2 skips; fmt/clippy; CI atual por confirmar |
+| Testes necessários / disponíveis | 4 Rust,10 casos de processo por SO (9 passam/1 skip Windows),14 API/PostgreSQL restrito e restore;196 JS passam/2 skips; fmt/clippy; CI0026313 passou em Windows/Ubuntu |
 | Evidências | execution-engine/lifetime.rs com exceção FFI justificada; execution.ts valida containment/versão; docs/RUST-ENGINES.md e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M2 |
 | Prioridade | P0 |

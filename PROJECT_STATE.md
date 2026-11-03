@@ -21,7 +21,8 @@ implementação ausente como se fosse apenas homologação do SO.
   supervisor encerrou worker e neto sintético nos testes locais.
 - Linux: código configura PDEATHSIG/SIGKILL e NO_NEW_PRIVS antes de exec, confere
   pai após configurar e recusa interpretador set-ID/capabilities. Protege filho
-  direto, sem prometer árvore Linux. Validação Linux atual aguarda CI.
+  direto, sem prometer árvore Linux. Caminho validado na CI Ubuntu24.04;
+  Debian13 continua por homologar.
 - FFI fica somente em lifetime.rs, com invariantes/ADR. Biblioteca deny(unsafe),
   exceção explícita nesse módulo; CLI mantém forbid.23 dependências externas
   resolvidas, incluindo bindings já presentes no agente. Não afirmar zero unsafe.
@@ -44,7 +45,10 @@ implementação ausente como se fosse apenas homologação do SO.
   direto/191,47ms supervisionado; binário879104 bytes. Sem ganho de velocidade;
   RAM/CPU/carga não medidos. Script scripts/benchmark-execution.ts.
 - Logs .sentinel/lifetime-*.log e lifetime-performance.json. No local,
-  cargo audit continua indisponível. CI nova será consultada após push.
+  cargo audit continua indisponível. CI0026313 aprovada em Windows2022 e
+  Ubuntu24.04: run41557312004, concluída em02/11 às22:10 (America/Bahia).
+  https://github.com/securityMaker488/isee-sentinel/actions/runs/41557312004
+  Guarda pré-commit passou:222 arquivos/índice,351 blobs históricos.
 - Baseline0a76557 teve CI Windows2022/Ubuntu24.04 aprovada, run41514577061;
   esse resultado não valida o código0.1.1. Browser e workers sem alterações
   conservam as evidências anteriores, sem alegar novo QA neste incremento.
@@ -80,7 +84,9 @@ finito, casos, análises offline, SecureFix CÓPIA SSH, RiskGraph e perícia
 preservados. Não presumir EDR completo, pentest geral ou isolamento de VM.
 
 Git privado autorizado: https://github.com/securityMaker488/isee-sentinel,
-main/origin HTTPS, privacidade reconfirmada no lote anterior. Conferir git
+main/origin HTTPS, privacidade reconfirmada antes do push atual. Código entregue:
+0026313060ca155201a7fcf56cfb902d3cd69641. Registro posterior só documental usa
+[skip ci], sem atribuir nova suíte ao registro. Conferir git
 log/status na retomada. Credenciais/bancos/dumps/.sentinel/target não entram
 no Git. Recompilar por SO; não depender desta conversa. DEVELOPMENT/TESTING
 e docs/RUST-ENGINES.md explicam reprodução e o contrato atualizado.
