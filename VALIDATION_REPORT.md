@@ -82,6 +82,8 @@ serviços dedicados de QA usados. Nenhum teste ofensivo externo foi iniciado.
 | Backup/restore do banco de testes nativo | 41 tabelas idênticas,13 migrações,22 importações/jobs,14 planos/revisões/etapas/execuções/vínculos,36 evidências e126 eventos; auditoria íntegra |
 | node scripts/browser-archive-qa.cjs | ZIP/TAR/TAR.GZ reais pelo plano, exportação, falha preservada, revogação, TAR.GZ avulso e390px passaram; JSONs exportados confirmam recibos Rust completed |
 | cargo audit --version | Comando indisponível; auditoria de advisories não executada |
+| npm run test:repository / verify:repository | 3 testes passaram; guarda pré-commit aprovou221 candidatos/221 blobs do índice/309 históricos, sem padrões de alta confiança ou caminhos proibidos encontrados |
+| CI do código0a76557 | Windows2022 e Ubuntu24.04 passaram; run41514577061 concluída em02/11 às20:02:02 UTC,5min32s após início do run |
 
 Os sete casos nativos cobrem contrato desconhecido/hash/budgets, env reduzido,
 exit7 enganoso, AbortSignal com PID encerrado, excesso stdout/stderr, mutação do
@@ -98,8 +100,12 @@ o parser não mudou nem sua suíte foi repetida localmente nesta etapa.
 Logs: .sentinel/v11-baseline-unrestricted.log, v11-rust-baseline.log,
 v11-supervisor-test.log, v11-imports-test.log, v11-final-check.log,
 v11-native.log, v11-restore.log e v11-browser.log. Não versionar dados de QA,
-credenciais, dumps ou screenshots com dados privados. Nova CI será consultada
-após o push; o resultado d67e95b acima não é atribuído ao código novo.
+credenciais, dumps ou screenshots com dados privados.
+[CI 0a76557](https://github.com/securityMaker488/isee-sentinel/actions/runs/41514577061)
+verificada com sucesso nos dois jobs. O build também passou após a atualização
+da matriz/documentação. Commit final só de documentação usa [skip ci] e não
+altera código/workflow/dependências; não representa nova execução da suíte.
+A guarda procura padrões definidos, não prova ausência universal de segredos.
 
 ### F. Desempenho
 

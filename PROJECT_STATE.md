@@ -51,7 +51,11 @@ implementação ausente como se fosse apenas homologação do SO.
   demonstra aceleração. Script scripts/benchmark-execution.ts. cargo audit não
   disponível neste ambiente; não executado.
 - Logs .sentinel/v11-*.log, resultados/capturas .sentinel/qa. Relatório A–G em
-  VALIDATION_REPORT.md. CI do novo incremento ainda será consultada após push.
+  VALIDATION_REPORT.md. CI do código0a76557 passou em Windows2022 e Ubuntu24.04:
+  https://github.com/securityMaker488/isee-sentinel/actions/runs/41514577061,
+  concluída em02/11 às20:02:02 UTC. Guarda passou:221 arquivos/índice,309 blobs
+  históricos antes do commit;3 testes da guarda passaram. Build após atualizar
+  matriz/documentação passou. Registro documental posterior não altera código.
 
 ## Próximo passo concreto
 
@@ -80,6 +84,9 @@ preservados. Não presumir EDR completo, pentest geral ou isolamento de VM.
 
 Git privado autorizado: https://github.com/securityMaker488/isee-sentinel,
 main/origin HTTPS; base inicial d67e95b39bd950b2c129e15d1ff6c4e23020f1d5.
+Código V11 entregue em0a76557b47fed7882c1944291e623593f69a61ae; push confirmado
+e privacidade reconfirmada pela API. Registro final apenas documental usa
+[skip ci]; a CI acima valida o código, sem atribuir novo teste ao registro.
 Conferir git log/status na retomada. Credenciais/bancos/dumps/.sentinel/target
 não entram no Git. Usar fonte sincronizada e recompilar por SO, sem depender
 desta conversa. DEVELOPMENT/TESTING e docs/RUST-ENGINES.md explicam reprodução.
