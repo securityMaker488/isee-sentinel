@@ -6,16 +6,18 @@ implementada; a lista de motores abaixo não implica oito novos executáveis.
 ## ADR: supervisão do worker existente, sem reescrita
 
 Adicionar `packages/execution-engine` como crate independente, com lockfile,
-biblioteca e CLI `sentinel-execution`0.1.0. API Fastify conserva identidade,
+biblioteca e CLI `sentinel-execution`0.1.1. API Fastify conserva identidade,
 mandatos/PolicyGate, transações e evidências; Python conserva o parser auditado.
 A UI informa qual supervisor está configurado e o relatório exporta seu recibo.
 Não mover o agente nem criar um workspace/crates vazios sem dependência real.
 
-Usar threads e std::process para um único filho confiável; Tokio/FFI/serviço
-permanente não são necessários neste recorte. `forbid(unsafe_code)` vale para
-biblioteca e CLI próprias, não é atestado de ausência de unsafe nas dependências.
-Serde/serde_json/sha2 reutilizam tecnologias presentes no projeto;21 pacotes
-externos resolvidos, inventário em generated/execution-dependencies.json.
+Usar threads e std::process para um único filho confiável; Tokio/serviço
+permanente não são necessários neste recorte. A CLI mantém forbid(unsafe_code);
+a biblioteca usa deny(unsafe_code), com uma única exceção em lifetime.rs para
+FFI de proteção do processo. Justificativa/invariantes na ADR abaixo. Isso não
+audita unsafe transitivo. Serde/serde_json/sha2 e bindings windows-sys/libc
+reutilizam dependências presentes no agente;23 pacotes externos resolvidos,
+inventário em generated/execution-dependencies.json.
 
 Configuração opcional `SENTINEL_EXECUTION_PATH` seleciona o binário compilado para
 a máquina atual; `SENTINEL_PYTHON_PATH` continua obrigatório. Sem a primeira,
@@ -45,7 +47,10 @@ Timeout, cancelamento ou excesso de saída matam e aguardam o filho antes da res
 Código de saída não zero nunca se torna sucesso por uma alegação no stdout.
 
 Resposta: `{receipt,stdout}`. O recibo inclui versão/engine/job, estado, exitCode,
-duração, hashes de original/worker/stdout, contadores e truncamento. `stdout` só
+duração, hashes de original/worker/stdout, contadores, truncamento e
+`containment` (windows_job ou linux_parent_death). A API exige engine0.1.1 e
+o modo correspondente ao SO; atualizar API e binário juntos. Recibo0.1.0
+é recusado, sem fallback. Formato de pedido/schemaVersion1 permanece igual. `stdout` só
 é retornado no sucesso UTF-8. Estados: completed, failed, cancelled, timed_out,
 output_limit, integrity_failed e invalid_output. CLI retorna0 no sucesso,3 na
 falha com recibo e2 na recusa de contrato/configuração. Falha anterior ao spawn
@@ -70,13 +75,18 @@ para o processo. Não inventar um novo estado SQL sem migração futura. Sem Rus
 a revalidação é anterior/posterior e não cancela o worker durante a execução.
 
 Este supervisor aceita **somente um worker confiável que não cria descendentes**.
-Não habilita plugins externos. Não fornece sandbox de SO, bloqueio de rede,
-cgroups, Job Objects, limites de memória/CPU/disco ou contenção de árvores de
-processos. Encerrar forçadamente o próprio supervisor pode deixar o filho ativo;
-EOF após morte da API funciona enquanto o supervisor permanece vivo. Watchdog
-Node fecha o pipe em46s e limita supervisor defeituoso em50s; esse fallback não
-prova limpeza de descendentes. Diretório privado/arquivo exclusivo e hashes
-reduzem riscos, sem eliminar todas as corridas de acesso ao filesystem.
+Não habilita plugins externos, sandbox, bloqueio de rede, cgroups ou limites de
+memória/CPU/disco. Desde0.1.1, Job Object protege a vida dos processos Windows;
+Linux configura sinal de morte do pai para o filho direto. Falha ao configurar
+nega spawn; plataformas diferentes de Windows/Linux são recusadas. Provas por
+SO e limites da árvore aparecem na ADR abaixo; Debian continua por homologar.
+
+EOF após morte da API cancela enquanto o supervisor está vivo. Watchdog Node
+fecha o pipe em46s e limita supervisor defeituoso em50s. O controle do SO cobre
+o worker direto se o supervisor termina; não é garantia de sandbox. Descendentes
+Linux e cancelamento normal de árvores que herdam pipes ainda não são suportados.
+Diretório privado/arquivo exclusivo e hashes não eliminam todas as corridas de
+filesystem; interpretar/configurar Python privilegiado não é suportado.
 
 Fila recuperável, idempotência geral, retries, pausa/cancelamento pelo painel,
 observabilidade completa e cotas acumuladas continuam pendentes. Não migrar
@@ -115,7 +125,7 @@ instalado no ambiente local deste checkpoint, portanto não foi executado.
 
 | Motor | Código comprovado / lacuna |
 |---|---|
-| Execution | Novo supervisor de archive.inspect integrado; contenção de descendentes e fila geral ausentes |
+| Execution | Supervisor0.1.1 integrado, proteção após morte do supervisor Windows/filho Linux; árvore geral, cotas e fila ainda parciais |
 | Web/API | Análise OpenAPI TypeScript existente; cliente HTTP/crawler Rust ainda ausentes |
 | Network | Parsers Nmap/HAR e perícia PCAP existentes; engine Rust de rede ausente |
 | Detection | Core TypeScript normaliza/correlaciona eventos; engine Rust e ingestão ampla não entregues |
@@ -125,7 +135,43 @@ instalado no ambiente local deste checkpoint, portanto não foi executado.
 | SecureCode Coordinator | Análises estáticas/SARIF existentes; coordenação Rust de Semgrep/Bandit/Trivy ausente |
 | AI Security Coordinator | Análise offline limitada existente; coordenador/modelo local e runtime isolado ausentes |
 
-Próximo incremento: contenção e encerramento do worker após falha do supervisor,
-com prova por PID/processo, contratos de cancelamento e limites por SO. Depois,
-job model recuperável e runtime antes de ampliar executores. ROADMAP é a fila;
+Próximo incremento: encerrar árvores também no cancelamento/timeout normal,
+sem prender a captura em pipes herdados; limites por SO e depois job model
+recuperável. Não ampliar executores antes dos controles. ROADMAP é a fila;
 essa decisão não cria cronograma paralelo.
+
+
+## ADR: proteção após falha do supervisor — 0.1.1
+
+O processo Python podia sobreviver a uma morte forçada do Rust0.1.0, mesmo com
+cancelamento cooperativo funcionando. A biblioteca padrão não oferece sozinha
+os dois controles necessários. Por isso lifetime.rs é a única exceção explícita
+a deny(unsafe_code); comentários SAFETY registram propriedade dos handles,
+layout/tamanho dos buffers e restrições após fork. A CLI e o restante da
+biblioteca continuam sem unsafe autorizado. Nenhum privilégio administrativo,
+serviço, firewall ou configuração persistente do Windows é alterado.
+
+No Windows, criar Job Object anônimo/não herdável com KILL_ON_JOB_CLOSE e atribuir
+o próprio supervisor **antes** do spawn. O filho herda o job; não habilitar flags
+de breakaway. OnceLock retém um único handle até o fim do processo, inclusive
+morte forçada. Esse handle intencionalmente não sofre Drop antecipado, que
+mataria o supervisor antes do recibo; o SO o fecha na saída. Erros anteriores
+à atribuição liberam o handle e recusam o worker. É contrato da CLI de um job,
+**não** biblioteca a embutir na API/agente persistentes. Compatibilidade com job
+aninhado deve ser comprovada no ambiente. [Job Objects](https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects)
+e [atribuição](https://learn.microsoft.com/en-us/windows/win32/api/jobapi2/nf-jobapi2-assignprocesstojobobject).
+
+No Linux, recusar interpretador set-ID ou com security.capability; configurar
+NO_NEW_PRIVS e PDEATHSIG/SIGKILL no filho antes de exec. Conferir getppid após
+armar o sinal fecha a corrida em que o pai já morreu. O callback após fork não
+aloca buffers, registra logs nem usa locks. A thread criadora permanece viva.
+Esse sinal não protege descendentes criados por fork; a garantia atual exige
+Python confiável sem mudança de credenciais nem novos filhos. [Contrato Linux](https://man7.org/linux/man-pages/man2/PR_SET_PDEATHSIG.2const.html).
+
+Testes reais interrompem o supervisor e observam o PID do worker; no Windows
+incluem um neto sintético. Linux tem teste de interpretador set-ID recusado e
+NoNewPrivs observado no próprio worker. PID zumbi Linux significa processo
+terminado aguardando o reaper do sistema, não execução viva nem reap feito pelo
+supervisor morto. Nenhum destes testes é homologação Debian. Testes e ambiente
+constam de VALIDATION_REPORT.md. Captura de pipes herdados numa árvore geral e
+cotas completas permanecem no M1, sem liberar plugins por causa deste recorte.

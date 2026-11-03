@@ -1,4 +1,8 @@
-#![forbid(unsafe_code)]
+#![deny(unsafe_code)]
+
+// OS lifetime controls require narrowly scoped FFI; all other code remains safe.
+#[allow(unsafe_code)]
+mod lifetime;
 
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -100,6 +104,7 @@ pub struct Receipt {
     pub schema_version: u8,
     pub engine: &'static str,
     pub engine_version: &'static str,
+    pub containment: &'static str,
     pub job_id: String,
     pub status: &'static str,
     pub exit_code: Option<i32>,
@@ -204,6 +209,8 @@ fn capture<R: Read + Send + 'static>(
 /// Runs only a deployment-owned Python worker. This is not a sandbox for arbitrary
 /// programs: the supported worker must not launch descendants or access the network.
 /// Authorization remains with the API; closing its control pipe cancels this child.
+/// Intended for the one-shot CLI: Windows lifetime protection assigns the calling
+/// process to a job. Do not embed this function in the API or endpoint agent.
 pub fn supervise(
     request: Request,
     python: &Path,
@@ -245,6 +252,7 @@ pub fn supervise(
         use std::os::windows::process::CommandExt;
         command.creation_flags(0x08000000); // CREATE_NO_WINDOW, no visible helper console.
     }
+    let containment = lifetime::configure(&mut command, python)?;
     let mut child = command.spawn().map_err(|_| "spawn_failed")?;
     let overflow = Arc::new(AtomicBool::new(false));
     // These pipes are requested above and cannot be absent after a successful spawn.
@@ -321,6 +329,7 @@ pub fn supervise(
             schema_version: 1,
             engine: "Sentinel Execution",
             engine_version: env!("CARGO_PKG_VERSION"),
+            containment,
             job_id: request.job_id,
             status: reason,
             exit_code: exit.code(),

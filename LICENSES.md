@@ -14,7 +14,9 @@ Demais produtos citados na matriz não foram integrados. Seus nomes identificam 
 ## Supervisor e pesquisa V11 — 02/11/2026
 
 `packages/execution-engine/Cargo.lock` fixa serde/serde_json/sha2 e21 pacotes
-externos resolvidos. Declarações de licença/versão/repositório extraídas de cargo
+externos resolvidos no0.1.0;0.1.1 tem23, adicionando windows-sys0.61.2 e
+windows-link0.2.1, e usa libc0.2.191 diretamente no Linux. Esses bindings já
+constavam das dependências do agente. Declarações de licença/versão/repositório extraídas de cargo
 metadata: [execution-dependencies.json](docs/generated/execution-dependencies.json).
 Predominam MIT/Apache-2.0; unicode-ident também declara Unicode-3.0. Preservar
 avisos aplicáveis na distribuição. Inventário não substitui revisão de avisos,

@@ -616,8 +616,8 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Dois escopos vigentes, ativo/bytes, mandato/hash e revisão exatos; com Rust configurado, revalidação durante a execução e cancelamento ao detectar perda de autorização |
-| Limitações | Sem extrair/executar;16MiB/512 entradas/8MiB por entrada/64MiB total; formatos limitados. Sem URL/Git, sandbox de SO ou contenção após morte forçada do supervisor |
-| Testes necessários / disponíveis | 24 testes worker no incremento TAR;14 API também no PostgreSQL restrito;7 processos nativos; navegador real ZIP/TAR/TAR.GZ e390px; restore41 tabelas/13 migrações |
+| Limitações | Sem extrair/executar;16MiB/512 entradas/8MiB por entrada/64MiB total; formatos limitados. Sem URL/Git ou sandbox; proteção de vida do worker por SO, árvores gerais ainda pendentes |
+| Testes necessários / disponíveis | 24 worker no incremento TAR;14 API no PostgreSQL restrito;10 testes nativos por SO (9 passam/1 skip Windows); browser anterior e restore41 tabelas/13 migrações |
 | Evidências | Migrações008/012/013, imports.ts/execution.ts, crate execution-engine, worker e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
@@ -728,17 +728,17 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | Diretriz V11.0; Referência B como pesquisa conceitual, sem código incorporado |
 | Problema | Orquestrar trabalhos persistentes |
-| Funcionalidades desejadas / recorte | Supervisor Rust de archive.inspect com recibos/limites/exit code e cancelamento; ampliar runtime e jobs recuperáveis |
+| Funcionalidades desejadas / recorte | Supervisor Rust0.1.1 com recibos/limites/cancelamento e proteção após morte do supervisor; ampliar árvores/runtime/jobs recuperáveis |
 | Módulo | Execution Center |
 | Implementação | Nativa |
-| Dependências | Rust/serde/serde_json/sha2, Python, PostgreSQL |
+| Dependências | Rust/serde/serde_json/sha2, windows-sys/libc, Python, PostgreSQL |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
 | Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | PolicyGate na API, identidade/mandato/hash preservados; pipe de controle cancela após perda de autorização detectada |
-| Limitações | Somente worker confiável sem descendentes. Sem sandbox/cgroups/Job Objects/fila/cotas gerais. Job running/completed/failed/interrupted; recibo tem estados próprios. Morte forçada do supervisor pode deixar filho ativo |
-| Testes necessários / disponíveis | 4 Rust,7 processos reais,2 casos API adicionais dentro de14 importações; PostgreSQL restrito, restore e navegador; fmt/clippy passaram |
-| Evidências | packages/execution-engine, apps/api/src/execution.ts, imports.ts; docs/RUST-ENGINES.md; VALIDATION_REPORT.md |
+| Limitações | Worker confiável. Job Object Windows e PDEATHSIG/NO_NEW_PRIVS Linux para filho direto; sem sandbox/cgroups/cotas/fila. Árvores Linux/pipes herdados no cancelamento geral ainda pendentes; job e recibo têm estados distintos |
+| Testes necessários / disponíveis | 4 Rust,10 casos de processo por SO (9 passam/1 skip Windows),14 API/PostgreSQL restrito e restore;196 JS passam/2 skips; fmt/clippy; CI atual por confirmar |
+| Evidências | execution-engine/lifetime.rs com exceção FFI justificada; execution.ts valida containment/versão; docs/RUST-ENGINES.md e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M2 |
 | Prioridade | P0 |
 

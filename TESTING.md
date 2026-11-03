@@ -160,3 +160,11 @@ Medição reproduzível: `npx tsx scripts/benchmark-execution.ts`, com
 seriais por caminho sobre ZIP sintético514 bytes; stdout JSON contém tempos e
 tamanho do binário. Não mede RAM, CPU, carga sustentada ou builds release, nem
 prova ganho de desempenho. Resultados observados ficam em VALIDATION_REPORT.md.
+
+
+No0.1.1, execution.test.ts tem10 casos: acrescenta morte forçada do supervisor,
+neto Windows encerrado pelo Job Object e interpretador set-ID recusado no Linux.
+O primeiro caso também verifica NoNewPrivs Linux. Testes de outro SO sinalizam
+skip. Depois de matar o pai Linux, processo zumbi conta como terminado, aguardando
+reap pelo sistema. Os testes não executam código de terceiros nem habilitam
+plugins; somente fixtures próprias com processos e arquivos temporários.

@@ -11,7 +11,7 @@ parar para Debian13 KDE quando restarem somente dependências reais desse SO.
 | Marco | Base comprovada / entrega | Próximo gate | Cobertura anterior |
 |---|---|---|---|
 | M0 Auditoria | Checkpoint/Git, arquitetura real, baseline, inventário110 referências, leitura dirigida de9 e licenças registrados | Manter revisão dirigida de mudanças; não repetir auditoria global. Pesquisa não homologa terceiros | V6.9 fase0; AttackLab A1 |
-| M1 Rust Core — em andamento | Agente existente preservado; novo supervisor archive.inspect, contrato/recibo/limites, revalidação durante execução, API/UI/auditoria integradas | Contenção e encerramento após falha do supervisor, runtime seguro por SO, job model recuperável, cotas e cancelamento; integrar sem substituir PolicyGate/evidência | Fases1/6 e pré-requisitos2/3; A2/A6 |
+| M1 Rust Core — em andamento | Agente existente preservado; novo supervisor archive.inspect, contrato/recibo/limites, revalidação durante execução, API/UI/auditoria integradas | Proteção após falha entregue para worker Windows/Linux; faltam árvores/cancelamento geral, runtime seguro por SO, job model recuperável e cotas; integrar sem substituir PolicyGate/evidência | Fases1/6 e pré-requisitos2/3; A2/A6 |
 | M2 Web/API | Analisador OpenAPI offline existente | Cliente HTTP Rust com URL exata/DNS/IP fixado/SSRF/redirects, crawler limitado, TLS/headers/JWT/achados; importação URL e Git com escopos próprios; ProofLab autorizado antes de DAST amplo | Fases2/3/4 e Evidence Fusion A3/A4 |
 | M3 SecureCode | Regras estáticas, dependências/SARIF existentes | Coordenar Semgrep/Bandit/Trivy/secrets/SCA com licença/versão/limites; correção em cópia/branch, regressão, reteste e relatórios vinculados | Fases4/5; A4 |
 | M4 Detection/Security Operations | Eventos/core/SOC/casos/FIM e perícia parcial existentes | Ingestão Sigma/YARA/Suricata/Zeek, confiança/deduplicação, hunting, evidência/timeline, resposta autorizada e recuperação testada | Fase7; A4/A5/A6 |
@@ -23,11 +23,11 @@ Nenhum dos marcos funcionais M1–M5 está completo. Os M0–M6 da matriz antiga
 
 ## Próximo incremento concreto
 
-1. M1: preservar o supervisor de um único worker confiável. Projetar e implementar
-   contenção de processo/árvore e encerramento quando o supervisor morre, com
-   testes reais de PID e limites por SO. Não aceitar plugins arbitrários enquanto
-   essas garantias estiverem ausentes. Onde a prova exigir Linux, registrar o
-   teste correspondente para Debian sem afirmar validação pelo Windows.
+1. M1: preservar o supervisor de um único worker confiável.0.1.1 já protege a
+   vida do worker com Job Object Windows/sinal de morte do pai Linux. Próximo:
+   cancelamento/timeout de árvores sem prender leitura em pipes herdados, limites
+   por SO e provas de encerramento. Não habilitar plugins arbitrários. Confirmar
+   as garantias Linux na CI e depois no Debian, sem atribuí-las ao Windows.
 2. Completar contratos de runtime/job model, cancelamento/recuperação e cotas.
    Qualquer novo estado SQL exige nova migração, nunca reescrever001–013.
    Preservar identidade, revisão/hash de autorização, evidência e idempotência.

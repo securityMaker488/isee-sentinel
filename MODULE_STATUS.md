@@ -11,7 +11,7 @@ profissional ou comercial.
 | Authorization Manager | Responsável/prova cifrados, projeto, revisão, nove perfis, limites, manifesto imutável IPv4/portas/exclusões e revogação sem retorno ao legado | Catálogo amplo, cotas acumuladas, cancelamento imediato e homologação Debian |
 | Planos de avaliação | Revisões imutáveis, etapas vinculadas ao mandato/hash e análise estática e inspeção de arquivo com job/evidência/relatório; tela funcional | Integrar os demais executores; comparação/reteste e fila gerais |
 | Universal Import Lab | ZIP/TAR/TAR.GZ cifrados, inspeção limitada, vínculo ao plano e recibo do supervisor Rust opcional | URL, Git, instaladores e execução isolada |
-| Execution Engine | Rust integrado à inspeção, contratos/exit code/hashes, limites e cancelamento por perda de escopo | Contenção após morte do supervisor, descendentes, cotas de SO, fila e recuperação gerais |
+| Execution Engine | Rust0.1.1 integrado, recibos/limites/cancelamento; Job Object Windows e sinal de morte do pai Linux para o worker | Árvores gerais/pipes herdados, cotas de SO, fila e recuperação; homologação Debian |
 | SecureBuild / análises | Regras estáticas, dependências, NmapXML/HAR, SARIF, cloud, identidade, IA, binários/timelines | SAST/DAST/SCA completos, feeds e avaliações de execução |
 | API Security | Auditoria estática OpenAPI JSON 3.0/3.1 | Testes ativos de autorização e lógica de negócio |
 | Agente | Rust real com HMAC e monitoramento finito de arquivo explícito | Telemetria ampliada, serviço Linux/Windows, EDR/XDR |

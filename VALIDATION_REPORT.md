@@ -4,6 +4,77 @@ Diretriz V11.0 e requisitos anteriores, versão de desenvolvimento 0.2.0. Result
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
+## Incremento M1 — vida do worker após falha, 0.1.1 — 02/11/2026
+
+### A. Base e B. Pesquisa dirigida
+
+Retomada de main/3b4d1ef, código0a76557 com CI aprovada. Não repetidas auditoria
+ou pesquisa de repositórios. Consultados contratos oficiais Job Objects/atribuição
+Windows e PDEATHSIG Linux, com links na ADR em docs/RUST-ENGINES.md; bindings
+windows-sys/libc já presentes no cache/lockfile do agente. Risco tratado: matar
+forçadamente Rust0.1.0 podia deixar o worker ativo. Quarentena e consentimento
+existentes permanecem pré-requisitos.
+
+### C. Implementação e D. Segurança
+
+Novo src/lifetime.rs no crate execution-engine. Alterados lib.rs/Cargo.toml/lock,
+API execution.ts, testes execution/imports, inventário de licenças e documentação
+vigente/ameaças/matriz/checkpoint. Versão0.1.1; JSON v1 acrescenta containment,
+validado conforme SO e persistido. Nenhuma migração, UI, agente ou parser mudou.
+
+Windows cria job anônimo/não herdável, configura KILL_ON_JOB_CLOSE e atribui o
+supervisor antes do spawn; handle fica vivo até saída/morte do processo. Linux
+recusa interpretador privilegiado e configura NO_NEW_PRIVS/PDEATHSIG com checagem
+de pai, protegendo filho direto. Falhas negam spawn. FFI está isolada numa única
+exceção a deny(unsafe_code); CLI conserva forbid. Comentários SAFETY e ADR
+registram invariantes, propriedade dos handles, buffers e restrições após fork.
+São23 dependências externas resolvidas, sem código projetos de referência autorizados incorporado.
+
+Isso não é sandbox de SO/rede, nem garante árvores Linux ou cancelamento normal
+de filhos que herdam pipes. Worker confiável sem descendentes continua sendo o
+único adaptador suportado. Job Objects não isolam contra código hostil no mesmo
+host; não habilitar plugins. Sem mudanças de firewall, SO, privilégios ou serviços
+persistentes. API e binário devem ser atualizados juntos; recibo antigo é recusado.
+
+### E. Testes observados
+
+| Verificação | Resultado local Windows |
+|---|---|
+| cargo fmt/clippy -Dwarnings/test/build, --locked/--offline | Passaram;4 testes Rust |
+| npx tsx --test apps/api/test/execution.test.ts | 9 passaram,1 caso Linux ignorado;3,047s na repetição final |
+| npm run check com Python e Rust reais | Build44 módulos;196 passaram,0 falhas,2 skips por SO;198 casos,34,105s |
+| API imports/PostgreSQL18/runtime restrito | 14 passaram;6,410s, recibos0.1.1 e modo persistidos |
+| Backup/restore nativo | 41 tabelas idênticas,13 migrações,22 importações/jobs,14 planos/revisões/etapas/execuções/vínculos,36 evidências e126 eventos; auditoria íntegra |
+
+Casos novos: morte forçada do supervisor encerra Python; no Windows encerra
+neto sintético também. Caso Linux recusa set-ID antes do worker; fixture de
+sucesso observa NoNewPrivs. Ambos os últimos controles Linux aguardam CI, sem
+alegação de execução local. PID zumbi após morte do pai conta como terminado,
+aguardando o reaper do sistema. Testes removem somente seus próprios temporários.
+Não somar9/14 aos196: já fazem parte da suíte. Navegador/parser/agente inalterados
+não foram repetidos localmente; resultados anteriores continuam históricos.
+
+A primeira checagem TypeScript detectou tipo literal ainda0.1.0/sem containment;
+corrigido antes da suíte completa. A primeira inicialização de QA sem porta
+explícita encontrou o serviço já existente; repetida com127.0.0.1:55432 passou,
+sem alterar5432. Cluster dedicado encerrado após restore. Fastify mantém aviso
+de depreciação conhecido. cargo audit não disponível. Logs .sentinel/lifetime-*.log.
+CI deste incremento ainda será consultada após push; não atribuir a ele a CI0a76557.
+
+### F. Performance e G. Continuidade
+
+`scripts/benchmark-execution.ts`: Windows/debug,8 amostras/caminho, ZIP514 bytes.
+Medianas128,50ms direto/191,47ms supervisionado; mínimos124,92/176,79ms;
+máximos140,34/199,41ms; binário879104 bytes. Registro em lifetime-performance.json
+(03/11 UTC, ainda02/11 no fuso America/Bahia). Custo adicional esperado, sem ganho
+de velocidade; não medidos CPU/RAM/carga/produção. Comparações entre rodadas
+pequenas não constituem prova estatística de regressão ou melhora.
+
+M1 continua parcial. Próximo incremento: árvores/cancelamento/timeout sem pipes
+presos, limites por SO, depois job model recuperável/cotas; preservar escopos e
+evidências. Linux será verificado em CI Ubuntu e depois no Debian13 KDE, sem
+confundir os ambientes. PROJECT_STATE/ROADMAP mantêm a fila única.
+
 ## Incremento V11 — supervisão Rust e pesquisa — 02/11/2026
 
 ### A. Estado inicial
