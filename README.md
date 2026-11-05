@@ -1,4 +1,5 @@
 # I.See Sentinel · Private Operator Edition 0.2
+aqui e as ordens pra nao se esquecer e usar 
 
 Implementação incremental conforme diretriz **V11.0**, preservando requisitos anteriores, com um único
 operador fundador e empresas/projetos separados. O núcleo conecta análise,
