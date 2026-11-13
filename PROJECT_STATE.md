@@ -102,12 +102,22 @@ preservados. Não presumir EDR completo, pentest geral ou isolamento de VM.
 Git autorizado: https://github.com/securityMaker488/isee-sentinel, main/origin
 HTTPS. Em 13/11/2026 o titular autorizou a publicação pública sob AGPL-3.0 e a
 reescrita única do histórico para retirar o registro interno de pesquisa sobre
-os projetos de referência. Estado: árvore sanitizada localmente; espelho privado
-de backup verificado em C:\Users\golde\isee-sentinel-backup (16 commits, fsck
-limpo, manifesto por commit com sha256 do manifesto); reescrita do histórico
-preparada localmente, aguardando aprovação do titular. Nada foi enviado ao
-remoto e a visibilidade continua privada até essa aprovação. Código anterior
-ao incremento: 2a0486adc0bb2f82c53d35a2e65f44260b90ad6a. Registro posterior só
+os projetos de referência. Estado: árvore sanitizada e histórico reescrito
+localmente, ambos verificados (0 ocorrência de nome ou URL nos 421 blobs de
+texto dos 18 commits reescritos, dossiê ausente de todos os commits, 0 dos 119
+arquivos de código/teste/migração alterados, árvore final idêntica à árvore
+sanitizada no momento da reescrita, guarda de repositório e suíte de 200 casos
+aprovadas). O espelho
+privado de backup verificado está em C:\Users\golde\isee-sentinel-backup (duas
+séries: a publicada até então e a já sanitizada, 17 commits, fsck limpo,
+manifesto por commit com sha256 do manifesto); a série anterior também está na
+branch local archive/DO-NOT-PUSH-pre-publication-2026-11-13, que não deve ser
+publicada (--all/--mirror proibidos). Nada foi enviado ao remoto e a
+visibilidade continua privada até a aprovação do titular. HEAD reescrito atual:
+45e02d09699bbc18a1beae3d4df76392fd75b11d. Os hashes citados em seções
+anteriores (por exemplo 2a0486adc0bb2f82c53d35a2e65f44260b90ad6a) pertencem à
+série anterior, preservada no espelho privado, e não correspondem mais à branch
+main. Registro posterior só
 documental usa [skip ci], sem atribuir nova suíte ao registro. Conferir git
 log/status na retomada. Credenciais/bancos/dumps/.sentinel/target não entram
 no Git. Recompilar por SO; não depender desta conversa. DEVELOPMENT/TESTING

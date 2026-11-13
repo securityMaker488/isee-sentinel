@@ -21,14 +21,16 @@ não se estende a outras publicações.
 
 Espelho local fora do repositório, criado antes de qualquer alteração:
 `C:\Users\golde\isee-sentinel-backup\isee-sentinel-2026-11-13.git`
-(`git clone --mirror`), com 16 commits, `git fsck --full --strict` sem erros e
-`refs/heads/main` idêntico ao HEAD local e ao `origin/main` do momento.
-Manifesto por commit (SHA-1, SHA da árvore, autor, data, assunto) em
-`manifest-commits-2026-11-13.txt`, com o sha256 do manifesto em
-`manifest-commits-2026-11-13.txt.sha256`
-(`31f770189f58e1531f6d6c4f5b2770401f519a1bc24ca39a17cde764d6f87ed4`).
+(`git clone --mirror`), com `git fsck --full --strict` sem erros. O espelho
+guarda duas séries: `refs/heads/main` em `1b79d4ad…` (a série publicada até
+então, 16 commits) e `refs/heads/archive/pre-publication` em `00f7bd83…` (a
+série com a árvore já sanitizada, 17 commits), num total de 17 objetos de
+commit. Manifesto por commit (SHA-1, SHA da árvore, autor, data, assunto),
+organizado por ref, em `manifest-commits-2026-11-13.txt`, com o sha256 do
+manifesto em `manifest-commits-2026-11-13.txt.sha256`
+(`e81194413ff9097aa4219addc467f1119a003acb6e68bd07d31a9a7af0d51267`).
 O espelho guarda a série completa, inclusive o registro interno de pesquisa e
-as URLs que o histórico público não terá.
+as URLs que o histórico público não terá, e fica fora da árvore versionada.
 
 ### C. Auditoria de atribuição legal
 
@@ -67,12 +69,14 @@ aos projetos estudados, preservando integralmente código, testes, migrações e
 documentação técnica. Ela é feita localmente; o remoto continua com a série
 anterior e nenhum force-push foi executado.
 
-Verificação automatizada do histórico reescrito (17 commits, 222 arquivos
-distintos, 419 blobs de texto): **0 ocorrências** de qualquer nome ou URL dos
+Verificação automatizada do histórico reescrito (18 commits, 222 arquivos
+distintos, 421 blobs de texto): **0 ocorrências** de qualquer nome ou URL dos
 projetos de referência; dossiê de pesquisa **ausente de todos os commits**;
 **0 dos 119 arquivos de código, teste e migração** perdidos ou alterados pela
 reescrita; árvore final byte a byte idêntica à árvore sanitizada
-(`482be5fc09b6d6bfc396802c2f3338c731292056`). A guarda de repositório passa
+(`482be5fc09b6d6bfc396802c2f3338c731292056`) no momento da reescrita — os dois
+commits posteriores acrescentam apenas documentação (`GITHUB.md` e este
+registro) e nenhum código. A guarda de repositório passa
 sobre o histórico reescrito (221 blobs de índice, 454 blobs de histórico) e a
 suíte completa foi repetida sobre a árvore final: 200 casos, 198 passaram, 0
 falhas, 2 ignorados por SO, 42,8s, mais os 3 testes da própria guarda.
