@@ -63,6 +63,7 @@ profundidade, não habilitação de plugins.
 | npm test com supervisor e Python reais | 200 casos: 198 passaram, 0 falhas, 2 ignorados por SO; 38,0s |
 | npm run check (typecheck + build do painel + suíte) | 44 módulos compilados; suíte sem o supervisor: 200 casos, 181 passaram, 19 ignorados; 32,3s |
 | Controle negativo (árvore sem terminação) | Binário cópia com a terminação de árvore desligada: os 2 casos novos falham (`captureComplete:false`), o que prova que não são vacuosos |
+| CI43450994529 (commit fc1dfcc) | Windows2022 e Ubuntu24.04 aprovados; Ubuntu 200 casos/199 passaram/1 ignorado, Windows 200/198/2; casos novos de árvore aprovados nos dois SOs |
 
 Casos novos: cancelamento e timeout encerram worker e descendente, o descendente
 herda o pipe de stdout e mesmo assim o recibo sai com captura completa e
@@ -73,14 +74,24 @@ original: a captura ficou presa no pipe herdado, o recibo saiu com
 morre quando o supervisor sai (job externo), o que mostra por que a asserção de
 captura completa — e não só a morte do PID — é a prova do controle.
 
+Fragilidade pré-existente corrigida neste incremento: a CI de 05/11
+(run42033523252, do commit de README) já falhava no Ubuntu porque o helper
+`terminated()` tratava ESRCH na leitura de `/proc/<pid>/stat` como erro,
+quando o processo havia sido colhido entre a abertura e a leitura. O helper
+passa a tratar ESRCH como ENOENT (processo encerrado). A falha era da base e
+não deste incremento, mas os casos novos usam o mesmo helper. O caso de timeout
+também passou a usar 3000ms, para que o worker consiga iniciar e criar o
+descendente em máquina mais lenta antes do fim do prazo.
+
 Não executados neste incremento: cluster PostgreSQL dedicado (14 testes do
-incremento anterior não repetidos), navegador, agente, perf/Benchmark, Debian,
-`cargo audit` (ausente no ambiente) e execução do binário Linux. O caminho Linux
-foi verificado localmente por compilação cruzada (`cargo check` e `cargo clippy
--D warnings` para x86_64-unknown-linux-gnu, com o alvo Rust instalado para
-isso): o código compila e passa o lint que a CI aplica, mas não foi executado
-em host Linux — a execução continua a cargo da CI Ubuntu 24.04 e do Debian13.
-PID zumbi Linux continua sendo processo terminado aguardando o reaper do sistema.
+incremento anterior não repetidos), navegador, agente, perf/Benchmark, Debian e
+`cargo audit` (ausente no ambiente). O caminho Linux foi verificado localmente
+por compilação cruzada (`cargo check` e `cargo clippy -D warnings` para
+x86_64-unknown-linux-gnu, com o alvo Rust instalado para isso) e **executado na
+CI Ubuntu 24.04**: os dois casos de árvore passaram no Linux real (grupo de
+processos + rlimits), e o job Linux da CI43450994529 aprovou. A execução no
+Debian13 continua pendente de homologação. PID zumbi Linux continua sendo
+processo terminado aguardando o reaper do sistema.
 
 ### F. Desempenho e G. Continuidade
 

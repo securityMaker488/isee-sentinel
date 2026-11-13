@@ -49,8 +49,8 @@ implementação ausente como se fosse apenas homologação do SO.
   skip Linux no Windows, incluindo os 2 novos de árvore encerrada
   (cancelamento e timeout) com descendente herdando o pipe.
 - TypeScript/build44 módulos e suíte completa com supervisor real:200 casos,198
-  passaram,0 falhas,2 skips por SO,38,0s. Sem o supervisor a mesma suíte teve
-  19 skips,32,3s.
+  passaram,0 falhas,2 skips por SO,38,0s;40,9s após os ajustes de teste. Sem o
+  supervisor a mesma suíte teve 19 skips,32,3s.
 - Controle negativo: cópia do binário com a terminação de árvore desligada fez
   os 2 casos novos falharem (`captureComplete:false`), provando que não são
   vacuosos.
@@ -59,9 +59,11 @@ implementação ausente como se fosse apenas homologação do SO.
 - Backup/restore, medição debug/Windows (medianas128,50ms/191,47ms) e QA de
   navegador:históricos de 02/11, preservados sem novo QA neste incremento.
 - Logs .sentinel/lifetime-*.log e lifetime-performance.json. No local, cargo
-  audit continua indisponível. CI0026313 aprovada em Windows2022 e Ubuntu24.04:
-  run41557312004, concluída em02/11 às22:10 (America/Bahia). Esse resultado não
-  valida 0.2.0; a CI deste código ainda não foi executada.
+  audit continua indisponível. CI43450994529 (commit fc1dfcc) aprovada em
+  Windows2022 e Ubuntu24.04: Ubuntu 200 casos/199 passaram/1 ignorado, Windows
+  200/198/2; os 2 casos novos de árvore passaram nos dois SOs, o que executa o
+  caminho Linux (grupo+rlimits) em Linux real. A CI0026313 (run41557312004)
+  validava 0.1.1, não 0.2.0.
 
 ## Próximo passo concreto
 

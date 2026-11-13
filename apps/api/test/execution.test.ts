@@ -73,7 +73,10 @@ async function terminated(pid:number){
    // After forced parent death the system reaper owns the child. A zombie is
    // terminated, even when that reaper has not yet removed its process entry.
    try{const state=await readFile(`/proc/${pid}/stat`,'utf8');if(state.slice(state.lastIndexOf(')')+2).startsWith('Z '))return;}
-   catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')return;throw error;}
+   catch(error){const code=(error as NodeJS.ErrnoException).code;
+    // ENOENT: the entry is gone. ESRCH: the process was reaped between the
+    // open and the read. Both mean the process is terminated.
+    if(code==='ENOENT'||code==='ESRCH')return;throw error;}
   }
   await delay(20);
  }
@@ -123,7 +126,7 @@ test('cancellation terminates the worker tree and is not blocked by an inherited
 });
 test('timeout terminates the worker tree instead of leaving descendants behind',{skip},async()=>{
  await treeWorkerFiles();
- const result=await raw({...request(),timeoutMs:800});assert.equal(result.code,3,result.err);
+ const result=await raw({...request(),timeoutMs:3000});assert.equal(result.code,3,result.err);
  const report=JSON.parse(result.out);assert.equal(report.receipt.status,'timed_out');assert.equal(report.receipt.captureComplete,true);
  for(const pid of [await waitPid(),await waitPid('grandchild.pid')])await terminated(pid);
  await unlink(pidPath());await unlink(join(folder,'grandchild.pid'));
