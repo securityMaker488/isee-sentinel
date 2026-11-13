@@ -62,12 +62,28 @@ redigidos, preservando a cadeia de custódia do anexo do operador.
 
 ### E. Estado do histórico reescrito
 
-A reescrita remove dos 16 commits o registro interno de pesquisa e as menções
+A reescrita remove dos 17 commits o registro interno de pesquisa e as menções
 aos projetos estudados, preservando integralmente código, testes, migrações e
 documentação técnica. Ela é feita localmente; o remoto continua com a série
-anterior e nenhum force-push foi executado. Consequência prevista: os hashes
-de commit mudam e a atualização do remoto exigirá `--force-with-lease` com a
-autorização já dada, além de nova execução da CI sobre o histórico reescrito.
+anterior e nenhum force-push foi executado.
+
+Verificação automatizada do histórico reescrito (17 commits, 222 arquivos
+distintos, 419 blobs de texto): **0 ocorrências** de qualquer nome ou URL dos
+projetos de referência; dossiê de pesquisa **ausente de todos os commits**;
+**0 dos 119 arquivos de código, teste e migração** perdidos ou alterados pela
+reescrita; árvore final byte a byte idêntica à árvore sanitizada
+(`482be5fc09b6d6bfc396802c2f3338c731292056`). A guarda de repositório passa
+sobre o histórico reescrito (221 blobs de índice, 454 blobs de histórico) e a
+suíte completa foi repetida sobre a árvore final: 200 casos, 198 passaram, 0
+falhas, 2 ignorados por SO, 42,8s, mais os 3 testes da própria guarda.
+
+A série anterior fica preservada em espelho privado
+(`C:\Users\golde\isee-sentinel-backup`) e, até a publicação, na branch local
+`archive/DO-NOT-PUSH-pre-publication-2026-11-13`, que **não** deve ser enviada
+(`--all`/`--mirror` estão proibidos). Consequência prevista: os hashes de
+commit mudam e a atualização do remoto exigirá `--force-with-lease`, com a
+autorização já dada, seguida de nova execução da CI sobre o histórico
+reescrito.
 
 ### F. Limites desta etapa
 

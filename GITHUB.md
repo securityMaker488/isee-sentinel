@@ -40,8 +40,27 @@ Antes de tornar o repositório público, o titular autorizou e o trabalho execut
    redigido ficam registrados em `docs/PROMPT-COVERAGE.json`, preservando a
    cadeia de custódia.
 4. **Reescrita do histórico** para remover o registro interno de pesquisa e as
-   menções aos projetos estudados também nos commits antigos. A reescrita é
-   local até a aprovação do titular: nada foi enviado ao remoto nesta etapa.
+   menções aos projetos estudados também nos commits antigos. A reescrita está
+   pronta localmente, verificada (0 ocorrência de nome ou URL nos 419 blobs de
+   texto dos 17 commits, dossiê ausente de todos os commits, 0 dos 119
+   arquivos de código/teste/migração alterados, árvore final idêntica à
+   árvore sanitizada) e **ainda não enviada ao remoto**. Com a aprovação do
+   titular, a publicação segue esta ordem:
+
+```text
+git fetch origin
+git rev-parse origin/main            # deve continuar 1b79d4ad1b795932585905f483fdf1c5a040fb02
+git push --force-with-lease origin main
+gh repo edit securityMaker488/isee-sentinel --visibility public
+gh repo view securityMaker488/isee-sentinel --json visibility
+git branch -D archive/DO-NOT-PUSH-pre-publication-2026-11-13
+```
+
+O `--force-with-lease` falha sozinho se o remoto tiver mudado desde o
+`fetch`, o que protege um estado inesperado do repositório. Nunca use `--all`
+ou `--mirror`: a branch de arquivo local ainda contém a série anterior, com o
+registro interno de pesquisa, e não deve ser publicada. Depois do envio, a CI
+roda de novo sobre o histórico reescrito e o resultado deve ser conferido.
 
 Consequências conhecidas da reescrita: os hashes de commit mudam, e o remoto
 precisa ser atualizado com `--force-with-lease` (o repositório nunca foi
