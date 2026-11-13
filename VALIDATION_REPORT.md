@@ -101,6 +101,12 @@ podem continuar acessíveis no GitHub por SHA até a coleta de lixo da plataform
 e os logs de CI das execuções anteriores foram conferidos: nenhum contém os
 termos redigidos.
 
+Validação do estado publicado: a CI43477284677 (workflow_dispatch sobre
+`54f3f62`) aprovou em Windows2022 e Ubuntu24.04; a árvore pública não contém o
+dossiê; o README publicado traz o aviso de licença e o `LICENSE` é o texto
+canônico da AGPL-3.0; a busca de código na API do GitHub para os termos
+redigidos retorna zero resultados.
+
 ### G. Limites desta etapa
 
 Não foram reexecutados PostgreSQL, navegador, perf/Benchmark nem Debian; a
