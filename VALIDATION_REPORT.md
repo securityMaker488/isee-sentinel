@@ -64,6 +64,7 @@ profundidade, não habilitação de plugins.
 | npm run check (typecheck + build do painel + suíte) | 44 módulos compilados; suíte sem o supervisor: 200 casos, 181 passaram, 19 ignorados; 32,3s |
 | Controle negativo (árvore sem terminação) | Binário cópia com a terminação de árvore desligada: os 2 casos novos falham (`captureComplete:false`), o que prova que não são vacuosos |
 | CI43450994529 (commit fc1dfcc) | Windows2022 e Ubuntu24.04 aprovados; Ubuntu 200 casos/199 passaram/1 ignorado, Windows 200/198/2; casos novos de árvore aprovados nos dois SOs |
+| CI43452527408 (commit 2a0486a, com o ajuste do helper) | Windows2022 e Ubuntu24.04 aprovados |
 
 Casos novos: cancelamento e timeout encerram worker e descendente, o descendente
 herda o pipe de stdout e mesmo assim o recibo sai com captura completa e

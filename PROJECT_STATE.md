@@ -62,8 +62,9 @@ implementação ausente como se fosse apenas homologação do SO.
   audit continua indisponível. CI43450994529 (commit fc1dfcc) aprovada em
   Windows2022 e Ubuntu24.04: Ubuntu 200 casos/199 passaram/1 ignorado, Windows
   200/198/2; os 2 casos novos de árvore passaram nos dois SOs, o que executa o
-  caminho Linux (grupo+rlimits) em Linux real. A CI0026313 (run41557312004)
-  validava 0.1.1, não 0.2.0.
+  caminho Linux (grupo+rlimits) em Linux real. A CI43452527408 (commit 2a0486a,
+  com o ajuste de fragilidade do helper) também aprovou nos dois jobs. A
+  CI0026313 (run41557312004) validava 0.1.1, não 0.2.0.
 
 ## Próximo passo concreto
 
@@ -98,7 +99,7 @@ preservados. Não presumir EDR completo, pentest geral ou isolamento de VM.
 
 Git privado autorizado: https://github.com/securityMaker488/isee-sentinel,
 main/origin HTTPS, privacidade reconfirmada antes do push atual. Código entregue:
-fc1dfcc59bfda62121a3de9eff739f6b88b5df7a. Registro posterior só documental usa
+2a0486adc0bb2f82c53d35a2e65f44260b90ad6a. Registro posterior só documental usa
 [skip ci], sem atribuir nova suíte ao registro. Conferir git
 log/status na retomada. Credenciais/bancos/dumps/.sentinel/target não entram
 no Git. Recompilar por SO; não depender desta conversa. DEVELOPMENT/TESTING
