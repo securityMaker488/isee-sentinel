@@ -4,6 +4,63 @@ Diretriz V11.0 e requisitos anteriores, versão de desenvolvimento 0.2.0. Result
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
+## Incremento M1 — cancelamento por requerimento no painel, 0.2.0 — 13/11/2026
+
+Diretriz V13.1, marco M1 do ROADMAP. Incremento menor e funcional: o
+cancelamento pedido pelo operador, que antes existia apenas como perda de
+autorização detectada durante a execução.
+
+### A. O que foi entregue
+
+- `POST /api/jobs/:id/cancel`: contrato geral por job, em apps/api/src/jobs.ts.
+  Registra o pedido, sinaliza o motor em execução e responde com o estado.
+- Estado terminal próprio `cancelled` e registro do requerente e do instante do
+  pedido (`jobs.cancel_requested_at`, `jobs.cancel_requested_by`), em migração
+  014. Nenhuma migração 001–013 foi alterada.
+- Registro de execução em memória: cada motor publica seu `AbortController`; o
+  caminho de importação passa a interromper a execução ao receber o sinal.
+- Auditoria `job.cancel_requested` (pedido) e `import.cancelled` (desfecho).
+- Interface: botão "Cancelar inspeção" na linha em andamento do histórico de
+  importações e recarga da lista durante a execução.
+
+### B. Autorização e isolamento
+
+O cancelamento exige as mesmas operações e o mesmo escopo vigente que
+autorizaram o job, no mesmo ativo e na mesma organização: import/forensics
+exigem `scan` e `evidence.import`; securebuild/lab_nmap exigem `scan`.
+Verificado: pedido sem escopo é 403 e não grava nada; job de outra organização
+é 404; job inexistente é 404; job que não está em execução é 409; job sem
+execução local responde `cancel_requested`, porque o pedido é durável mesmo
+sem motor a interromper. O cancelamento não amplia mandato, escopo ou janela.
+
+### C. Comportamento verificado
+
+Suíte completa com supervisor Rust e Python reais: 202 casos, 200 passaram,
+0 falhas, 2 skips por SO, 37,3s. fmt, clippy com `-D warnings` e build do
+supervisor passaram; o crate não teve código alterado, apenas o campo de
+licença (AGPL-3.0-only).
+
+No caso principal (apps/api/test/job-cancellation.test.ts): o pedido responde
+200 com `cancelling`; a requisição que originou a importação recebe 409
+`IMPORT_CANCELLED`; o job termina `cancelled` com
+`error_code=IMPORT_CANCELLED`; `cancel_requested_at` e `cancel_requested_by`
+ficam preenchidos; a evidência em quarentena permanece e responde
+`integrityVerified:true`; o lock de execução é liberado; a auditoria contém
+`job.cancel_requested` e `import.cancelled`.
+
+### D. Limitações reais
+
+- Só o caminho de importação publica `AbortController` no contrato. Forensics,
+  AttackLab e SecureBuild ainda não podem ser cancelados por este caminho; o
+  contrato está pronto para eles.
+- A interrupção imediata da árvore do worker depende do supervisor Rust. Sem
+  ele, o pedido fica registrado e a inspeção termina na fronteira seguinte; a
+  tela informa isso ao operador.
+- O registro de execução em memória vale para o processo que executa o job.
+  Não há fila distribuída nem cancelamento entre processos.
+- A CI deste incremento ainda não foi executada; a validação relatada aqui é
+  local, em Windows, com supervisor e Python reais.
+
 ## Preparação de publicação pública — 13/11/2026
 
 ### A. Autorização e escopo

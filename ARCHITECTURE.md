@@ -42,10 +42,14 @@ sem shell. Seus relatórios devem comprovar hash e tamanho do original.
 | Casos/correção | REMEDIATION_WORKFLOW.md | Notas cifradas, mesmo ativo, aprovação e revisões da cópia |
 | Grafo | docs/RISKGRAPH.md; /api/graph | 200 nós/500 relações; sem inferência de caminho explorável |
 
-Jobs persistem em PostgreSQL: `running/completed/failed/interrupted`. Na
-inicialização operacional, trabalhos em execução são marcados interrompidos e
+Jobs persistem em PostgreSQL: `running/completed/failed/interrupted/cancelled`.
+Na inicialização operacional, trabalhos em execução são marcados interrompidos e
 auditados. Resultados tardios são recusados; originais e erros permanecem. Não há
-fila central completa, pausa, cancelamento pelo painel ou reexecução automática.
+fila central completa, pausa ou reexecução automática. O cancelamento por
+requerimento existe (`POST /api/jobs/:id/cancel`, migração014), exige o mesmo
+escopo vigente que autorizou o job, registra o requerente e encerra a
+execução no processo que a executa; ainda não cobre forensics, AttackLab e
+SecureBuild.
 O backend operacional deve executar como instância única neste recorte.
 
 Migrações001–013 cobrem núcleo, operador/clientes, agentes, casos/correções,

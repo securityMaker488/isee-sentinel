@@ -12,77 +12,87 @@ não estão100% concluídos. Completar desenvolvimento portátil aqui; parar par
 Debian13 KDE quando só restarem dependências reais de Linux. Não transferir
 implementação ausente como se fosse apenas homologação do SO.
 
-## Incremento atual — contenção de árvore no cancelamento, supervisor 0.2.0
+## Incremento atual — cancelamento por requerimento no painel
 
-- Base main/7e1797f, supervisor 0.1.1 integrationado. Não repetir pesquisa nem
-  auditoria anterior; a V11 e as oito fontes seguem consolidadas.
-- Prova antes do código: sonda fora do repositório mediu o host (V1 job externo
-  ao supervisor/V2 job aninhado). Jobs aninhados funcionam nesta máquina; o job
-  interno pode ser terminado sem matar o supervisor. Prova do host, não
-  homologação de outro SO.
-- Windows: job externo continua protegendo a vida do worker quando o supervisor
-  morre; job interno criado após o spawn recebe o worker, carrega limites
-  (64 processos, 512MiB, CPU=timeout+60s, KILL_ON_JOB_CLOSE) e é terminado em
-  cancelamento/timeout e no caminho normal. Falha ao estabelecer o contêiner
-  recusa a execução.
-- Linux: worker vira líder do seu grupo de processos (setpgid antes do exec) e o
-  grupo recebe SIGKILL no cancelamento/timeout; PDEATHSIG/NO_NEW_PRIVS e
-  recusa de interpretador set-ID permanecem; RLIMIT_CPU/DATA/FSIZE/NOFILE
-  aplicados antes do exec. A árvore não fica contida após morte forçada do
-  supervisor e um descendente que crie novo grupo escapa. O caminho Linux foi
-  verificado localmente por compilação cruzada (check e clippy para
-  x86_64-unknown-linux-gnu); a execução fica com a CI Ubuntu24.04 e o Debian13
-  continua por homologar.
-- Captura com prazo de 2s: pipe herdado não bloqueia o recibo. Captura
-  incompleta vira `captureComplete:false` + estado `capture_incomplete`, nunca
-  `completed`.
-- Recibo: versão0.2.0, containment windows_job_tree/linux_process_group e
-  captureComplete novo; API valida SO/versão/campo e persiste; 0.1.1 e 0.1.0
-  recusados sem fallback. Atualizar API e binário juntos. FFI fica somente em
-  lifetime.rs (exceção explícita a deny(unsafe); CLI mantém forbid). 23
-  dependências externas, as mesmas de 0.1.1. Nenhuma migração001–013, parser,
-  agente ou interface foi alterada.
+- Base main/2dcaa0f (publicação AGPL-3.0 concluída). Fila única: M1 do ROADMAP.
+  Incremento menor e funcional: o cancelamento pedido pelo operador, que
+  existia só como perda de autorização. O incremento anterior (contenção de
+  árvore no cancelamento, supervisor 0.2.0) fica preservado no
+  VALIDATION_REPORT.md.
+- Entregue: `POST /api/jobs/:id/cancel`, contrato geral por job, sem UI
+  fictícia. Estado terminal próprio `cancelled` (migração014), registro do
+  requerente e do instante do pedido em `jobs`, auditoria
+  `job.cancel_requested` e `import.cancelled`, botão "Cancelar inspeção" na
+  tela de importações e recarga da lista durante a execução.
+- Autorização: o cancelamento exige as mesmas operações e o mesmo escopo
+  vigente que autorizaram o job (import/forensics: scan+evidence.import;
+  securebuild/lab_nmap: scan), no mesmo ativo e na mesma organização. Pedido
+  sem escopo é 403 e não grava nada; job de outra organização é 404; job que
+  não está em execução é 409. O cancelamento não amplia mandato nem escopo.
+- Interrupção: o motor publica seu `AbortController`; o pedido aborta a
+  execução. Com o supervisor Rust, a árvore do worker é encerrada na hora e o
+  recibo fica `cancelled`. Sem supervisor Rust, o pedido fica registrado e a
+  inspeção termina na fronteira seguinte — limitação real, dita na tela, não
+  mascarada.
+- Durabilidade: o pedido é gravado antes do sinal
+  (`jobs.cancel_requested_at`/`cancel_requested_by`). O registro de execução em
+  memória é volátil por desenho; job órfão segue marcado `interrupted` pela
+  inicialização do servidor.
+- O original em quarentena é preservado e continua verificável; a evidência não
+  é apagada; o lock de execução é liberado; a requisição que originou a
+  importação recebe 409 `IMPORT_CANCELLED`.
 
 ## Validação atual e evidências
 
-- fmt/clippy -Dwarnings/build e4 Rust passaram. Processos:12 casos,11 passaram/1
-  skip Linux no Windows, incluindo os 2 novos de árvore encerrada
-  (cancelamento e timeout) com descendente herdando o pipe.
-- TypeScript/build44 módulos e suíte completa com supervisor real:200 casos,198
-  passaram,0 falhas,2 skips por SO,38,0s;40,9s após os ajustes de teste. Sem o
-  supervisor a mesma suíte teve 19 skips,32,3s.
-- Controle negativo: cópia do binário com a terminação de árvore desligada fez
-  os 2 casos novos falharem (`captureComplete:false`), provando que não são
-  vacuosos.
-- PostgreSQL18/runtime restrito:não repetido neste incremento; as 14 execuções
-  de 02/11 são históricos e não validam 0.2.0.
-- Backup/restore, medição debug/Windows (medianas128,50ms/191,47ms) e QA de
-  navegador:históricos de 02/11, preservados sem novo QA neste incremento.
+- Incremento do cancelamento: suíte completa com supervisor real e Python real
+  — 202 casos, 200 passaram, 0 falhas, 2 skips por SO, 37,3s. Os 2 casos novos
+  (apps/api/test/job-cancellation.test.ts) cobrem o cancelamento de uma
+  inspeção em andamento e as guardas de autorização, isolamento e organização.
+- Comportamento verificado no caso principal: o pedido de cancelamento
+  responde 200 `cancelling`; a requisição que originou a importação recebe 409
+  `IMPORT_CANCELLED`; o job fica `cancelled` com `error_code=IMPORT_CANCELLED`;
+  `cancel_requested_at` e `cancel_requested_by` ficam preenchidos; a evidência
+  permanece e responde `integrityVerified:true`; o lock de execução é
+  liberado; a auditoria contém `job.cancel_requested` e `import.cancelled`.
+- Guardas verificadas: job inexistente 404, job concluído 409, pedido sem
+  escopo 403 sem gravar nada, job de outra organização 404 e job sem execução
+  local responde `cancel_requested` (pedido durável, sem motor a interromper).
+- fmt/clippy -Dwarnings/build do supervisor passaram neste incremento; o crate
+  não teve código alterado, apenas o campo de licença (AGPL-3.0-only).
+- Incremento anterior (contenção de árvore, supervisor 0.2.0): fmt/clippy/
+  build e 4 Rust passaram; 12 casos de processo, 11 passaram/1 skip Linux no
+  Windows, incluindo os 2 de árvore encerrada (cancelamento e timeout) com
+  descendente herdando o pipe; controle negativo com a terminação desligada
+  fez os 2 casos falharem (`captureComplete:false`). PostgreSQL18/runtime
+  restrito, backup/restore, medição debug/Windows e QA de navegador são
+  históricos de 02/11, não repetidos aqui.
+- CI43450994529 (commit fc1dfcc) e CI43452527408 (commit 2a0486a) aprovaram em
+  Windows2022 e Ubuntu24.04; o caminho Linux (grupo+rlimits) roda em Linux real
+  nessas execuções. A CI0026313 (run41557312004) validava 0.1.1, não 0.2.0.
+  A CI deste incremento ainda não foi executada.
 - Logs .sentinel/lifetime-*.log e lifetime-performance.json. No local, cargo
-  audit continua indisponível. CI43450994529 (commit fc1dfcc) aprovada em
-  Windows2022 e Ubuntu24.04: Ubuntu 200 casos/199 passaram/1 ignorado, Windows
-  200/198/2; os 2 casos novos de árvore passaram nos dois SOs, o que executa o
-  caminho Linux (grupo+rlimits) em Linux real. A CI43452527408 (commit 2a0486a,
-  com o ajuste de fragilidade do helper) também aprovou nos dois jobs. A
-  CI0026313 (run41557312004) validava 0.1.1, não 0.2.0.
+  audit continua indisponível.
 
 ## Próximo passo concreto
 
-1. M1 (restante): runtime/job model recuperável, cancelamento geral pelo painel,
-   idempotência e cotas acumuladas. Novos estados SQL exigem nova migração.
-   Preservar identidades, revisão/hash do mandato, evidências e comportamento
-   após interrupção. Fechar pipe herdado na origem exigiria criação de processo
-   própria (handle list) — fora do recorte atual.
+1. M1 (restante): job model recuperável, idempotência e cotas acumuladas.
+   Novos estados SQL exigem nova migração. Preservar identidades, revisão/hash
+   do mandato, evidências e comportamento após interrupção. O cancelamento
+   geral está entregue no caminho de importação; forensics, AttackLab e
+   SecureBuild devem publicar o mesmo `AbortController` para entrar no
+   contrato de `POST /api/jobs/:id/cancel`. Fechar pipe herdado na origem
+   exigiria criação de processo própria (handle list) — fora do recorte atual.
 2. M2: HTTP Rust/URL exata/DNS-IP/SSRF/redirects e limites em servidor sintético,
    depois Git por adaptador próprio. Manifesto Nmap não autoriza HTTP. Não
    refazer ZIP/TAR ou planos; seguir M3–M5 conforme ROADMAP.
 3. Homologar Debian13 KDE quando só restarem dependências reais de Linux.
 
 Limites: sem sandbox de SO/rede/cgroups, cotas CPU/RAM/disco acumuladas, fila/
-retries ou cancelamento geral pelo painel; polling250ms não é atômico. Job
-Objects e grupos de processos são contenção de processo, não isolamento.
-Hash/recibo não é assinatura digital. Linux/Debian, serviço do agente e
-QEMU/Kali ainda precisam de homologação própria.
+retries ou fila distribuída; o registro de cancelamento em memória vale só
+para o processo que executa o job; polling250ms não é atômico. Job Objects e
+grupos de processos são contenção de processo, não isolamento. Hash/recibo não
+é assinatura digital. Linux/Debian, serviço do agente e QEMU/Kali ainda
+precisam de homologação própria.
 
 ## Base e continuidade
 

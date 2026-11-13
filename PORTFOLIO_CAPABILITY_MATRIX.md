@@ -14,7 +14,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Node 24, Fastify, PostgreSQL |
 | Sistema operacional | Multiplataforma; Debian por homologar |
 | Rede | Não após instalação |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Sem SaaS; isolamento por organização e vínculo de projeto via ativo; retenção automatizada pendente |
 | Testes necessários / disponíveis | apps/api/test/integration.test.ts; isolamento/MFA/CSRF/migrações; resultados em VALIDATION_REPORT.md |
@@ -34,7 +34,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | TypeScript |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não é SAST interprocedural nem DAST; autorização e lógica de negócio incompletas |
 | Testes necessários / disponíveis | packages/core/test/core.test.ts |
@@ -54,7 +54,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | JSON, saxes para XML de rede |
 | Sistema operacional | Multiplataforma |
 | Rede | Não; bases CVE futuras exigem atualização |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Sem feed CVE atualizado; sem scanner externo instalado; licença de futuras edições a verificar |
 | Testes necessários / disponíveis | packages/core/test/analysis.test.ts (execução pendente ao registrar) |
@@ -94,7 +94,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Rust, reqwest/rustls, backend |
 | Sistema operacional | Windows compilado; Linux depende homologação |
 | Rede | Agente precisa alcançar backend; pode ser rede local |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Somente arquivos explícitos; não EDR, não processos/serviços/ETW; comprometimento do host limita confiança |
 | Testes necessários / disponíveis | apps/api/test/agents.test.ts: 5 passaram; Rust/Python em teste nesta alteração |
@@ -134,7 +134,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | PostgreSQL, regras TypeScript |
 | Sistema operacional | Multiplataforma |
 | Rede | Não, exceto recepção remota |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Duas famílias de detecção com FIM em testes; editor Sigma e hunting avançado pendentes |
 | Testes necessários / disponíveis | apps/api/test/integration.test.ts |
@@ -154,7 +154,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | PostgreSQL, migração 004 |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Relatório profissional e classificação de impacto ainda parciais |
 | Testes necessários / disponíveis | apps/api/test/operations.test.ts: 6 testes passaram; painel em desenvolvimento |
@@ -174,7 +174,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Artefatos cifrados, laboratório, escopo |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | A aplicação altera somente artefato armazenado; não configura nem reinicia host |
 | Testes necessários / disponíveis | apps/api/test/operations.test.ts |
@@ -214,7 +214,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | saxes; PCAP parser futuro |
 | Sistema operacional | Multiplataforma |
 | Rede | Importação offline |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | HAR e XML não equivalem a PCAP/PCAPNG; captura, TLS e reassembly não implementados |
 | Testes necessários / disponíveis | packages/core/test/analysis.test.ts |
@@ -254,7 +254,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | VM QEMU/KVM e rede isolada para cenários completos |
 | Sistema operacional | KVM Linux; outros hosts por avaliar |
 | Rede | Laboratório isolado |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Cenário sintético não comprova contenção de ataques nem cobertura ATT&CK; Suricata/Sigma/YARA/Auditd/Atomic não integrados |
 | Testes necessários / disponíveis | scripts/browser-qa.cjs cenário sintético |
@@ -294,7 +294,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | JSON de origem autorizada |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não indexa imagens, não extrai artefatos apagados; timestamps dependem da fonte |
 | Testes necessários / disponíveis | packages/core/test/analysis.test.ts |
@@ -334,7 +334,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Envelope binário base64 limitado |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não declara arquivo benigno/malicioso; não há decompilação, assinatura Authenticode ou YARA integrado |
 | Testes necessários / disponíveis | packages/core/test/analysis.test.ts |
@@ -394,7 +394,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Modelo relacional e fatos rastreáveis |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Até200nós/500arestas; sem inferência de caminho explorável. Importação/forense referenciadas por evidências, sem nós próprios |
 | Testes necessários / disponíveis | 5 testes de escopo, relações, truncamento, risco e determinismo; UI no roteiro de navegador |
@@ -414,7 +414,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Node crypto, Argon2, rustls |
 | Sistema operacional | Multiplataforma |
 | Rede | Offline para arquivos; TLS ativo requer rede |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não é auditoria de certificados ou algoritmos completa |
 | Testes necessários / disponíveis | Core baseline e auth integration |
@@ -434,7 +434,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Export sentinel.identity.v1 |
 | Sistema operacional | Multiplataforma para arquivo |
 | Rede | Não para importação |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não conecta LDAP/AD, não altera identidades externas |
 | Testes necessários / disponíveis | packages/core/test/analysis.test.ts |
@@ -454,7 +454,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | JSON IAM/S3 fornecido |
 | Sistema operacional | Multiplataforma |
 | Rede | Não para importação |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Sem inventário cloud ativo; não simula toda semântica IAM/SCP |
 | Testes necessários / disponíveis | packages/core/test/analysis.test.ts |
@@ -474,7 +474,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Export sentinel.ai.v1 |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não é teste de modelo, prompt injection real ou assistente IA operacional |
 | Testes necessários / disponíveis | packages/core/test/analysis.test.ts |
@@ -514,7 +514,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Resultados de motores |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Camada só cadastrada não protege; canários e controles ativos pendentes |
 | Testes necessários / disponíveis | packages/core/test/core.test.ts |
@@ -534,7 +534,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | PostgreSQL e chave externa |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Hash não garante cadeia inteira; administrador de banco pode adulterar; retenção e exportações ampliadas pendentes; cadeia completa por operação/teste/observação/reteste e comparação ainda pendentes, conforme plano AttackLab |
 | Testes necessários / disponíveis | API evidence/audit tests e restore anterior |
@@ -554,7 +554,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Dados de projeto/escopo/evidência |
 | Sistema operacional | Multiplataforma |
 | Rede | Não |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Relatórios JSON de análises, incidentes, forense e importação; PDF e comparação generalizada pendentes |
 | Testes necessários / disponíveis | API scan report tests |
@@ -574,7 +574,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Matriz versionada e registro de adaptadores |
 | Sistema operacional | Multiplataforma |
 | Rede | Conforme adaptador |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não há carregamento arbitrário de plugins nem catálogo universal. Versão Nmap real não homologada |
 | Testes necessários / disponíveis | Catálogo conferido com arquivos e registros desta sessão |
@@ -594,7 +594,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Runtimes e fixtures sintéticas |
 | Sistema operacional | Windows executado; Debian pendente |
 | Rede | Não para testes locais |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Testes de novas alterações não promovem operação Debian; avaliação independente ausente |
 | Testes necessários / disponíveis | docs/VALIDATION.md histórico; relatório desta alteração pendente |
@@ -614,11 +614,11 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Python3.11+, PostgreSQL; supervisor Rust opcional |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
-| Autorização | Dois escopos vigentes, ativo/bytes, mandato/hash e revisão exatos; com Rust configurado, revalidação durante a execução e cancelamento ao detectar perda de autorização |
-| Limitações | Sem extrair/executar;16MiB/512 entradas/8MiB por entrada/64MiB total; formatos limitados. Sem URL/Git ou sandbox; proteção de vida do worker por SO, árvores gerais ainda pendentes |
-| Testes necessários / disponíveis | 24 worker no incremento TAR;14 API no PostgreSQL restrito;10 testes nativos por SO (9 passam/1 skip Windows); browser anterior e restore41 tabelas/13 migrações |
-| Evidências | Migrações008/012/013, imports.ts/execution.ts, crate execution-engine, worker e VALIDATION_REPORT.md |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Autorização | Dois escopos vigentes, ativo/bytes, mandato/hash e revisão exatos; com Rust configurado, revalidação durante a execução e cancelamento ao detectar perda de autorização; cancelamento por requerimento com as mesmas operações e o mesmo escopo vigente do job |
+| Limitações | Sem extrair/executar;16MiB/512 entradas/8MiB por entrada/64MiB total; formatos limitados. Sem URL/Git ou sandbox; proteção de vida do worker por SO, árvores gerais ainda pendentes. O cancelamento imediato da árvore depende do supervisor Rust; sem ele o pedido fica registrado e a inspeção termina na fronteira seguinte |
+| Testes necessários / disponíveis | 24 worker no incremento TAR;16 API (14 anteriores + 2 de cancelamento);10 testes nativos por SO (9 passam/1 skip Windows); browser anterior e restore41 tabelas/14 migrações |
+| Evidências | Migrações008/012/013/014, imports.ts/jobs.ts/execution.ts, crate execution-engine, worker e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
 
@@ -634,7 +634,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Python3.11+ |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Sem aquisição de dispositivo/imagem;semTLSdecrypt;SQLitevaloresomitidos;16testesworker+5API |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -654,7 +654,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | A definir |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não implementado; URLs públicas não autorizam teste |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -674,7 +674,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | PostgreSQL/PolicyGate |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Administrador cria/aprova/revoga; analista consulta detalhes. Ativo gerenciado não admite retorno ao legado; troca de limites exige novo rascunho |
 | Limitações | Somente executores implementados; bytes por entrada e portas/alvos explícitos. Planos versionados com static.scan/archive.inspect integrados; sem cota acumulada, remediação do host, cancelamento imediato ou verificação jurídica automática |
 | Testes necessários / disponíveis | 13 testes política+4 manifesto puro;26 API também no PostgreSQL restrito; navegador e restore36tabelas/10migrações passaram no Windows |
@@ -694,7 +694,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Isolamento de laboratório a validar |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | SecureFixdeconfiguraçãoérecorteexistente;aplicaçãoProofLabcompletanãoimplementada |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -714,7 +714,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | PolicyGate/importação/jobs |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Administrador cria/revisa planos; analista pode executar static.scan/archive.inspect; cada execução exige mandato/hash vigente, ativo e bytes autorizados |
 | Limitações | static.scan/archive.inspect integrados; demais perfis apenas planejáveis. Até25 etapas/100 revisões/100 resultados com aviso. Cancelamento do worker de arquivos depende de Rust; sem fila geral ou comparação/reteste |
 | Testes necessários / disponíveis | 18 API de planos e14 de importações;3 core; navegador estático/arquivos;14 importações no PostgreSQL restrito; restore41 tabelas/13 migrações |
@@ -728,17 +728,17 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | Diretriz V11.0; projetos de referência autorizados como pesquisa conceitual, sem código incorporado |
 | Problema | Orquestrar trabalhos persistentes |
-| Funcionalidades desejadas / recorte | Supervisor Rust0.2.0 com recibos/limites/cancelamento, árvore encerrada em cancelamento/timeout e proteção após morte do supervisor; ampliar runtime/jobs recuperáveis e cotas |
+| Funcionalidades desejadas / recorte | Supervisor Rust0.2.0 com recibos/limites/cancelamento, árvore encerrada em cancelamento/timeout e proteção após morte do supervisor; cancelamento por requerimento (`POST /api/jobs/:id/cancel`) com estado terminal `cancelled` e registro do requerente; ampliar runtime/jobs recuperáveis e cotas |
 | Módulo | Execution Center |
 | Implementação | Nativa |
 | Dependências | Rust/serde/serde_json/sha2, windows-sys/libc, Python, PostgreSQL |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
-| Autorização | PolicyGate na API, identidade/mandato/hash preservados; pipe de controle cancela após perda de autorização detectada |
-| Limitações | Worker confiável. Job Object Windows e PDEATHSIG/NO_NEW_PRIVS Linux para filho direto; sem sandbox/cgroups/cotas/fila. Árvores Linux/pipes herdados no cancelamento geral ainda pendentes; job e recibo têm estados distintos |
-| Testes necessários / disponíveis | 4 Rust,10 casos de processo por SO (9 passam/1 skip Windows),14 API/PostgreSQL restrito e restore;196 JS passam/2 skips; fmt/clippy; CI0026313 passou em Windows/Ubuntu |
-| Evidências | execution-engine/lifetime.rs com exceção FFI justificada; execution.ts valida containment/versão; docs/RUST-ENGINES.md e VALIDATION_REPORT.md |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Autorização | PolicyGate na API, identidade/mandato/hash preservados; pipe de controle cancela após perda de autorização detectada; o cancelamento por requerimento exige as mesmas operações e o mesmo escopo vigente que autorizaram o job |
+| Limitações | Worker confiável. Job Object Windows e PDEATHSIG/NO_NEW_PRIVS Linux para filho direto; sem sandbox/cgroups/cotas/fila. Árvores Linux/pipes herdados no cancelamento geral ainda pendentes; job e recibo têm estados distintos. O registro de execução que permite o cancelamento é volátil e vale para o processo do job; só o caminho de importação publica o contrato |
+| Testes necessários / disponíveis | 4 Rust,10 casos de processo por SO (9 passam/1 skip Windows),16 API/PostgreSQL restrito e restore;200 JS passam/2 skips; fmt/clippy; CI0026313 passou em Windows/Ubuntu |
+| Evidências | execution-engine/lifetime.rs com exceção FFI justificada; execution.ts valida containment/versão; apps/api/src/jobs.ts, migração014, docs/RUST-ENGINES.md e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M2 |
 | Prioridade | P0 |
 
@@ -754,7 +754,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Laboratórioisolado |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não implementado nem executado |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -774,7 +774,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Ambientesdedicados |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Sem protocolo industrial ativo ou testes de disponibilidade implementados |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -794,7 +794,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Processos/referênciasconfiguráveis |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Auditoria técnica existente não constitui conformidade ou certificação |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -814,7 +814,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Backup/restorebase |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Teste de restauração técnica não constitui BIA/DR empresarial completo |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -834,7 +834,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | A definir |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Não implementado;nenhum envio de simulação realizado |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -854,7 +854,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | A definir |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Análise de lockfile não equivale à gestão de terceiros |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |
@@ -874,7 +874,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Dependências | Clientes/projetos/relatórios |
 | Sistema operacional | Multiplataforma |
 | Rede | Sem rede durante inspeção offline; futuras integrações conforme escopo |
-| Licenciamento | Código Sentinel proprietário; dependências no inventário de licenças; ferramentas de referência não embutidas |
+| Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Operador autenticado; isolamento de empresa/projeto. Análise/ingestão requer escopo de ativo; dados e alvos devem ser próprios ou autorizados. |
 | Limitações | Operadorúnico;nenhumrecurso liberado comercialmente |
 | Testes necessários / disponíveis | Ver TESTING.md e VALIDATION_REPORT.md; não há teste de comportamento ainda não implementado |

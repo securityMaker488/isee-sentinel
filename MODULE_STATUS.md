@@ -8,10 +8,10 @@ profissional ou comercial.
 | Módulo | Disponível no Windows | Ainda falta |
 |---|---|---|
 | Fundação privada | MFA, clientes/projetos/ativos, escopo, CSRF, evidências, auditoria e planos versionados | Vínculos com demais executores, retenção e homologação |
-| Authorization Manager | Responsável/prova cifrados, projeto, revisão, nove perfis, limites, manifesto imutável IPv4/portas/exclusões e revogação sem retorno ao legado | Catálogo amplo, cotas acumuladas, cancelamento imediato e homologação Debian |
+| Authorization Manager | Responsável/prova cifrados, projeto, revisão, nove perfis, limites, manifesto imutável IPv4/portas/exclusões e revogação sem retorno ao legado | Catálogo amplo, cotas acumuladas, cancelamento imediato nas demais operações e homologação Debian |
 | Planos de avaliação | Revisões imutáveis, etapas vinculadas ao mandato/hash e análise estática e inspeção de arquivo com job/evidência/relatório; tela funcional | Integrar os demais executores; comparação/reteste e fila gerais |
-| Universal Import Lab | ZIP/TAR/TAR.GZ cifrados, inspeção limitada, vínculo ao plano e recibo do supervisor Rust opcional | URL, Git, instaladores e execução isolada |
-| Execution Engine | Rust0.2.0 integrado, recibos/limites/cancelamento; árvore encerrada em cancelamento/timeout (Job Object interno Windows, grupo de processos Linux) e proteção após morte do supervisor | Cotas acumuladas, fila/recuperação, contenção Linux completa e pipe herdado fechado na origem; homologação Debian |
+| Universal Import Lab | ZIP/TAR/TAR.GZ cifrados, inspeção limitada, vínculo ao plano, recibo do supervisor Rust opcional e cancelamento por requerimento com estado terminal próprio | URL, Git, instaladores, execução isolada e cancelamento imediato sem supervisor Rust |
+| Execution Engine | Rust0.2.0 integrado, recibos/limites/cancelamento; árvore encerrada em cancelamento/timeout (Job Object interno Windows, grupo de processos Linux), proteção após morte do supervisor e contrato de cancelamento por requerimento (`POST /api/jobs/:id/cancel`) | Cotas acumuladas, fila/recuperação, cancelamento nos demais executores, contenção Linux completa e pipe herdado fechado na origem; homologação Debian |
 | SecureBuild / análises | Regras estáticas, dependências, NmapXML/HAR, SARIF, cloud, identidade, IA, binários/timelines | SAST/DAST/SCA completos, feeds e avaliações de execução |
 | API Security | Auditoria estática OpenAPI JSON 3.0/3.1 | Testes ativos de autorização e lógica de negócio |
 | Agente | Rust real com HMAC e monitoramento finito de arquivo explícito | Telemetria ampliada, serviço Linux/Windows, EDR/XDR |

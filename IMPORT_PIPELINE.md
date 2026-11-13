@@ -63,6 +63,7 @@ razão100. Detalhes: [worker](docs/IMPORT-ARCHIVE-WORKER.md).
 | `POST /api/imports` | `{assetId,name,format,contentBase64,assessment?}`; exige ambos os escopos |
 | `GET /api/imports` | Últimas 100 execuções da empresa, estado, ativo/projeto, evidência e erro |
 | `GET /api/imports/:id` | Relatório/estado e vínculo da evidência; leitura auditada |
+| `POST /api/jobs/:id/cancel` | Cancelamento por requerimento de um job em execução; exige as mesmas operações e o mesmo escopo vigente que autorizaram o job |
 
 Sucesso retorna `id`, `assetId`, `projectId`, `evidenceId`, `status`,
 `format`, `quarantineOnly`, `report` e contexto `assessment` quando enviado. O relatório usa `schemaVersion:"1.0"` e engine
@@ -80,8 +81,18 @@ Contrato/limites: [supervisor](docs/RUST-ENGINES.md). O recibo validado aparece 
 `configured:true` verifica presença de caminho absoluto de Python, não todos os
 requisitos operacionais. Ausência de configuração retorna `PYTHON_UNAVAILABLE`;
 concorrência retorna `IMPORT_BUSY`; entrada/saída inválida, timeout e integridade
-geram códigos próprios. Falhas depois da preservação mantêm a evidência. Não há
-cancelamento pelo painel, reexecução automática ou fila central completa.
+geram códigos próprios. Falhas depois da preservação mantêm a evidência.
+
+O cancelamento por requerimento (`POST /api/jobs/:id/cancel`, migração014) grava
+`jobs.cancel_requested_at`/`cancel_requested_by`, audita `job.cancel_requested`
+e sinaliza o motor em execução. O job termina `cancelled`, com
+`error_code=IMPORT_CANCELLED`, e a requisição que originou a importação recebe
+409 `IMPORT_CANCELLED`. O original em quarentena permanece cifrado e
+verificável; o lock de execução é liberado. Com o supervisor Rust, a árvore do
+worker é encerrada na hora; sem ele, o pedido fica registrado e a inspeção
+termina na fronteira seguinte. O registro de execução em memória vale para o
+processo que executa o job: não há cancelamento entre processos nem fila
+distribuída. Reexecução automática e fila central completa seguem ausentes.
 
 ## Verificação e limites de confiança
 

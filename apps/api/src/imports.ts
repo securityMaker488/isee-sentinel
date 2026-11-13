@@ -11,6 +11,7 @@ import {permit,scoped,storedScopeGrant} from './policy.ts';
 import {assessmentContextSchema,validateAssessmentExecution,recordAssessmentExecution,recordAssessmentEvidence,type AssessmentContext} from './assessment-plans.ts';
 import {digest,encrypt} from './security.ts';
 import {audit} from './audit.ts';
+import {registerJobExecution,releaseJobExecution,jobCancellationRequested} from './jobs.ts';
 import {runSupervisedImport,type ExecutionReceipt} from './execution.ts';
 
 export type ArchiveFormat='zip'|'tar'|'tar.gz';
@@ -56,7 +57,7 @@ export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date
   }
   if(!pythonPath||!isAbsolute(pythonPath))throw new HttpError(503,'PYTHON_UNAVAILABLE','Python local não configurado.');
   if(busy)throw new HttpError(409,'IMPORT_BUSY','Há uma inspeção em andamento.');busy=true;
-  const id=randomUUID(),evidenceId=randomUUID(),sha256=digest(bytes);let started=false,folder:string|undefined,receipt:ExecutionReceipt|undefined;
+  const id=randomUUID(),evidenceId=randomUUID(),sha256=digest(bytes);let started=false,folder:string|undefined,receipt:ExecutionReceipt|undefined,policyError:unknown;
   try{
    await db.transaction(async tx=>{
     await validate(tx);
@@ -72,7 +73,7 @@ export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date
    });started=true;
    folder=await mkdtemp(join(tmpdir(),'sentinel-import-'));const file=join(folder,'input.archive');await writeFile(file,bytes,{flag:'wx',mode:0o600});
    await db.transaction(validate);
-   const controller=new AbortController();let policyError:unknown,pending:Promise<void>|undefined,stopped=false;
+   const controller=new AbortController();registerJobExecution(id,controller);let pending:Promise<void>|undefined,stopped=false;
    const timer=executionPath?setInterval(()=>{
     if(pending||stopped)return;
     pending=db.transaction(validate).catch(error=>{policyError=error;controller.abort();}).finally(()=>{pending=undefined;});
@@ -93,8 +94,14 @@ export async function registerImports(app:FastifyInstance,{db,masterKey,now=Date
     await tx.query('UPDATE import_runs SET report=$2 WHERE id=$1',[id,JSON.stringify(report)]);await tx.query("UPDATE jobs SET status='completed',completed_at=$2 WHERE id=$1",[id,new Date(now())]);await audit(tx,a.organizationId,a.id,'import.inspected',id,{evidenceId,sha256,format:b.format,entries:report.entries.length,quarantineOnly:true,...(receipt?{execution:receipt}:{})});
    });return {id,format:b.format,assetId:b.assetId,projectId:asset.project_id??null,evidenceId,status:'completed',quarantineOnly:true,report,...(b.assessment?{assessment:b.assessment}:{})};
   }catch(error){
-   if(started)await db.transaction(async tx=>{const code=error instanceof HttpError?error.code:'IMPORT_FAILED';await tx.query("UPDATE jobs SET status='failed',completed_at=$2 WHERE id=$1 AND status='running'",[id,new Date(now())]);await tx.query('UPDATE import_runs SET error_code=$2 WHERE id=$1',[id,code]);await audit(tx,a.organizationId,a.id,'import.failed',id,{code,evidenceId,...(receipt?{execution:receipt}:{})});});throw error;
+   // Cancelamento pedido pelo operador é estado terminal próprio; perda de
+   // autorização continua sendo falha, com o código do escopo.
+   const cancelled=!policyError&&(jobCancellationRequested(id)||(error instanceof HttpError&&error.code==='IMPORT_CANCELLED'));
+   if(started)await db.transaction(async tx=>{const code=cancelled?'IMPORT_CANCELLED':error instanceof HttpError?error.code:'IMPORT_FAILED';await tx.query("UPDATE jobs SET status=$2,completed_at=$3 WHERE id=$1 AND status='running'",[id,cancelled?'cancelled':'failed',new Date(now())]);await tx.query('UPDATE import_runs SET error_code=$2 WHERE id=$1',[id,code]);await audit(tx,a.organizationId,a.id,cancelled?'import.cancelled':'import.failed',id,{code,evidenceId,...(receipt?{execution:receipt}:{})});});
+   if(cancelled&&!(error instanceof HttpError&&error.code==='IMPORT_CANCELLED'))throw new HttpError(409,'IMPORT_CANCELLED','Inspeção cancelada; original preservado.');
+   throw error;
   }finally{
+   releaseJobExecution(id);
    try{if(folder){const parent=resolve(tmpdir());if(dirname(resolve(folder))!==parent||!resolve(folder).startsWith(join(parent,'sentinel-import-')))throw new Error('Unexpected temporary path');await unlink(join(folder,'input.archive')).catch(e=>{if(e.code!=='ENOENT')throw e;});await rmdir(folder);}}
    finally{try{if(started)await db.query('DELETE FROM import_execution_lock WHERE slot=1 AND job_id=$1',[id]);}finally{busy=false;}}
   }

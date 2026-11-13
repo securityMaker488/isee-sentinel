@@ -21,6 +21,7 @@ import {registerLab,type LabRunner} from './lab.ts';
 import {registerForensics,type ForensicRunner} from './forensics.ts';
 import {registerGraph} from './graph.ts';
 import {registerImports,type ImportRunner} from './imports.ts';
+import {registerJobs} from './jobs.ts';
 import {registerAuthorizationManager} from './authorization-manager.ts';
 import {registerAssessmentPlans,assessmentContextSchema,validateAssessmentExecution,recordAssessmentExecution,recordAssessmentEvidence} from './assessment-plans.ts';
 
@@ -202,6 +203,7 @@ export async function buildApp(options:AppOptions) {
   await registerForensics(app,{db,masterKey,now,pythonPath:options.pythonPath??process.env.SENTINEL_PYTHON_PATH,runner:options.forensicRunner});
   await registerGraph(app,{db});
   await registerImports(app,{db,masterKey,now,pythonPath:options.pythonPath??process.env.SENTINEL_PYTHON_PATH,runner:options.importRunner,executionPath:options.executionPath??process.env.SENTINEL_EXECUTION_PATH});
+  await registerJobs(app,{db,now});
   if(options.staticDir&&existsSync(options.staticDir))await app.register(staticFiles,{root:options.staticDir,prefix:'/',index:['index.html']});
   await app.ready();return app;
 }
