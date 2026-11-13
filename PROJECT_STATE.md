@@ -96,7 +96,7 @@ preservados. Não presumir EDR completo, pentest geral ou isolamento de VM.
 
 Git privado autorizado: https://github.com/securityMaker488/isee-sentinel,
 main/origin HTTPS, privacidade reconfirmada antes do push atual. Código entregue:
-0026313060ca155201a7fcf56cfb902d3cd69641. Registro posterior só documental usa
+fc1dfcc59bfda62121a3de9eff739f6b88b5df7a. Registro posterior só documental usa
 [skip ci], sem atribuir nova suíte ao registro. Conferir git
 log/status na retomada. Credenciais/bancos/dumps/.sentinel/target não entram
 no Git. Recompilar por SO; não depender desta conversa. DEVELOPMENT/TESTING
