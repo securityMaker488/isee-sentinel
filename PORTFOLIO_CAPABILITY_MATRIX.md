@@ -726,7 +726,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 
 | Campo | Registro |
 |---|---|
-| Ferramenta de referência | Diretriz V11.0; Referência B como pesquisa conceitual, sem código incorporado |
+| Ferramenta de referência | Diretriz V11.0; projetos de referência autorizados como pesquisa conceitual, sem código incorporado |
 | Problema | Orquestrar trabalhos persistentes |
 | Funcionalidades desejadas / recorte | Supervisor Rust0.2.0 com recibos/limites/cancelamento, árvore encerrada em cancelamento/timeout e proteção após morte do supervisor; ampliar runtime/jobs recuperáveis e cotas |
 | Módulo | Execution Center |

@@ -1,5 +1,8 @@
-# I.See Sentinel · Private Operator Edition 0.2
-aqui e as ordens pra nao se esquecer e usar 
+# I.See Sentinel 0.2 · Private Operator Edition
+
+Edição autohospedada para um operador fundador único, com empresas e projetos
+separados. O código é público sob AGPL-3.0; a operação, os dados e o ambiente
+de laboratório continuam sendo de uso privado.
 
 Implementação incremental conforme diretriz **V11.0**, preservando requisitos anteriores, com um único
 operador fundador e empresas/projetos separados. O núcleo conecta análise,
@@ -31,7 +34,7 @@ A análise estática e a inspeção de arquivos podem ser executadas por etapa, 
 e as evidências; os demais perfis indicam seu estado de integração.
 Consulte [planos de avaliação](docs/ASSESSMENT-PLANS.md).
 Código e memória de continuidade são sincronizados no
-[repositório privado](https://github.com/securityMaker488/isee-sentinel).
+[repositório público](https://github.com/securityMaker488/isee-sentinel).
 As pendências Windows continuam registradas; o preparo do GitHub não encerra
 essa etapa nem homologa o Debian.
 
@@ -149,3 +152,18 @@ O desenvolvimento e os testes locais foram feitos no Windows disponível,
 inclusive PostgreSQL nativo. Debian 13 KDE é o alvo principal; sua instalação,
 dual boot, drivers, Podman e Kali/KVM ainda não foram executados. Consulte o
 diagnóstico e execute `bash scripts/diagnose-linux.sh` no Linux de destino.
+
+## Licença
+
+Copyright (C) 2026 I.See Technologies. Este programa é software livre: sob a
+GNU Affero General Public License, versão 3 (AGPL-3.0), como publicada pela Free
+Software Foundation.
+
+O código-fonte correspondente está neste repositório, incluindo a interface web
+oferecida por rede: quem usa o serviço recebe o código e as instruções de
+compilação correspondentes (AGPL §13). Avisos de licença e copyrights de
+terceiros permanecem no [LICENSE](LICENSE) e no inventário em
+[LICENSES.md](LICENSES.md); nenhuma dependência é vendorizada no repositório.
+
+Contribuições e uso comercial exigem compatibilidade com a AGPL-3.0. O guia de
+colaboração está em [CONTRIBUTING.md](CONTRIBUTING.md).

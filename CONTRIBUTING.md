@@ -1,8 +1,9 @@
-# Desenvolvimento e contribuições internas
+# Desenvolvimento e contribuições
 
-I.See Sentinel é software proprietário da I.See Technologies. Este guia organiza
-contribuições internas autorizadas; não concede licença pública ou autorização
-para publicar o repositório. Consulte [LICENSE](LICENSE) e [LICENSES.md](LICENSES.md).
+I.See Sentinel é software da I.See Technologies, publicado sob a GNU Affero
+General Public License 3 (AGPL-3.0). Este guia organiza contribuições; qualquer
+contribuição é publicada sob a mesma licença. Consulte [LICENSE](LICENSE) e
+[LICENSES.md](LICENSES.md).
 
 ## Retomar e delimitar
 
@@ -15,7 +16,7 @@ Registre riscos e o critério de aceite antes de introduzir um novo executor.
 Use branch de tarefa quando o histórico estiver preparado. Confira `git status`
 e preserve alterações não sincronizadas antes de atualizar uma branch. Não use
 reset destrutivo, force-push, troca de remoto ou publicação para contornar conflito.
-[GITHUB-PRIVATE.md](GITHUB-PRIVATE.md) descreve a preparação do remoto privado.
+[GITHUB.md](GITHUB.md) descreve a preparação do remoto e a publicação de 13/11/2026.
 
 ## Implementar
 

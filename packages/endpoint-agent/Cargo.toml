@@ -5,7 +5,7 @@ edition = "2024"
 rust-version = "1.85"
 publish = false
 description = "Explicit-consent integrity observations and authenticated bounded monitoring for I.See Sentinel"
-license = "LicenseRef-Proprietary"
+license = "AGPL-3.0-only"
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }

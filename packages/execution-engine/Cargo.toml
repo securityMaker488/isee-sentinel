@@ -4,7 +4,7 @@ version = "0.2.0"
 edition = "2024"
 rust-version = "1.85"
 publish = false
-license = "LicenseRef-Proprietary"
+license = "AGPL-3.0-only"
 description = "Bounded supervision of Sentinel's trusted offline archive worker"
 
 [dependencies]

@@ -2,6 +2,7 @@
   "name": "isee-sentinel",
   "version": "0.2.0",
   "private": true,
+  "license": "AGPL-3.0-only",
   "type": "module",
   "description": "I.See Sentinel — Private Operator Edition, directive V11.0",
   "engines": {

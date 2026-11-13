@@ -1,6 +1,7 @@
 # I.See Sentinel — instruções do repositório
 
-Produto proprietário da I.See Technologies, Private Operator Edition. Fundador
+Produto da I.See Technologies, Private Operator Edition, publicado sob
+GNU AGPL-3.0. Fundador
 único; clientes são organizações/projetos, não usuários públicos. Priorizar
 funcionalidades locais e verificáveis, sem SaaS, Docker ou APIs pagas obrigatórias.
 
@@ -57,9 +58,16 @@ credenciais cifradas, integridade e auditoria. Sem segredos em logs, prompts,
 commits ou relatórios. Não incluir banco/chave/credencial/.env real no Git.
 Executar a verificação de repositório antes de commit/push; ela não substitui
 revisão dos arquivos. Não usar push --force, mudar remoto, tornar repositório
-público ou publicar código sem autorização específica. O remoto desejado é
-privado securityMaker488/isee-sentinel já foi criado e o push foi autorizado.
-Conferir o remoto observado antes de sincronizar; preservar a privacidade.
+público ou publicar código sem autorização específica.
+
+Estado em 13/11/2026: o titular autorizou a publicação pública do repositório
+securityMaker488/isee-sentinel sob AGPL-3.0 e autorizou, uma única vez, a
+reescrita de histórico necessária para retirar do histórico público o registro
+interno de pesquisa sobre os projetos de referência — registrada em
+[GITHUB.md](GITHUB.md) e no espelho privado de backup. Essa autorização é
+datada e não se repete: qualquer outro force-push, mudança de remoto ou
+publicação continua exigindo autorização nova e explícita. Conferir o remoto
+observado antes de sincronizar.
 
 Não formatar, particionar, mudar bootloader, apagar Windows, alterar serviços
 preexistentes ou iniciar ação ofensiva fora de escopo. Instalação do SO é separada.

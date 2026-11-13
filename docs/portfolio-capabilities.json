@@ -689,7 +689,7 @@
     {
       "id": "execution-center",
       "module": "Execution Center",
-      "reference": "Diretriz V11.0; Referência B como pesquisa conceitual, sem código incorporado",
+      "reference": "Diretriz V11.0; projetos de referência autorizados como pesquisa conceitual, sem código incorporado",
       "problem": "Orquestrar trabalhos persistentes",
       "desired": "Supervisor Rust0.2.0 com recibos/limites/cancelamento, árvore encerrada em cancelamento/timeout e proteção após morte do supervisor; ampliar runtime/jobs recuperáveis e cotas",
       "implementation": "Nativa",

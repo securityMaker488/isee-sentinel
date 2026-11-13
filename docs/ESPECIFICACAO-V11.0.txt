@@ -101,17 +101,14 @@ Toda decisão arquitetural importante deverá considerar segurança, desempenho,
 
 O proprietário da I.See Technologies recebeu autorização do colaborador para estudar e utilizar seus projetos, conforme os direitos efetivamente concedidos.
 
-Considere estes perfis como referências prioritárias:
+Considere os perfis abaixo como referências prioritárias. Os identificadores, URLs e revisões
+analisadas estão na documentação de pesquisa interna, mantida fora deste repositório.
 
-https://github.com/projetos de referência autorizados
+## Referências identificadas
 
-https://github.com/projetos de referência autorizados
+### Referência A — scanner modular de vulnerabilidades Web/API
 
-## Repositórios identificados
-
-### Referência A
-
-https://github.com/projetos de referência autorizados/Referência A
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência principal para:
 
@@ -149,13 +146,13 @@ Referência principal para:
 - Testes positivos e negativos.
 - Avaliação de comportamento de WAF.
 
-A documentação pública do Referência A deve ser confrontada com a versão do código realmente analisada.
+A documentação pública da Referência A deve ser confrontada com a versão do código realmente analisada.
 
 Não reproduzir automaticamente mecanismos de evasão de WAF. Priorizar identificação das proteções, análise de resultados, compatibilidade e testes controlados.
 
-### Referência B
+### Referência B — execução verificável e quality gates
 
-https://github.com/projetos de referência autorizados/Referência B
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência para:
 
@@ -171,9 +168,9 @@ Referência para:
 - Logs auditáveis.
 - Confiabilidade no desenvolvimento com IA.
 
-### Referência C
+### Referência C — aplicação desktop em Rust/Tauri
 
-https://github.com/projetos de referência autorizados/Referência C
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência para:
 
@@ -197,9 +194,9 @@ Analisar rigorosamente o gerenciamento de permissões, sudoers, IPv6, firewall e
 
 Não executar configurações privilegiadas desse projeto no Debian principal sem revisão e autorização.
 
-### Referência D
+### Referência D — serviços de comércio em Go
 
-https://github.com/projetos de referência autorizados/Referência D
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência para:
 
@@ -216,9 +213,9 @@ Referência para:
 - Segurança de lógica de negócios.
 - Testes de regressão.
 
-### Referência E
+### Referência E — API gateway e limitação de taxa
 
-https://github.com/projetos de referência autorizados/Referência E
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência para:
 
@@ -234,9 +231,9 @@ Referência para:
 - Logs estruturados.
 - Graceful shutdown.
 
-### Referência F
+### Referência F — monólito modular de APIs
 
-https://github.com/projetos de referência autorizados/Referência F
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência para:
 
@@ -249,9 +246,9 @@ Referência para:
 - Observabilidade.
 - Organização de backend.
 
-### Referência G
+### Referência G — automação de desenvolvimento
 
-https://github.com/projetos de referência autorizados/Referência G
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência para:
 
@@ -263,9 +260,9 @@ Referência para:
 
 Não presumir compatibilidade direta com Codex, pois o projeto foi desenvolvido para fluxos específicos de Claude Code.
 
-### Referência H
+### Referência H — pagamentos e integridade transacional
 
-https://github.com/projetos de referência autorizados/Referência H
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência para:
 
@@ -277,9 +274,9 @@ Referência para:
 - Resiliência.
 - Segurança de lógica de negócios.
 
-### Referência I
+### Referência I — operações de segurança
 
-https://github.com/projetos de referência autorizados/Referência I
+(Referência interna: identificada na documentação de pesquisa mantida fora deste repositório.)
 
 Referência conceitual para operações de segurança.
 
@@ -708,7 +705,7 @@ Preservar serviços TypeScript existentes se forem adequados.
 ## Java
 
 - Integração de ferramentas JVM.
-- Estudos do Referência A.
+- Estudos da Referência A.
 - Segurança Spring.
 - Análise de bytecode.
 - CFG e análise de fluxo.
@@ -920,7 +917,7 @@ Não instalar o catálogo inteiro no Debian principal.
 
 # 11 — WEB/API SECURITY ENGINE
 
-Evoluir o motor Web/API com base nos conhecimentos do Referência A e nas melhores práticas de engenharia segura.
+Evoluir o motor Web/API com base nos conhecimentos da Referência A e nas melhores práticas de engenharia segura.
 
 ## Discovery
 
@@ -1135,7 +1132,7 @@ Separar laboratórios de malware dos ambientes de clientes.
 
 # 16 — NETWORK, VPN E IDENTITY SECURITY
 
-Usar Referência C como referência para pesquisa de rede.
+Usar a Referência C como referência para pesquisa de rede.
 
 Desenvolver ou integrar:
 
@@ -1163,7 +1160,7 @@ Estudar:
 - Passkeys.
 - Key management.
 
-Não importar configurações privilegiadas do Referência C sem auditoria.
+Não importar configurações privilegiadas da Referência C sem auditoria.
 
 ---
 
@@ -1240,9 +1237,9 @@ Nunca incluir segredos integralmente em relatórios por padrão.
 
 ---
 
-# 19 — referência autorizada-INSPIRED VERIFIED EXECUTION
+# 19 — VERIFIED EXECUTION BASEADO EM REFERÊNCIA AUTORIZADA
 
-Aplicar os conceitos do Referência B ao processo de desenvolvimento e à execução do Sentinel.
+Aplicar os conceitos da Referência B ao processo de desenvolvimento e à execução do Sentinel.
 
 Exigir evidências para:
 
@@ -1664,7 +1661,7 @@ Criar ou atualizar documentos equivalentes à organização existente:
 - TECHNOLOGY-DECISIONS.md.
 - SECURITY.md.
 - THREAT-MODEL.md.
-- registro de pesquisa interno.
+- Documentação de pesquisa interna, mantida fora deste repositório.
 - REPOSITORY-INVENTORY.md.
 - THIRD-PARTY-LICENSES.md.
 - CAPABILITY-MATRIX.md.
@@ -1826,7 +1823,7 @@ Ordem obrigatória:
 1. Auditar o Sentinel real.
 2. Preservar o estado do projeto.
 3. Identificar tecnologias existentes.
-4. Estudar projetos de referência autorizados.
+4. Estudar os projetos de referência autorizados.
 5. Identificar oportunidades e riscos de licença.
 6. Avaliar a arquitetura Rust-first.
 7. Selecionar o primeiro incremento de maior valor.

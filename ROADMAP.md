@@ -39,7 +39,8 @@ Nenhum dos marcos funcionais M1–M5 está completo. Os M0–M6 da matriz antiga
 4. Seguir M3–M5 nas dependências acima, mantendo ProofLab, remediação/reteste,
    governança e liberação do escopo anterior. Catálogo não é executor implementado.
 
-Auditoria/decisões: docs/RUST-ENGINES.md e registro de pesquisa interno.
+Auditoria/decisões: docs/RUST-ENGINES.md e registro de pesquisa interno, mantido fora
+do repositório.
 Resultados e limitações de cada incremento: VALIDATION_REPORT.md.
 
 ## Cobertura V6.9 preservada — não é uma segunda fila

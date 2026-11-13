@@ -4,7 +4,81 @@ Diretriz V11.0 e requisitos anteriores, versão de desenvolvimento 0.2.0. Result
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
-## Incremento M1 — contenção de árvore no cancelamento, 0.2.0 — 13/11/2026
+## Preparação de publicação pública — 13/11/2026
+
+### A. Autorização e escopo
+
+O titular autorizou, nesta data, a publicação pública do repositório sob
+GNU AGPL-3.0 e a reescrita do histórico necessária para não expor o registro
+interno de pesquisa sobre os projetos de referência estudados. O escopo desta
+etapa é **preparação local**: árvore sanitizada, histórico reescrito
+localmente, backup verificado e relatório. Não houve envio ao remoto, não houve
+force-push e a visibilidade do repositório continua **privada** até a aprovação
+final do titular. A autorização para reescrever o histórico é única, datada e
+não se estende a outras publicações.
+
+### B. Backup privado e verificável
+
+Espelho local fora do repositório, criado antes de qualquer alteração:
+`C:\Users\golde\isee-sentinel-backup\isee-sentinel-2026-11-13.git`
+(`git clone --mirror`), com 16 commits, `git fsck --full --strict` sem erros e
+`refs/heads/main` idêntico ao HEAD local e ao `origin/main` do momento.
+Manifesto por commit (SHA-1, SHA da árvore, autor, data, assunto) em
+`manifest-commits-2026-11-13.txt`, com o sha256 do manifesto em
+`manifest-commits-2026-11-13.txt.sha256`
+(`31f770189f58e1531f6d6c4f5b2770401f519a1bc24ca39a17cde764d6f87ed4`).
+O espelho guarda a série completa, inclusive o registro interno de pesquisa e
+as URLs que o histórico público não terá.
+
+### C. Auditoria de atribuição legal
+
+Nenhum código de terceiros incorporado: nenhum diretório vendorizado, nenhum
+cabeçalho de copyright alheio nos 119 arquivos de código versionados e nenhum
+bloco de código de terceiros no repositório. O registro interno de pesquisa
+guardava apenas metadados (revisões, hashes, caminhos de testes), sem
+excerpts de código, e foi removido da árvore e do histórico público.
+
+Dependências de terceiros: 274 pacotes npm com licença resolvida (o inventário
+em `docs/generated/dependencies.json` cobre exatamente o `package-lock.json`;
+só os três pacotes do próprio workspace apareciam sem licença e agora declaram
+AGPL-3.0-only), 23 pacotes do supervisor e 147 pacotes do crate do agente, ambos
+com inventário novo ou atualizado em `docs/generated/`. As licenças são
+predominantemente MIT/Apache-2.0, com Unicode-3.0, ISC, BSD-3-Clause, Zlib,
+BSL-1.0, CDLA-Permissive-2.0, Unlicense e uma entrada dual
+(MIT/Apache-2.0/LGPL-2.1-or-later) que merece revisão jurídica antes de
+distribuição comercial. Nenhum aviso de licença ou copyright de terceiro foi
+removido: o registro interno de pesquisa saiu, os inventários e as declarações
+das dependências ficaram.
+
+### D. Redação e integridade da especificação
+
+O capítulo 02 da especificação V11 (bibliografia dos projetos de referência)
+foi redigido por decisão do titular: nomes e URLs viraram "Referência A..I" e
+"Referência interna", preservando as listas técnicas de capacidades e todo o
+resto do documento byte a byte. O arquivo passou de 41767 para 42846 bytes;
+`sha256` original `065bf67c…` e redigido `3e7c4c24…` estão registrados em
+`docs/PROMPT-COVERAGE.json`, que também passou a espelhar os 88 títulos
+redigidos, preservando a cadeia de custódia do anexo do operador.
+
+### E. Estado do histórico reescrito
+
+A reescrita remove dos 16 commits o registro interno de pesquisa e as menções
+aos projetos estudados, preservando integralmente código, testes, migrações e
+documentação técnica. Ela é feita localmente; o remoto continua com a série
+anterior e nenhum force-push foi executado. Consequência prevista: os hashes
+de commit mudam e a atualização do remoto exigirá `--force-with-lease` com a
+autorização já dada, além de nova execução da CI sobre o histórico reescrito.
+
+### F. Limites desta etapa
+
+Não foram reexecutados PostgreSQL, navegador, perf/Benchmark nem Debian; a
+suíte completa e o build Rust foram repetidos sobre a árvore sanitizada antes
+da reescrita. O repositório segue privado até a aprovação do titular. Hashes
+antigos citados em documentos anteriores ficaram sem objeto no histórico
+reescrito e foram mantidos apenas como registro do que foi validado antes da
+reescrita.
+
+
 
 ### A. Base e B. Prova dirigida antes do código
 
@@ -133,7 +207,7 @@ recusa interpretador privilegiado e configura NO_NEW_PRIVS/PDEATHSIG com checage
 de pai, protegendo filho direto. Falhas negam spawn. FFI está isolada numa única
 exceção a deny(unsafe_code); CLI conserva forbid. Comentários SAFETY e ADR
 registram invariantes, propriedade dos handles, buffers e restrições após fork.
-São23 dependências externas resolvidas, sem código projetos de referência autorizados incorporado.
+São23 dependências externas resolvidas, sem código de terceiros incorporado.
 
 Isso não é sandbox de SO/rede, nem garante árvores Linux ou cancelamento normal
 de filhos que herdam pipes. Worker confiável sem descendentes continua sendo o
@@ -201,15 +275,15 @@ nativo/engine de execução Rust, contenção geral, fila recuperável ou client
 
 ### B. Pesquisa
 
-110 repositórios públicos paginados:106 projetos de referência autorizados e4 projetos de referência autorizados. Nove referências
-solicitadas examinadas em revisões fixas: Referência A, Referência B, Referência C,
-Referência D, Referência E, Referência F, Referência G, Referência H e Referência I.
-[Pesquisa](registro de pesquisa interno) e [registro](registro de pesquisa interno)
-contêm commits, manifests/licenças, arquivos lidos/hashes, testes localizados,
-compatibilidade não comprovada e decisões. Nenhum terceiro foi compilado,
-executado ou incorporado. Referência I só contém README nessa revisão. Referência F
-contém LICENSE AGPL e license.md CC-BY-NC-SA; não tratar como licença resolvida.
-Conceitos aproveitados: exit code real e integridade antes/depois, com código próprio.
+110 repositórios públicos paginados em dois perfis, e nove referências solicitadas
+examinadas em revisões fixas. O registro com commits, manifests/licenças,
+arquivos lidos/hashes, testes localizados, compatibilidade não comprovada e
+decisões foi movido para fora do repositório em 13/11/2026, por decisão do
+titular, antes da publicação: a identificação dos projetos e as URLs não são
+publicadas. Nenhum terceiro foi compilado, executado ou incorporado, e nenhum
+aviso de licença de terceiro foi removido; duas das referências tinham licença
+dupla ou ausente e não foram tratadas como licença resolvida. Conceitos
+aproveitados: exit code real e integridade antes/depois, com código próprio.
 
 ### C. Implementação e decisões
 

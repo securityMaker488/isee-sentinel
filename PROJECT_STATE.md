@@ -88,19 +88,27 @@ QEMU/Kali ainda precisam de homologação própria.
 
 Guia27 seções/8 fontes/651 títulos; V11 original41767 bytes com hash. Pesquisa
 prévia:110 repositórios públicos inventariados,9 leituras dirigidas/revisões;
-nenhum código terceiro executado/incorporado. Referência F tem licenças distintas;
-referências não concedem autorização de integração. Não repetir pesquisa sem
-necessidade concreta. Arquivos/decisões: docs/projetos de referência autorizados-RESEARCH e RUST-ENGINES.
+nenhum código terceiro executado/incorporado. Duas das referências tinham
+licença dupla ou ausente, e referências não concedem autorização de integração.
+Não repetir pesquisa sem
+necessidade concreta. Arquivos/decisões: docs/RUST-ENGINES.md e registro de pesquisa
+interno, mantido fora do repositório.
 
 React/Fastify/PostgreSQL, fundador/MFA, clientes/projetos/ativos, PolicyGate,
 mandatos/manifestos, evidências cifradas e auditoria continuam. Agente HMAC/FIM
 finito, casos, análises offline, SecureFix CÓPIA SSH, RiskGraph e perícia
 preservados. Não presumir EDR completo, pentest geral ou isolamento de VM.
 
-Git privado autorizado: https://github.com/securityMaker488/isee-sentinel,
-main/origin HTTPS, privacidade reconfirmada antes do push atual. Código entregue:
-2a0486adc0bb2f82c53d35a2e65f44260b90ad6a. Registro posterior só documental usa
-[skip ci], sem atribuir nova suíte ao registro. Conferir git
+Git autorizado: https://github.com/securityMaker488/isee-sentinel, main/origin
+HTTPS. Em 13/11/2026 o titular autorizou a publicação pública sob AGPL-3.0 e a
+reescrita única do histórico para retirar o registro interno de pesquisa sobre
+os projetos de referência. Estado: árvore sanitizada localmente; espelho privado
+de backup verificado em C:\Users\golde\isee-sentinel-backup (16 commits, fsck
+limpo, manifesto por commit com sha256 do manifesto); reescrita do histórico
+preparada localmente, aguardando aprovação do titular. Nada foi enviado ao
+remoto e a visibilidade continua privada até essa aprovação. Código anterior
+ao incremento: 2a0486adc0bb2f82c53d35a2e65f44260b90ad6a. Registro posterior só
+documental usa [skip ci], sem atribuir nova suíte ao registro. Conferir git
 log/status na retomada. Credenciais/bancos/dumps/.sentinel/target não entram
 no Git. Recompilar por SO; não depender desta conversa. DEVELOPMENT/TESTING
 e docs/RUST-ENGINES.md explicam reprodução e o contrato atualizado.

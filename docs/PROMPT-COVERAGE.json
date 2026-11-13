@@ -2737,9 +2737,9 @@
     },
     {
       "path": "docs/ESPECIFICACAO-V11.0.txt",
-      "sha256": "065bf67c8e79682952449ca3cb9627d3b544a99e94112f5af39a4ae3cd223b10",
-      "bytes": 41767,
-      "provenance": "original attachment bytes",
+      "sha256": "3e7c4c24f36a0b7e88af1ce160b39928449c6a80256fac7ab9f1b09f13905019",
+      "bytes": 42846,
+      "provenance": "anexo original com o capitulo 02 de referencia redigido em 13/11/2026, por decisao do titular, antes da publicacao; sha256Original preserva a cadeia de custodia",
       "sections": [
         {
           "line": 1,
@@ -2791,573 +2791,575 @@
           ]
         },
         {
-          "line": 110,
-          "heading": "Repositórios identificados",
+          "line": 107,
+          "heading": "Referências identificadas",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 112,
-          "heading": "Referência A",
+          "line": 109,
+          "heading": "Referência A — scanner modular de vulnerabilidades Web/API",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 156,
-          "heading": "Referência B",
+          "line": 153,
+          "heading": "Referência B — execução verificável e quality gates",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 174,
-          "heading": "Referência C",
+          "line": 171,
+          "heading": "Referência C — aplicação desktop em Rust/Tauri",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 200,
-          "heading": "Referência D",
+          "line": 197,
+          "heading": "Referência D — serviços de comércio em Go",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 219,
-          "heading": "Referência E",
+          "line": 216,
+          "heading": "Referência E — API gateway e limitação de taxa",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 237,
-          "heading": "Referência F",
+          "line": 234,
+          "heading": "Referência F — monólito modular de APIs",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 252,
-          "heading": "Referência G",
+          "line": 249,
+          "heading": "Referência G — automação de desenvolvimento",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 266,
-          "heading": "Referência H",
+          "line": 263,
+          "heading": "Referência H — pagamentos e integridade transacional",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 280,
-          "heading": "Referência I",
+          "line": 277,
+          "heading": "Referência I — operações de segurança",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 288,
+          "line": 285,
           "heading": "Pesquisa adicional",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 319,
+          "line": 316,
           "heading": "03 — POLÍTICA DE PROPRIEDADE INTELECTUAL E LICENÇAS",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 347,
+          "line": 344,
           "heading": "04 — AUDITORIA OBRIGATÓRIA DO SENTINEL EXISTENTE",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 386,
+          "line": 383,
           "heading": "05 — PRINCÍPIO RUST-FIRST",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 429,
+          "line": 426,
           "heading": "06 — ARQUITETURA RUST SECURITY ENGINES",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 433,
+          "line": 430,
           "heading": "6.1 Sentinel Execution Engine — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 463,
+          "line": 460,
           "heading": "6.2 Sentinel Web/API Security Engine — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 487,
+          "line": 484,
           "heading": "6.3 Sentinel Network Engine — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 507,
+          "line": 504,
           "heading": "6.4 Sentinel Detection Engine — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 534,
+          "line": 531,
           "heading": "6.5 Sentinel Evidence Engine — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 555,
+          "line": 552,
           "heading": "6.6 Sentinel Forensics Processing Engine — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 573,
+          "line": 570,
           "heading": "6.7 Sentinel Agent Runtime — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 590,
+          "line": 587,
           "heading": "6.8 Sentinel SecureCode Coordinator — Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 606,
+          "line": 603,
           "heading": "6.9 Sentinel AI Security Coordinator",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 618,
+          "line": 615,
           "heading": "07 — ORGANIZAÇÃO DO CÓDIGO RUST",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 671,
+          "line": 668,
           "heading": "08 — ARQUITETURA MULTILINGUAGEM",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 675,
+          "line": 672,
           "heading": "Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 679,
+          "line": 676,
           "heading": "Python",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 690,
+          "line": 687,
           "heading": "TypeScript / React",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 702,
+          "line": 699,
           "heading": "Go",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 708,
+          "line": 705,
           "heading": "Java",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 717,
+          "line": 714,
           "heading": "C/C++ / Assembly",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 725,
+          "line": 722,
           "heading": "C# / PowerShell",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 738,
+          "line": 735,
           "heading": "09 — PLUGIN SDK E TOOL ADAPTER SYSTEM",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 781,
+          "line": 778,
           "heading": "10 — CATÁLOGO DE FERRAMENTAS A ESTUDAR E INTEGRAR",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 787,
+          "line": 784,
           "heading": "10.1 Offensive Security / Pentest",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 810,
+          "line": 807,
           "heading": "10.2 Bug Bounty / Web Hacking",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 828,
+          "line": 825,
           "heading": "10.3 AppSec / DevSecOps",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 844,
+          "line": 841,
           "heading": "10.4 Blue Team / SOC",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 859,
+          "line": 856,
           "heading": "10.5 Forensics / Reverse Engineering",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 875,
+          "line": 872,
           "heading": "10.6 Cloud / Infrastructure",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 888,
+          "line": 885,
           "heading": "10.7 Mobile / AI / IoT",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 921,
+          "line": 918,
           "heading": "11 — WEB/API SECURITY ENGINE",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 925,
+          "line": 922,
           "heading": "Discovery",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 942,
+          "line": 939,
           "heading": "Módulos de análise",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 999,
+          "line": 996,
           "heading": "12 — SECURE CODE ANALYSIS ENGINE",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1003,
+          "line": 1000,
           "heading": "Static Analysis",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1020,
+          "line": 1017,
           "heading": "Linguagens prioritárias",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1030,
+          "line": 1027,
           "heading": "Análises de segurança",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1053,
+          "line": 1050,
           "heading": "13 — BLUE TEAM & DETECTION OPERATIONS",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1088,
+          "line": 1085,
           "heading": "14 — PURPLE TEAM OPERATIONS",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1111,
+          "line": 1108,
           "heading": "15 — DFIR, MALWARE E REVERSE ENGINEERING",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1136,
+          "line": 1133,
           "heading": "16 — NETWORK, VPN E IDENTITY SECURITY",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1170,
+          "line": 1167,
           "heading": "17 — AI SECURITY",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1195,
+          "line": 1192,
           "heading": "18 — EVIDENCE ENGINE E RELATÓRIOS",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1243,
-          "heading": "19 — referência autorizada-INSPIRED VERIFIED EXECUTION",
+          "line": 1240,
+          "heading": "19 — VERIFIED EXECUTION BASEADO EM REFERÊNCIA AUTORIZADA",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1278,
+          "line": 1275,
           "heading": "20 — THREAT MODEL DO SENTINEL",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1327,
+          "line": 1324,
           "heading": "21 — SEGURANÇA E AUTORIZAÇÃO DAS OPERAÇÕES",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1354,
+          "line": 1351,
           "heading": "22 — INTERFACE E COMMAND CENTER",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1402,
+          "line": 1399,
           "heading": "23 — I.SEE SECURITY LAB",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1441,
+          "line": 1438,
           "heading": "24 — HARDWARE E OTIMIZAÇÃO",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1473,
+          "line": 1470,
           "heading": "25 — TESTES DE ENGENHARIA E SEGURANÇA",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1475,
+          "line": 1472,
           "heading": "Rust",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1488,
+          "line": 1485,
           "heading": "Python",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1496,
+          "line": 1493,
           "heading": "TypeScript",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1505,
+          "line": 1502,
           "heading": "Go",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1512,
+          "line": 1509,
           "heading": "Java",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1520,
+          "line": 1517,
           "heading": "Plataforma completa",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1540,
+          "line": 1537,
           "heading": "26 — PLANO DE EVOLUÇÃO EM MARCOS",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1542,
+          "line": 1539,
           "heading": "MARCO 0 — AUDITORIA",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1557,
+          "line": 1554,
           "heading": "MARCO 1 — RUST CORE",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1572,
+          "line": 1569,
           "heading": "MARCO 2 — WEB/API ENGINE",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1587,
+          "line": 1584,
           "heading": "MARCO 3 — SECURECODE",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1600,
+          "line": 1597,
           "heading": "MARCO 4 — DETECTION & SECURITY OPERATIONS",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1613,
+          "line": 1610,
           "heading": "MARCO 5 — ADVANCED OPERATIONS",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1634,
+          "line": 1631,
           "heading": "27 — APRENDIZADO CONTÍNUO E PESQUISA",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1658,
+          "line": 1655,
           "heading": "28 — DOCUMENTAÇÃO E CONTINUIDADE",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1693,
+          "line": 1690,
           "heading": "29 — REGRAS DE EXECUÇÃO AUTÔNOMA",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1729,
+          "line": 1726,
           "heading": "30 — CRITÉRIOS DE ACEITAÇÃO",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1761,
+          "line": 1758,
           "heading": "31 — RELATÓRIO FINAL DE CADA EXECUÇÃO",
           "guideSections": [
             "G27"
           ]
         },
         {
-          "line": 1818,
+          "line": 1815,
           "heading": "32 — COMANDO DE EXECUÇÃO FINAL",
           "guideSections": [
             "G27"
           ]
         }
-      ]
+      ],
+      "sha256Original": "065bf67c8e79682952449ca3cb9627d3b544a99e94112f5af39a4ae3cd223b10",
+      "bytesOriginal": 41767
     }
   ]
 }

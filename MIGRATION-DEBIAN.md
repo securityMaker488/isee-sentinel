@@ -14,8 +14,8 @@ Os critérios de hardware anteriores estão em docs/FASES-V6.5.md.
 4. Guarde backups de dados/chaves separadamente. Git transporta fonte e memória,
    não credenciais nem a instância operacional.
 
-O remoto privado criado é `securityMaker488/isee-sentinel`. GITHUB-PRIVATE.md
-registra a preparação e os comandos de conferência. Verifique a sincronização
+O remoto criado é `securityMaker488/isee-sentinel`, público desde 13/11/2026 sob
+AGPL-3.0. [GITHUB.md](GITHUB.md) registra a preparação e os comandos de conferência. Verifique a sincronização
 antes de trocar de sistema; a criação do remoto não encerra as pendências Windows.
 
 Também é possível transportar o Git bundle local da entrega, sem GitHub.
@@ -27,7 +27,7 @@ cd isee-sentinel
 git status
 ```
 
-Esse clone terá o arquivo bundle como origem local. Configure GitHub privado
+Esse clone terá o arquivo bundle como origem local. Configure o GitHub
 separadamente quando autorizado; não trate o bundle como endereço de publicação.
 O ZIP correspondente contém fonte e build web de desenvolvimento, sem banco,
 chaves ou dependências instaladas. Em ambos os casos rode o setup do sistema
