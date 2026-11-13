@@ -89,14 +89,27 @@ commit mudam e a atualização do remoto exigirá `--force-with-lease`, com a
 autorização já dada, seguida de nova execução da CI sobre o histórico
 reescrito.
 
-### F. Limites desta etapa
+### F. Publicação executada
+
+Com a aprovação do titular em 13/11/2026: `git push --force-with-lease` do
+histórico reescrito (lease verificado contra `1b79d4ad…`, que era o estado
+real do remoto), depois `gh repo edit --visibility public`. O repositório está
+**público** sob AGPL-3.0. A série pré-reescrita foi removida do repositório
+local (branch apagada, `refs/original` removido, reflog expirado, prune
+executado); o único resíduo é o espelho privado verificado. Os commits antigos
+podem continuar acessíveis no GitHub por SHA até a coleta de lixo da plataforma,
+e os logs de CI das execuções anteriores foram conferidos: nenhum contém os
+termos redigidos.
+
+### G. Limites desta etapa
 
 Não foram reexecutados PostgreSQL, navegador, perf/Benchmark nem Debian; a
 suíte completa e o build Rust foram repetidos sobre a árvore sanitizada antes
-da reescrita. O repositório segue privado até a aprovação do titular. Hashes
-antigos citados em documentos anteriores ficaram sem objeto no histórico
+da reescrita, e a CI pública reexecuta a suíte sobre o histórico publicado.
+Hashes antigos citados em documentos anteriores ficaram sem objeto no histórico
 reescrito e foram mantidos apenas como registro do que foi validado antes da
-reescrita.
+reescrita. A remoção dos objetos antigos no GitHub não é controlada por esta
+equipe: depende da coleta de lixo da plataforma ou de solicitação ao suporte.
 
 
 

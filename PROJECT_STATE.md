@@ -99,27 +99,16 @@ mandatos/manifestos, evidências cifradas e auditoria continuam. Agente HMAC/FIM
 finito, casos, análises offline, SecureFix CÓPIA SSH, RiskGraph e perícia
 preservados. Não presumir EDR completo, pentest geral ou isolamento de VM.
 
-Git autorizado: https://github.com/securityMaker488/isee-sentinel, main/origin
-HTTPS. Em 13/11/2026 o titular autorizou a publicação pública sob AGPL-3.0 e a
-reescrita única do histórico para retirar o registro interno de pesquisa sobre
-os projetos de referência. Estado: árvore sanitizada e histórico reescrito
-localmente, ambos verificados (0 ocorrência de nome ou URL nos 421 blobs de
-texto dos 18 commits reescritos, dossiê ausente de todos os commits, 0 dos 119
-arquivos de código/teste/migração alterados, árvore final idêntica à árvore
-sanitizada no momento da reescrita, guarda de repositório e suíte de 200 casos
-aprovadas). O espelho
-privado de backup verificado está em C:\Users\golde\isee-sentinel-backup (duas
-séries: a publicada até então e a já sanitizada, 17 commits, fsck limpo,
-manifesto por commit com sha256 do manifesto); a série anterior também está na
-branch local archive/DO-NOT-PUSH-pre-publication-2026-11-13, que não deve ser
-publicada (--all/--mirror proibidos). Nada foi enviado ao remoto e a
-visibilidade continua privada até a aprovação do titular. HEAD reescrito atual:
-45e02d09699bbc18a1beae3d4df76392fd75b11d. Os hashes citados em seções
-anteriores (por exemplo 2a0486adc0bb2f82c53d35a2e65f44260b90ad6a) pertencem à
-série anterior, preservada no espelho privado, e não correspondem mais à branch
-main. Registro posterior só
-documental usa [skip ci], sem atribuir nova suíte ao registro. Conferir git
-log/status na retomada. Credenciais/bancos/dumps/.sentinel/target não entram
+Git: https://github.com/securityMaker488/isee-sentinel, main/origin HTTPS, **público
+desde 13/11/2026** sob AGPL-3.0, por decisão do titular. Publicação executada:
+push do histórico reescrito com `--force-with-lease` (1b79d4a → 916f427) e
+mudança de visibilidade. A série pré-reescrita foi removida do repositório local
+(refs, reflog e prune) e permanece apenas no espelho privado de backup, verificado
+e fora da árvore versionada. O e-mail pessoal nos metadados dos commits foi
+mantido, por decisão do titular. Impacto conhecido: commits antigos podem
+continuar acessíveis no GitHub por SHA até a coleta de lixo; os logs de CI
+verificados não contêm os termos redigidos. Conferir git log/status na retomada.
+Credenciais/bancos/dumps/.sentinel/target não entram
 no Git. Recompilar por SO; não depender desta conversa. DEVELOPMENT/TESTING
 e docs/RUST-ENGINES.md explicam reprodução e o contrato atualizado.
 
