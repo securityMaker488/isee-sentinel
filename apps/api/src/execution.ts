@@ -9,10 +9,10 @@ import type {ImportRunner} from './imports.ts';
 const worker=fileURLToPath(new URL('../../../workers/imports/inspect_archive.py',import.meta.url));
 const maxOutput=2*1024*1024;
 export interface ExecutionReceipt {
- schemaVersion:1;engine:'Sentinel Execution';engineVersion:'0.1.1';containment:'windows_job'|'linux_parent_death';jobId:string;
- status:'completed'|'failed'|'cancelled'|'timed_out'|'output_limit'|'integrity_failed'|'invalid_output';
+ schemaVersion:1;engine:'Sentinel Execution';engineVersion:'0.2.0';containment:'windows_job_tree'|'linux_process_group';jobId:string;
+ status:'completed'|'failed'|'cancelled'|'timed_out'|'output_limit'|'integrity_failed'|'invalid_output'|'capture_incomplete';
  exitCode:number|null;durationMs:number;inputSha256:string;workerSha256:string;
- stdoutSha256:string;stdoutBytes:number;stderrBytes:number;outputTruncated:boolean;
+ stdoutSha256:string;stdoutBytes:number;stderrBytes:number;outputTruncated:boolean;captureComplete:boolean;
 }
 export type SupervisedOptions=Parameters<ImportRunner>[0]&{executionPath:string;workerPath?:string};
 async function executable(path:string){
@@ -59,15 +59,15 @@ export async function runSupervisedImport(options:SupervisedOptions):Promise<Buf
     if(transportError)throw new HttpError(422,'EXECUTION_PROTOCOL','Falha no protocolo do supervisor.');
     let response:any;try{response=JSON.parse(output.toString('utf8'));}catch{throw new HttpError(422,'EXECUTION_PROTOCOL','Resposta do supervisor inválida.');}
     const r=response?.receipt as ExecutionReceipt;
-    const statuses=['completed','failed','cancelled','timed_out','output_limit','integrity_failed','invalid_output'];
-    if(!r||r.schemaVersion!==1||r.engine!=='Sentinel Execution'||r.engineVersion!=='0.1.1'||r.containment!==(process.platform==='win32'?'windows_job':'linux_parent_death')||r.jobId!==options.jobId||r.inputSha256!==inputHash||r.workerSha256!==workerHash||!statuses.includes(r.status)
+    const statuses=['completed','failed','cancelled','timed_out','output_limit','integrity_failed','invalid_output','capture_incomplete'];
+    if(!r||r.schemaVersion!==1||r.engine!=='Sentinel Execution'||r.engineVersion!=='0.2.0'||r.containment!==(process.platform==='win32'?'windows_job_tree':'linux_process_group')||r.jobId!==options.jobId||r.inputSha256!==inputHash||r.workerSha256!==workerHash||!statuses.includes(r.status)
        ||!Number.isSafeInteger(r.durationMs)||r.durationMs<0||!Number.isInteger(r.stdoutBytes)||r.stdoutBytes<0||r.stdoutBytes>maxOutput+1||!Number.isInteger(r.stderrBytes)||r.stderrBytes<0||r.stderrBytes>65537
-       ||typeof r.outputTruncated!=='boolean'||!/^[0-9a-f]{64}$/.test(r.stdoutSha256)||!(r.exitCode===null||Number.isInteger(r.exitCode)))throw new HttpError(409,'EXECUTION_INTEGRITY','Recibo do supervisor não corresponde à execução.');
-    if((r.status==='completed')!==(code===0)||(r.status==='completed'&&(r.exitCode!==0||r.outputTruncated)))throw new HttpError(409,'EXECUTION_INTEGRITY','Resultado e saída do processo divergem.');
+       ||typeof r.outputTruncated!=='boolean'||typeof r.captureComplete!=='boolean'||!/^[0-9a-f]{64}$/.test(r.stdoutSha256)||!(r.exitCode===null||Number.isInteger(r.exitCode)))throw new HttpError(409,'EXECUTION_INTEGRITY','Recibo do supervisor não corresponde à execução.');
+    if((r.status==='completed')!==(code===0)||(r.status==='completed'&&(r.exitCode!==0||r.outputTruncated||!r.captureComplete)))throw new HttpError(409,'EXECUTION_INTEGRITY','Resultado e saída do processo divergem.');
     const bytes=typeof response.stdout==='string'?Buffer.from(response.stdout,'utf8'):undefined;
     if(r.status==='completed'&&(!bytes||bytes.length!==r.stdoutBytes||digest(bytes)!==r.stdoutSha256))throw new HttpError(409,'EXECUTION_INTEGRITY','Saída do processo não corresponde ao hash.');
     // Copy only schema fields; do not persist arbitrary fields from an external process.
-    const receipt:ExecutionReceipt={schemaVersion:r.schemaVersion,engine:r.engine,engineVersion:r.engineVersion,containment:r.containment,jobId:r.jobId,status:r.status,exitCode:r.exitCode,durationMs:r.durationMs,inputSha256:r.inputSha256,workerSha256:r.workerSha256,stdoutSha256:r.stdoutSha256,stdoutBytes:r.stdoutBytes,stderrBytes:r.stderrBytes,outputTruncated:r.outputTruncated};
+    const receipt:ExecutionReceipt={schemaVersion:r.schemaVersion,engine:r.engine,engineVersion:r.engineVersion,containment:r.containment,jobId:r.jobId,status:r.status,exitCode:r.exitCode,durationMs:r.durationMs,inputSha256:r.inputSha256,workerSha256:r.workerSha256,stdoutSha256:r.stdoutSha256,stdoutBytes:r.stdoutBytes,stderrBytes:r.stderrBytes,outputTruncated:r.outputTruncated,captureComplete:r.captureComplete};
     onReceipt?.(receipt);
     if(signal?.aborted||r.status==='cancelled')throw new HttpError(409,'IMPORT_CANCELLED','Inspeção cancelada; original preservado.');
     if(r.status!=='completed')throw new HttpError(422,r.status==='timed_out'?'IMPORT_TIMEOUT':r.status==='output_limit'?'IMPORT_OUTPUT_LIMIT':'IMPORT_REJECTED','Worker não concluiu a inspeção; original preservado.');

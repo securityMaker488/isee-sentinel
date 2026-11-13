@@ -23,11 +23,13 @@ Nenhum dos marcos funcionais M1–M5 está completo. Os M0–M6 da matriz antiga
 
 ## Próximo incremento concreto
 
-1. M1: preservar o supervisor de um único worker confiável.0.1.1 já protege a
-   vida do worker com Job Object Windows/sinal de morte do pai Linux. Próximo:
-   cancelamento/timeout de árvores sem prender leitura em pipes herdados, limites
-   por SO e provas de encerramento. Não habilitar plugins arbitrários. Confirmar
-   as garantias Linux na CI e depois no Debian, sem atribuí-las ao Windows.
+1. M1: preservar o supervisor de um único worker confiável.0.2.0 já encerra a
+   árvore do worker em cancelamento/timeout (Job Object interno no Windows,
+   grupo de processos no Linux), limita a captura por prazo e mantém a proteção
+   após morte do supervisor. Próximo: job model recuperável, cancelamento geral
+   pelo painel, idempotência e cotas acumuladas. Não habilitar plugins
+   arbitrários. Confirmar as garantias Linux na CI e depois no Debian, sem
+   atribuí-las ao Windows.
 2. Completar contratos de runtime/job model, cancelamento/recuperação e cotas.
    Qualquer novo estado SQL exige nova migração, nunca reescrever001–013.
    Preservar identidade, revisão/hash de autorização, evidência e idempotência.

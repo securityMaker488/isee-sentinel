@@ -13,6 +13,7 @@ use std::process::{Command, Stdio};
 use std::sync::{
     Arc,
     atomic::{AtomicBool, Ordering},
+    mpsc,
 };
 use std::thread;
 use std::time::{Duration, Instant};
@@ -20,6 +21,9 @@ use std::time::{Duration, Instant};
 pub const MAX_INPUT: u64 = 16 * 1024 * 1024;
 pub const MAX_OUTPUT: usize = 2 * 1024 * 1024;
 pub const MAX_REQUEST: u64 = 8192;
+
+/// Time allowed for the capture pipes to close after the worker tree ends.
+const CAPTURE_GRACE_MS: u64 = 2000;
 
 #[cfg(test)]
 mod tests {
@@ -115,6 +119,7 @@ pub struct Receipt {
     pub stdout_bytes: usize,
     pub stderr_bytes: usize,
     pub output_truncated: bool,
+    pub capture_complete: bool,
 }
 
 #[derive(Serialize)]
@@ -191,19 +196,41 @@ pub fn bounded_hash(path: &Path, limit: u64) -> Result<String, &'static str> {
     Ok(format!("{:x}", hash.finalize()))
 }
 
+/// Reader of one worker pipe. The capture never blocks the receipt: a
+/// descendant that inherited the pipe can only delay it until the deadline.
+struct Capture {
+    receiver: mpsc::Receiver<io::Result<Vec<u8>>>,
+}
+
+impl Capture {
+    /// Returns the captured bytes, or None when the pipe did not close in time.
+    fn finish(&self, deadline: Instant) -> Option<Vec<u8>> {
+        let remaining = deadline.saturating_duration_since(Instant::now());
+        match self.receiver.recv_timeout(remaining) {
+            Ok(Ok(bytes)) => Some(bytes),
+            Ok(Err(_)) | Err(_) => None,
+        }
+    }
+}
+
 fn capture<R: Read + Send + 'static>(
     reader: R,
     limit: usize,
     overflow: Arc<AtomicBool>,
-) -> thread::JoinHandle<io::Result<Vec<u8>>> {
+) -> Capture {
+    let (sender, receiver) = mpsc::sync_channel(1);
     thread::spawn(move || {
         let mut result = Vec::new();
-        reader.take(limit as u64 + 1).read_to_end(&mut result)?;
-        if result.len() > limit {
+        let outcome = reader
+            .take(limit as u64 + 1)
+            .read_to_end(&mut result)
+            .map(|_| result);
+        if outcome.as_ref().is_ok_and(|bytes| bytes.len() > limit) {
             overflow.store(true, Ordering::SeqCst);
         }
-        Ok(result)
-    })
+        let _ = sender.send(outcome);
+    });
+    Capture { receiver }
 }
 
 /// Runs only a deployment-owned Python worker. This is not a sandbox for arbitrary
@@ -252,8 +279,16 @@ pub fn supervise(
         use std::os::windows::process::CommandExt;
         command.creation_flags(0x08000000); // CREATE_NO_WINDOW, no visible helper console.
     }
-    let containment = lifetime::configure(&mut command, python)?;
+    let mut guard = lifetime::prepare(&mut command, python, request.timeout_ms)?;
     let mut child = command.spawn().map_err(|_| "spawn_failed")?;
+    // The worker is adopted by the OS container that owns its descendants. A
+    // container that cannot be established refuses the execution instead of
+    // running an unprotected worker.
+    if let Err(code) = guard.contain(&child) {
+        let _ = child.kill();
+        let _ = child.wait();
+        return Err(code);
+    }
     let overflow = Arc::new(AtomicBool::new(false));
     // These pipes are requested above and cannot be absent after a successful spawn.
     let (Some(stdout), Some(stderr)) = (child.stdout.take(), child.stderr.take()) else {
@@ -273,28 +308,34 @@ pub fn supervise(
             reason = "output_limit";
         }
         if reason != "completed" {
-            // Never report cancellation until the child has actually been reaped.
+            // The whole tree is terminated before the child is reaped, so no
+            // descendant survives the cancellation or the timeout.
+            guard.terminate_tree();
             let _ = child.kill();
+            // Never report cancellation until the child has actually been reaped.
             break child.wait().map_err(|_| "wait_failed")?;
         }
         match child.try_wait() {
             Ok(Some(status)) => break status,
             Ok(None) => thread::sleep(Duration::from_millis(10)),
             Err(_) => {
+                guard.terminate_tree();
                 let _ = child.kill();
                 let _ = child.wait();
                 return Err("wait_failed");
             }
         }
     };
-    let stdout = out
-        .join()
-        .map_err(|_| "capture_failed")?
-        .map_err(|_| "capture_failed")?;
-    let stderr = err
-        .join()
-        .map_err(|_| "capture_failed")?
-        .map_err(|_| "capture_failed")?;
+    // A descendant that outlived the worker would keep the capture pipes open.
+    // The tree is terminated before joining, so the receipt cannot be blocked
+    // by an inherited pipe.
+    guard.terminate_tree();
+    let deadline = Instant::now() + Duration::from_millis(CAPTURE_GRACE_MS);
+    let stdout = out.finish(deadline);
+    let stderr = err.finish(deadline);
+    let capture_complete = stdout.is_some() && stderr.is_some();
+    let stdout = stdout.unwrap_or_default();
+    let stderr = stderr.unwrap_or_default();
     if reason == "completed" {
         if cancelled.load(Ordering::SeqCst) {
             reason = "cancelled";
@@ -302,6 +343,8 @@ pub fn supervise(
             reason = "output_limit";
         } else if !exit.success() {
             reason = "failed";
+        } else if !capture_complete {
+            reason = "capture_incomplete";
         } else if bounded_hash(&request.file, request.max_input_bytes)
             .ok()
             .as_deref()
@@ -329,7 +372,7 @@ pub fn supervise(
             schema_version: 1,
             engine: "Sentinel Execution",
             engine_version: env!("CARGO_PKG_VERSION"),
-            containment,
+            containment: guard.mode(),
             job_id: request.job_id,
             status: reason,
             exit_code: exit.code(),
@@ -340,6 +383,7 @@ pub fn supervise(
             stdout_bytes,
             stderr_bytes: stderr.len(),
             output_truncated: overflow.load(Ordering::SeqCst),
+            capture_complete,
         },
         stdout: text,
     })

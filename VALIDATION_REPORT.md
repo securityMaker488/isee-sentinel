@@ -4,6 +4,99 @@ Diretriz V11.0 e requisitos anteriores, versão de desenvolvimento 0.2.0. Result
 sintéticas e ambientes locais controlados. Não constituem homologação Debian,
 liberação para clientes, certificação ou prontidão comercial.
 
+## Incremento M1 — contenção de árvore no cancelamento, 0.2.0 — 13/11/2026
+
+### A. Base e B. Prova dirigida antes do código
+
+Retomada de main/7e1797f, supervisor 0.1.1 integrado e documentado. Não repetida
+a pesquisa de repositórios nem a auditoria ampla. A dúvida de projeto era única:
+como encerrar a árvore do worker em cancelamento/timeout normal sem deixar um
+descendente vivo e sem prender a captura em pipe herdado. Um programa
+descartável, fora do repositório, mediu o host antes de qualquer linha de
+código: (V1) supervisor fora de job, worker atribuído depois do spawn,
+`TerminateJobObject` matou worker e neto e o supervisor sobreviveu; (V2)
+supervisor dentro de job externo, worker herdou o job externo e recebeu um job
+interno, e terminar o job interno matou a árvore sem tocar no supervisor.
+Conclusão: jobs aninhados funcionam nesta máquina e o job interno pode ser
+terminado sem matar quem o supervisiona. A prova vale para este host, não é
+homologação de outro SO.
+
+### C. Implementação e D. Segurança
+
+`packages/execution-engine` foi para 0.2.0. `lifetime.rs` passou a ter duas
+camadas: o job externo (0.1.1) segue como garantia de morte do supervisor, e um
+job interno, criado após o spawn, recebe o worker e carrega os limites por SO
+(processos vivos 64, memória 512MiB, tempo de CPU = timeout+60s,
+KILL_ON_JOB_CLOSE). No Linux, o worker torna-se líder do seu grupo de processos
+(setpgid antes do exec) e o grupo recebe SIGKILL; PDEATHSIG e NO_NEW_PRIVS
+continuam como antes; RLIMIT_CPU/DATA/FSIZE/NOFILE passam a ser aplicados ao
+filho antes do exec. Falha ao estabelecer o contêiner recusa a execução: não há
+execução sem contenção.
+
+A captura deixou de ser `join` sem prazo: os leitores têm deadline de 2s e, se
+o pipe não fechar, o recibo registra `captureComplete:false` e o estado
+`capture_incomplete` — nunca `completed`. O JSON v1 do recibo ganha
+`captureComplete`; `containment` passa a `windows_job_tree`/`linux_process_group`
+e a API exige engine 0.2.0, recusando 0.1.1 e 0.1.0 sem fallback. A API valida
+e persiste o novo campo; nenhum estado SQL novo, nenhuma migração, UI, agente
+ou parser alterados. 23 dependências externas, as mesmas de 0.1.1. FFI continua
+isolada em lifetime.rs, única exceção a deny(unsafe_code); CLI mantém forbid.
+
+Isso continua não sendo sandbox de SO/rede: Job Objects e grupos de processos
+são contenção de processo, não isolamento. Continuam abertos: no Linux a árvore
+não fica contida por completo após morte forçada do supervisor (o sinal cobre o
+filho direto) e um descendente que crie novo grupo/sessão escapa; no Windows um
+descendente anterior à atribuição ao job interno sobrevive ao cancelamento até
+a saída do supervisor. Fechar o pipe herdado na origem exigiria criação de
+processo própria com `PROC_THREAD_ATTRIBUTE_HANDLE_LIST`, fora deste recorte.
+O worker continua confiável por contrato: a contenção de árvore é defesa em
+profundidade, não habilitação de plugins.
+
+### E. Testes observados
+
+| Verificação | Resultado local Windows |
+|---|---|
+| Sonda de jobs aninhados (programa fora do repositório) | V1 e V2: atribuição e terminação de job interno concluíram árvore sem afetar o supervisor |
+| cargo fmt/clippy -Dwarnings/test/build, --offline | Passaram; 4 testes Rust |
+| cargo check/clippy para x86_64-unknown-linux-gnu | Compilou e passou o lint do caminho Linux; não executado |
+| npx tsx --test apps/api/test/execution.test.ts | 12 casos: 11 passaram, 1 ignorado (Linux); 4,59s |
+| npm test com supervisor e Python reais | 200 casos: 198 passaram, 0 falhas, 2 ignorados por SO; 38,0s |
+| npm run check (typecheck + build do painel + suíte) | 44 módulos compilados; suíte sem o supervisor: 200 casos, 181 passaram, 19 ignorados; 32,3s |
+| Controle negativo (árvore sem terminação) | Binário cópia com a terminação de árvore desligada: os 2 casos novos falham (`captureComplete:false`), o que prova que não são vacuosos |
+
+Casos novos: cancelamento e timeout encerram worker e descendente, o descendente
+herda o pipe de stdout e mesmo assim o recibo sai com captura completa e
+`captureComplete:true`; o PID do descendente é observado como terminado. O
+controle negativo, com a terminação de árvore desligada, reproduziu o problema
+original: a captura ficou presa no pipe herdado, o recibo saiu com
+`captureComplete:false` e o teste falhou. Sem o job interno, o descendente ainda
+morre quando o supervisor sai (job externo), o que mostra por que a asserção de
+captura completa — e não só a morte do PID — é a prova do controle.
+
+Não executados neste incremento: cluster PostgreSQL dedicado (14 testes do
+incremento anterior não repetidos), navegador, agente, perf/Benchmark, Debian,
+`cargo audit` (ausente no ambiente) e execução do binário Linux. O caminho Linux
+foi verificado localmente por compilação cruzada (`cargo check` e `cargo clippy
+-D warnings` para x86_64-unknown-linux-gnu, com o alvo Rust instalado para
+isso): o código compila e passa o lint que a CI aplica, mas não foi executado
+em host Linux — a execução continua a cargo da CI Ubuntu 24.04 e do Debian13.
+PID zumbi Linux continua sendo processo terminado aguardando o reaper do sistema.
+
+### F. Desempenho e G. Continuidade
+
+Não houve medição de desempenho neste incremento: a comparação com a medição de
+02/11 (medianas 128,50ms direto/191,47ms supervisionado, binário 879104 bytes)
+não é repetida, e a diferença de binário não é medida. Sem afirmação de ganho
+ou regressão. Custos de RAM/CPU/carga não medidos.
+
+M1 continua parcial: encerrar a árvore e liberar a captura era o recorte. Próximo
+incremento: job model recuperável, cancelamento geral pelo painel, idempotência
+e cotas acumuladas; depois M2 (cliente HTTP Rust com URL exata, DNS/IP, SSRF e
+redirects). Preservar escopos, revisão/hash do mandato e evidências. Linux segue
+pendente de homologação no Debian13 KDE. PROJECT_STATE/ROADMAP mantêm a fila
+única.
+
+
 ## Incremento M1 — vida do worker após falha, 0.1.1 — 02/11/2026
 
 ### A. Base e B. Pesquisa dirigida

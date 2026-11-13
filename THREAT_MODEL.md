@@ -40,3 +40,13 @@ binário continuam parte confiável da instalação; código malicioso com acess
 ao host não é contido como em sandbox. Recibo inclui modo e versão; não aceitar
 um modo diferente do SO. Cancelamento cooperativo e encerramento forçado são
 testados separadamente, com processos sintéticos reais.
+
+A revisão0.2.0 acrescenta contenção de árvore: um Job Object interno no
+Windows, terminado em cancelamento/timeout, e grupo de processos com SIGKILL no
+Linux. A captura tem prazo próprio: pipe herdado por descendente não bloqueia o
+recibo, e uma captura incompleta é registrada como `captureComplete:false` com
+estado `capture_incomplete`, nunca `completed`. Continuam abertos: a árvore
+Linux não é contida por completo após morte forçada do supervisor, um
+descendente que crie novo grupo escapa, e um descendente anterior à atribuição
+do job interno sobrevive até a saída do supervisor. Contenção de processo não é
+sandbox.

@@ -1,6 +1,6 @@
 {
   "source": "cargo metadata --offline --locked; packages/execution-engine/Cargo.lock",
-  "recordedAt": "2026-11-02",
+  "recordedAt": "2026-11-13",
   "packages": [
     {
       "name": "block-buffer",
@@ -70,7 +70,7 @@
     },
     {
       "name": "sentinel-execution-engine",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "license": "LicenseRef-Proprietary",
       "repository": null
     },

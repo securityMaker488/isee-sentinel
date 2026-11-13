@@ -691,7 +691,7 @@
       "module": "Execution Center",
       "reference": "Diretriz V11.0; Referência B como pesquisa conceitual, sem código incorporado",
       "problem": "Orquestrar trabalhos persistentes",
-      "desired": "Supervisor Rust0.1.1 com recibos/limites/cancelamento e proteção após morte do supervisor; ampliar árvores/runtime/jobs recuperáveis",
+      "desired": "Supervisor Rust0.2.0 com recibos/limites/cancelamento, árvore encerrada em cancelamento/timeout e proteção após morte do supervisor; ampliar runtime/jobs recuperáveis e cotas",
       "implementation": "Nativa",
       "dependencies": "Rust/serde/serde_json/sha2, windows-sys/libc, Python, PostgreSQL",
       "os": "Multiplataforma",

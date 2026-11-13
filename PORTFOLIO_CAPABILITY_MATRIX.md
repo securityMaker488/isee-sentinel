@@ -728,7 +728,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 |---|---|
 | Ferramenta de referência | Diretriz V11.0; Referência B como pesquisa conceitual, sem código incorporado |
 | Problema | Orquestrar trabalhos persistentes |
-| Funcionalidades desejadas / recorte | Supervisor Rust0.1.1 com recibos/limites/cancelamento e proteção após morte do supervisor; ampliar árvores/runtime/jobs recuperáveis |
+| Funcionalidades desejadas / recorte | Supervisor Rust0.2.0 com recibos/limites/cancelamento, árvore encerrada em cancelamento/timeout e proteção após morte do supervisor; ampliar runtime/jobs recuperáveis e cotas |
 | Módulo | Execution Center |
 | Implementação | Nativa |
 | Dependências | Rust/serde/serde_json/sha2, windows-sys/libc, Python, PostgreSQL |

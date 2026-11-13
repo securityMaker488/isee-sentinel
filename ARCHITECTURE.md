@@ -57,10 +57,13 @@ nova migração: recibo em report/auditoria, job mantém estados existentes.
 
 Com Rust configurado, a API revalida autorização durante a inspeção e cancela
 o filho quando detecta revogação/expiração. Polling250ms mais latência do banco
-não é cancelamento atômico. Supervisor0.1.1 usa Job Object Windows e sinal de
-morte do pai no Linux para o worker direto, com modo declarado/validado no recibo.
-Árvores gerais, cotas de SO e fila ainda precisam de controles. A exceção FFI
-restrita está justificada em docs/RUST-ENGINES.md; agente e parser preservados.
+não é cancelamento atômico. Supervisor0.2.0 usa Job Object Windows em duas
+camadas (externo para a morte do supervisor, interno para a árvore) e grupo de
+processos Linux, com modo declarado/validado no recibo. Cancelamento e timeout
+encerram a árvore e a captura tem prazo próprio, de modo que um pipe herdado
+não bloqueia o recibo. Cotas acumuladas e fila ainda precisam de controles. A
+exceção FFI restrita está justificada em docs/RUST-ENGINES.md; agente e parser
+preservados.
 
 Processo separado e Python `-I` não são isolamento de sistema operacional.
 VMs, redes restritas, execução de aplicações desconhecidas e ProofLab completo

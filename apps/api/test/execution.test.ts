@@ -22,7 +22,7 @@ const sleeper="import os,time\nfrom pathlib import Path\nPath(__file__).with_nam
 test('native supervisor returns real status, hashes and bounded receipt without inherited secrets',{skip},async()=>{
  await writeFile(worker,"import os,json,sys\nfrom pathlib import Path\nresult={'secretInherited':'SENTINEL_TEST_PARENT_SECRET' in os.environ}\nif sys.platform=='linux': result['noNewPrivileges']=next(line.split(':',1)[1].strip() for line in Path('/proc/self/status').read_text().splitlines() if line.startswith('NoNewPrivs:'))\nprint(json.dumps(result))\n");
  process.env.SENTINEL_TEST_PARENT_SECRET='synthetic-parent-only';let receipt:ExecutionReceipt|undefined;
- try{const result=await runSupervisedImport({...options(),onReceipt:r=>{receipt=r;}});assert.equal(JSON.parse(result.toString()).secretInherited,false);if(process.platform==='linux')assert.equal(JSON.parse(result.toString()).noNewPrivileges,'1');assert.equal(receipt?.status,'completed');assert.equal(receipt?.exitCode,0);assert.equal(receipt?.stdoutSha256,digest(result));assert.equal(receipt?.workerSha256,digest(await readFile(worker)));assert.equal(receipt?.containment,process.platform==='win32'?'windows_job':'linux_parent_death');}
+ try{const result=await runSupervisedImport({...options(),onReceipt:r=>{receipt=r;}});assert.equal(JSON.parse(result.toString()).secretInherited,false);if(process.platform==='linux')assert.equal(JSON.parse(result.toString()).noNewPrivileges,'1');assert.equal(receipt?.status,'completed');assert.equal(receipt?.exitCode,0);assert.equal(receipt?.stdoutSha256,digest(result));assert.equal(receipt?.workerSha256,digest(await readFile(worker)));assert.equal(receipt?.containment,process.platform==='win32'?'windows_job_tree':'linux_process_group');}
  finally{delete process.env.SENTINEL_TEST_PARENT_SECRET;}
 });
 test('nonzero exit cannot become success even if stdout claims completion; stderr is redacted',{skip},async()=>{
@@ -104,6 +104,29 @@ test('forced supervisor death terminates its real worker without cooperative can
 });
 test('Windows job lifetime includes a real worker descendant',{skip:skip||process.platform!=='win32'},async()=>{
  await crashSupervisor(true);
+});
+// Worker that spawns a descendant which inherits the worker stdout, so the
+// capture pipe stays open until the whole tree is terminated.
+const treeWorker="import os,time,subprocess,sys\nfrom pathlib import Path\nPath(__file__).with_name('worker.pid').write_text(str(os.getpid()))\nsubprocess.Popen([sys.executable,'-I','-B',str(Path(__file__).with_name('grandchild.py'))])\nwhile True: time.sleep(0.02)\n";
+async function treeWorkerFiles(){
+ await writeFile(worker,treeWorker);await writeFile(join(folder,'grandchild.py'),sleeper.replace('worker.pid','grandchild.pid'));
+}
+test('cancellation terminates the worker tree and is not blocked by an inherited pipe',{skip},async()=>{
+ await treeWorkerFiles();const controller=new AbortController();let receipt:ExecutionReceipt|undefined;
+ const running=runSupervisedImport({...options(),signal:controller.signal,onReceipt:r=>{receipt=r;}});
+ const rejected=assert.rejects(running,{code:'IMPORT_CANCELLED'});
+ const pids=[await waitPid(),await waitPid('grandchild.pid')];
+ controller.abort();await rejected;
+ for(const pid of pids)await terminated(pid);
+ assert.equal(receipt?.status,'cancelled');assert.equal(receipt?.captureComplete,true);
+ await unlink(pidPath());await unlink(join(folder,'grandchild.pid'));
+});
+test('timeout terminates the worker tree instead of leaving descendants behind',{skip},async()=>{
+ await treeWorkerFiles();
+ const result=await raw({...request(),timeoutMs:800});assert.equal(result.code,3,result.err);
+ const report=JSON.parse(result.out);assert.equal(report.receipt.status,'timed_out');assert.equal(report.receipt.captureComplete,true);
+ for(const pid of [await waitPid(),await waitPid('grandchild.pid')])await terminated(pid);
+ await unlink(pidPath());await unlink(join(folder,'grandchild.pid'));
 });
 test('Linux refuses a set-ID interpreter before executing the worker',{skip:skip||process.platform!=='linux'},async()=>{
  const interpreter=join(folder,'privileged-python');await writeFile(interpreter,'#!/bin/sh\nexit 99\n');await chmod(interpreter,0o4700);
