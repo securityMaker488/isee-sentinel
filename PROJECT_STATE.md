@@ -69,7 +69,9 @@ implementação ausente como se fosse apenas homologação do SO.
 - CI43450994529 (commit fc1dfcc) e CI43452527408 (commit 2a0486a) aprovaram em
   Windows2022 e Ubuntu24.04; o caminho Linux (grupo+rlimits) roda em Linux real
   nessas execuções. A CI0026313 (run41557312004) validava 0.1.1, não 0.2.0.
-  A CI deste incremento ainda não foi executada.
+  A CI deste incremento, 43530124903 (commit 1067d73), aprovou nos dois SOs:
+  Ubuntu24.04 com 202 casos/201 passaram/1 ignorado e Windows2022 com
+  202/200/2 ignorados.
 - Logs .sentinel/lifetime-*.log e lifetime-performance.json. No local, cargo
   audit continua indisponível.
 

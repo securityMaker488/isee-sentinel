@@ -58,8 +58,10 @@ ficam preenchidos; a evidência em quarentena permanece e responde
   tela informa isso ao operador.
 - O registro de execução em memória vale para o processo que executa o job.
   Não há fila distribuída nem cancelamento entre processos.
-- A CI deste incremento ainda não foi executada; a validação relatada aqui é
-  local, em Windows, com supervisor e Python reais.
+- A CI deste incremento executou: CI43530124903 (commit 1067d73) aprovada em
+  Windows2022 (202 casos, 200 passaram, 0 falhas, 2 skips por SO) e
+  Ubuntu24.04 (202 casos, 201 passaram, 0 falhas, 1 skip). Os 2 casos novos de
+  cancelamento passaram nos dois SOs, incluindo o caminho Linux do supervisor.
 
 ## Preparação de publicação pública — 13/11/2026
 
