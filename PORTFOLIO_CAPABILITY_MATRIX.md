@@ -617,7 +617,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | Dois escopos vigentes, ativo/bytes, mandato/hash e revisão exatos; com Rust configurado, revalidação durante a execução e cancelamento ao detectar perda de autorização; cancelamento por requerimento com as mesmas operações e o mesmo escopo vigente do job |
 | Limitações | Sem extrair/executar;16MiB/512 entradas/8MiB por entrada/64MiB total; formatos limitados. Sem URL/Git ou sandbox; proteção de vida do worker por SO, árvores gerais ainda pendentes. O cancelamento imediato da árvore depende do supervisor Rust; sem ele o pedido fica registrado e a inspeção termina na fronteira seguinte |
-| Testes necessários / disponíveis | 24 worker no incremento TAR;16 API (14 anteriores + 2 de cancelamento);10 testes nativos por SO (9 passam/1 skip Windows); browser anterior e restore41 tabelas/14 migrações |
+| Testes necessários / disponíveis | 24 worker no incremento TAR;16 API (14 anteriores + 2 de cancelamento);10 testes nativos por SO (9 passam/1 skip Windows); browser de 13/11/2026 com 23 verificações aprovadas e Python real na importação; restore41 tabelas/14 migrações |
 | Evidências | Migrações008/012/013/014, imports.ts/jobs.ts/execution.ts, crate execution-engine, worker e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M3 |
 | Prioridade | P0 |
@@ -737,7 +737,7 @@ Atualizada em02/11/2026 a partir dos incrementos e testes registrados. M0–M6 �
 | Licenciamento | Código Sentinel sob AGPL-3.0; dependências no inventário de licenças; ferramentas de referência não embutidas |
 | Autorização | PolicyGate na API, identidade/mandato/hash preservados; pipe de controle cancela após perda de autorização detectada; o cancelamento por requerimento exige as mesmas operações e o mesmo escopo vigente que autorizaram o job |
 | Limitações | Worker confiável. Job Object Windows e PDEATHSIG/NO_NEW_PRIVS Linux para filho direto; sem sandbox/cgroups/cotas/fila. Árvores Linux/pipes herdados no cancelamento geral ainda pendentes; job e recibo têm estados distintos. O registro de execução que permite o cancelamento é volátil e vale para o processo do job; só o caminho de importação publica o contrato |
-| Testes necessários / disponíveis | 4 Rust,10 casos de processo por SO (9 passam/1 skip Windows),16 API/PostgreSQL restrito e restore;200 JS passam/2 skips; fmt/clippy; CI0026313 passou em Windows/Ubuntu |
+| Testes necessários / disponíveis | 4 Rust,10 casos de processo por SO (9 passam/1 skip Windows),16 API/PostgreSQL restrito e restore;200 JS passam/2 skips; fmt/clippy; CI0026313 passou em Windows/Ubuntu; CI43530124903 passou em Windows2022 e Ubuntu24.04; browser de 13/11/2026 com 23 verificações aprovadas |
 | Evidências | execution-engine/lifetime.rs com exceção FFI justificada; execution.ts valida containment/versão; apps/api/src/jobs.ts, migração014, docs/RUST-ENGINES.md e VALIDATION_REPORT.md |
 | Estado real | Parcialmente implementado · M2 |
 | Prioridade | P0 |

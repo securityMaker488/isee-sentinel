@@ -62,6 +62,30 @@ ficam preenchidos; a evidência em quarentena permanece e responde
   Windows2022 (202 casos, 200 passaram, 0 falhas, 2 skips por SO) e
   Ubuntu24.04 (202 casos, 201 passaram, 0 falhas, 1 skip). Os 2 casos novos de
   cancelamento passaram nos dois SOs, incluindo o caminho Linux do supervisor.
+- Percurso no navegador executado em 13/11/2026 contra servidor sintético
+  efêmero (PostgreSQL em memória, `npm run qa:server` na porta 4311):
+  23 verificações, todas aprovadas, código de saída 0, sem erro de JavaScript
+  ou de console. Incluem login/MFA, ativo e escopos, SecureBuild e relatório,
+  SOC sintético, evidência, cadastro/download único e revogação do agente,
+  caso, SecureFix com restauração, análise de dependências, importação ZIP com
+  Python real e quarentena, PCAP com Python real, RiskGraph, Nmap indisponível
+  com execução desabilitada, matriz, isolamento entre empresas/projetos, layout
+  estreito e console limpo. Artefatos em `.sentinel/qa/`.
+- O percurso do navegador foi corrigido antes de ser executado: `scripts/browser-qa.cjs`
+  usava os rótulos anteriores ao suporte TAR (`Projeto ZIP` e
+  `Preservar e inspecionar ZIP`), renomeados em `d67e95b` (02/11/2026), e a
+  asserção do RiskGraph não aceitava o elemento duplicado quando o roteiro
+  rodava duas vezes sobre a mesma base. O roteiro foi atualizado para os rótulos
+  atuais e para `.first()` na posição duplicada. A correção é do roteiro, não
+  do produto; a tela nunca deixou de expor o campo com o rótulo atual.
+- Nova asserção do roteiro sobre o incremento: no histórico de importações, a
+  linha concluída aparece como "Inspecionada · em quarentena", não há botão
+  "Cancelar inspeção" em linha concluída e o texto que explica o cancelamento
+  por requerimento está presente. O cancelamento de uma inspeção em andamento
+  não é exercitado pelo navegador: exigiria uma importação longa e determinística;
+  ele é verificado por `apps/api/test/job-cancellation.test.ts` na API.
+- O banco do QA é em memória e some com o servidor: cada execução do roteiro
+  precisa de um servidor novo, ou a base herda o estado da execução anterior.
 
 ## Preparação de publicação pública — 13/11/2026
 
@@ -696,6 +720,11 @@ global insuficiente para atualizações do painel. O teto geral passou de200 par
 600 requisições/minuto; login mantém10/minuto e bloqueio persistente por conta.
 MFA, CSRF e autorização continuam cobertos pelos testes. O replay completo do
 navegador passou após as correções.
+
+Esse replay é histórico, de antes do suporte a TAR. O roteiro ficou com os
+rótulos antigos da tela de importação e deixou de ser executável em 02/11/2026;
+a correção e a nova execução estão no incremento de 13/11/2026, na seção
+"Incremento M1 — cancelamento por requerimento no painel".
 
 ## Limitações
 

@@ -48,6 +48,15 @@ implementação ausente como se fosse apenas homologação do SO.
   — 202 casos, 200 passaram, 0 falhas, 2 skips por SO, 37,3s. Os 2 casos novos
   (apps/api/test/job-cancellation.test.ts) cobrem o cancelamento de uma
   inspeção em andamento e as guardas de autorização, isolamento e organização.
+- Percurso no navegador em 13/11/2026 contra servidor sintético efêmero:
+  23 verificações, todas aprovadas, código de saída 0, console sem erros, com
+  Python real na importação ZIP e na perícia PCAP. O roteiro
+  (scripts/browser-qa.cjs) foi corrigido antes: usava rótulos da tela
+  anteriores ao suporte TAR, trocados em 02/11/2026, o que o havia tornado
+  inexecutável. Nova asserção cobre o histórico de importações: linha
+  concluída como "Inspecionada · em quarentena", sem "Cancelar inspeção" em
+  linha concluída e com o texto de explicação presente. O cancelamento de uma
+  inspeção em andamento segue verificado pela API, não pelo navegador.
 - Comportamento verificado no caso principal: o pedido de cancelamento
   responde 200 `cancelling`; a requisição que originou a importação recebe 409
   `IMPORT_CANCELLED`; o job fica `cancelled` com `error_code=IMPORT_CANCELLED`;
@@ -124,8 +133,10 @@ Credenciais/bancos/dumps/.sentinel/target não entram
 no Git. Recompilar por SO; não depender desta conversa. DEVELOPMENT/TESTING
 e docs/RUST-ENGINES.md explicam reprodução e o contrato atualizado.
 
-PostgreSQL dedicado55432 encerrado após os testes; QA4311 não iniciado neste
-incremento. Serviço5432 preexistente preservado. Para reiniciar o cluster de QA,
-passar explicitamente -h127.0.0.1 -p55432 ao pg_ctl; a configuração padrão não
-fixa a porta dedicada. Windows/partições/bootloader/firmware/firewall/Kali não
-alterados. Sem bloqueio externo para continuar código portátil Windows.
+PostgreSQL dedicado55432 encerrado após os testes; o QA4311 foi iniciado e
+encerrado no fim da verificação do navegador, sem serviço em execução ao fim
+deste incremento. Serviço5432 preexistente preservado. Para reiniciar o cluster
+de QA, passar explicitamente -h127.0.0.1 -p55432 ao pg_ctl; a configuração
+padrão não fixa a porta dedicada. Windows/partições/bootloader/firmware/
+firewall/Kali não alterados. Sem bloqueio externo para continuar código
+portátil Windows.
