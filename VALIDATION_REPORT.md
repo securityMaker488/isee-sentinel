@@ -86,6 +86,10 @@ ficam preenchidos; a evidência em quarentena permanece e responde
   ele é verificado por `apps/api/test/job-cancellation.test.ts` na API.
 - O banco do QA é em memória e some com o servidor: cada execução do roteiro
   precisa de um servidor novo, ou a base herda o estado da execução anterior.
+- A correção do roteiro teve a sua própria CI: CI43534765209 (commit a88482e)
+  aprovada em Windows2022 (202 casos, 200 passaram, 0 falhas, 2 skips por SO) e
+  Ubuntu24.04 (202 casos, 201 passaram, 0 falhas, 1 skip), com a guarda de
+  repositório passando nos dois ambientes.
 
 ## Preparação de publicação pública — 13/11/2026
 

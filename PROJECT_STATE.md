@@ -80,7 +80,8 @@ implementação ausente como se fosse apenas homologação do SO.
   nessas execuções. A CI0026313 (run41557312004) validava 0.1.1, não 0.2.0.
   A CI deste incremento, 43530124903 (commit 1067d73), aprovou nos dois SOs:
   Ubuntu24.04 com 202 casos/201 passaram/1 ignorado e Windows2022 com
-  202/200/2 ignorados.
+  202/200/2 ignorados. A CI da correção do roteiro de navegador,
+  43534765209 (commit a88482e), aprovou nos dois SOs com os mesmos números.
 - Logs .sentinel/lifetime-*.log e lifetime-performance.json. No local, cargo
   audit continua indisponível.
 
